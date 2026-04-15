@@ -22,6 +22,9 @@ npm install
 ```bash
 npm run dev
 ```
+
+## Estructura
+
 ```
 src/
 │
