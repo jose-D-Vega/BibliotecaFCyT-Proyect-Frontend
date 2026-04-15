@@ -1,7 +1,7 @@
 # BibliotecaFCyT - Frontend
 
 Frontend de la aplicación de gestión de biblioteca para la Facultad de Ciencias y Tecnología (FCyT). El sistema es una aplicación web de gestión de biblioteca para la Facultad de Ciencias y Tecnología (FCyT). Su objetivo principal es digitalizar y organizar todo el proceso relacionado con el manejo de libros, usuarios y servicios de préstamo dentro de la biblioteca, facilitando el trabajo tanto de los administradores como de los estudiantes o usuarios que la utilicen.
- 
+
 Autores : 
 Jose Vega Santos
 Carina Velazquez
@@ -21,6 +21,7 @@ npm install
 
 ```bash
 npm run dev
+```
 ```
 src/
 │
@@ -94,3 +95,4 @@ src/
 │   └── icons/
 │
 └── App.jsx
+```
