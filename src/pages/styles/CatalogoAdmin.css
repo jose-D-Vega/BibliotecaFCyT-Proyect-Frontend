@@ -1,0 +1,27 @@
+.admin-add-material-btn {
+  width: 100%;
+  margin-top: 18px;
+  background: #c9574b;
+  color: #fff4f2;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 15px 18px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+
+.admin-add-material-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 22px rgba(0,0,0,0.18);
+}
+
+.admin-add-material-btn:active {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}

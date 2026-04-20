@@ -1,0 +1,104 @@
+.admin-action-btn {
+  width: 220px;
+  text-align: center;
+  margin: 0;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.admin-modify-btn {
+  background: #c0392b;
+  color: white;
+  box-shadow: 0 6px 15px rgba(192, 57, 43, 0.3);
+}
+
+.admin-modify-btn:hover {
+  background: #a93226;
+}
+
+.admin-delete-material-btn {
+  background: #b83224;
+  color: white;
+  box-shadow: 0 6px 15px rgba(184, 50, 36, 0.3);
+}
+
+.admin-delete-material-btn:hover {
+  background: #922b21;
+}
+
+.admin-ejemplar-item {
+  background: #eef2f6;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 3px solid #c0392b;
+  color: #111827;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-ejemplar-item:hover {
+  transform: translateX(4px);
+  background: #e3e9ef;
+}
+
+.admin-ejemplar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-ejemplar-codigo {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-ejemplar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-ejemplar-estado {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-ejemplar-estado.disponible {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.admin-ejemplar-estado.prestamo {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.admin-ejemplar-delete-btn {
+  background: #b83224;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-ejemplar-delete-btn:hover {
+  background: #922b21;
+}
