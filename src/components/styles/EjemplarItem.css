@@ -20,11 +20,13 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+  min-width: 0;
 }
 
 .ejemplar-codigo {
   font-weight: 600;
   color: #1f2937;
+  line-height: 1.35;
 }
 
 .ejemplar-estado {
@@ -33,6 +35,7 @@
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .ejemplar-estado.disponible {
@@ -43,4 +46,32 @@
 .ejemplar-estado.prestamo {
   background: #fee2e2;
   color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+  .ejemplar {
+    padding: 11px 12px;
+  }
+
+  .ejemplar-codigo {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ejemplar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .ejemplar:hover {
+    transform: none;
+  }
+
+  .ejemplar-estado {
+    align-self: flex-start;
+    font-size: 11px;
+  }
 }

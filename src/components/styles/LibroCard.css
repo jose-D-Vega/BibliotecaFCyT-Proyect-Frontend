@@ -1,14 +1,12 @@
 .card {
-  background: #d7dde4; /* 🔥 gris claro nuevo */
+  background: #d7dde4;
   border-radius: 12px;
   border: none;
-
   overflow: hidden;
-
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .card img {
@@ -16,8 +14,7 @@
   height: auto;
   display: block;
   object-fit: cover;
-
-  background: #d7dde4; 
+  background: #d7dde4;
 }
 
 .card:hover {
@@ -32,30 +29,76 @@
 .info h3 {
   font-size: 15px;
   margin: 0;
-  color: #111827; 
+  color: #111827;
+  line-height: 1.35;
 }
 
 .info p {
   font-size: 13px;
   color: #4b5563;
+  line-height: 1.4;
 }
-
 
 .ver-detalles {
   background: #c0392b;
   color: white;
-
   border: none;
   padding: 8px;
   margin: 10px;
   border-radius: 6px;
-
   opacity: 0;
   transform: translateY(10px);
   transition: 0.2s ease;
+  margin-top: auto;
 }
 
 .card:hover .ver-detalles {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+  .card {
+    border-radius: 10px;
+  }
+
+  .info {
+    padding: 10px 10px 8px;
+  }
+
+  .info h3 {
+    font-size: 13px;
+  }
+
+  .info p {
+    font-size: 11.5px;
+  }
+
+  .ver-detalles {
+    opacity: 1;
+    transform: translateY(0);
+    margin: 8px 10px 10px;
+    padding: 9px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .info {
+    padding: 9px 9px 7px;
+  }
+
+  .info h3 {
+    font-size: 12.5px;
+  }
+
+  .info p {
+    font-size: 11px;
+  }
+
+  .ver-detalles {
+    margin: 8px 9px 9px;
+    padding: 8px;
+    font-size: 12px;
+  }
 }

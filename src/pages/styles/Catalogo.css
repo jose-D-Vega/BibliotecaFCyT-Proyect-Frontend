@@ -1,9 +1,10 @@
 .catalogo {
   font-family: Arial, sans-serif;
+  min-height: 100vh;
 }
 
 .catalogo-header {
-  background: #c0392b; /* 🔥 rojo principal */
+  background: #c0392b;
   padding: 30px 50px;
   color: white;
 }
@@ -12,28 +13,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  gap: 16px;
   margin-bottom: 20px;
 }
-
 
 .carrito-btn {
   background: rgba(255,255,255,0.15);
   color: white;
-
   border: 1px solid rgba(255,255,255,0.3);
-
   padding: 8px 14px;
   border-radius: 8px;
-
   cursor: pointer;
-
   display: flex;
   align-items: center;
   gap: 6px;
-
   transition: 0.2s;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .carrito-btn:hover {
@@ -42,7 +38,6 @@
   transform: translateY(-2px);
 }
 
-/* TÍTULO */
 .titulo {
   font-size: 32px;
   font-weight: bold;
@@ -50,34 +45,30 @@
   color: white;
 }
 
-/* BODY */
 .catalogo-body {
-  background: #3a4651; 
+  background: #3a4651;
   padding: 40px 50px;
   min-height: 60vh;
 }
 
-/* PAGINACIÓN */
 .paginacion {
   background: #3a4651;
-  padding: 20px 0;
-
+  padding: 20px 0 30px;
   display: flex;
   justify-content: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
-/* BOTONES */
 .paginacion button {
   background: #d7dde4;
   color: #1f2937;
-
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
-
   cursor: pointer;
   transition: 0.2s;
+  min-width: 38px;
 }
 
 .paginacion button:hover {
@@ -88,4 +79,79 @@
 .paginacion button.active {
   background: #c0392b;
   color: white;
+}
+
+@media (max-width: 1024px) {
+  .catalogo-header {
+    padding: 26px 28px;
+  }
+
+  .catalogo-body {
+    padding: 28px;
+  }
+
+  .titulo {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .catalogo-header {
+    padding: 22px 18px;
+  }
+
+  .catalogo-body {
+    padding: 22px 18px;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .titulo {
+    font-size: 28px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .carrito-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+
+  .paginacion {
+    padding: 18px 14px 24px;
+    gap: 8px;
+  }
+
+  .paginacion button {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .catalogo-header {
+    padding: 16px 12px;
+  }
+
+  .catalogo-body {
+    padding: 16px 12px;
+  }
+
+  .titulo {
+    font-size: 24px;
+  }
+
+  .paginacion {
+    padding: 16px 10px 22px;
+    gap: 8px;
+  }
+
+  .paginacion button {
+    min-width: 34px;
+    font-size: 14px;
+  }
 }

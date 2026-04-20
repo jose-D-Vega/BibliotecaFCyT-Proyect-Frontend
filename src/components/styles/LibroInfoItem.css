@@ -2,8 +2,8 @@
   background: #c9d2db;
   padding: 10px 12px;
   border-radius: 8px;
-
   border-left: 3px solid #c0392b;
+  min-width: 0;
 }
 
 .info-item span {
@@ -15,8 +15,34 @@
   margin: 3px 0 0;
   color: #111827;
   font-weight: 500;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .full {
   grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .info-item {
+    padding: 11px 12px;
+  }
+
+  .full {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-item {
+    padding: 10px 11px;
+  }
+
+  .info-item span {
+    font-size: 11px;
+  }
+
+  .info-item p {
+    font-size: 14px;
+  }
 }

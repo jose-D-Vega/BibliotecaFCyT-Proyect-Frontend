@@ -13,7 +13,6 @@
   box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
-
 .admin-add-material-btn:hover {
   transform: translateY(-2px);
   filter: brightness(1.08);
@@ -24,4 +23,22 @@
   transform: translateY(1px);
   filter: brightness(0.95);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .admin-add-material-btn {
+    margin-top: 16px;
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-add-material-btn {
+    margin-top: 14px;
+    padding: 12px 14px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
 }
