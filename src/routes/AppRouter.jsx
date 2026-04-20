@@ -4,14 +4,17 @@ import ProtectedRoute from './ProtectedRoute'
 
 import CatalogoPage from '../pages/public/CatalogoPublic'
 import LibroDetallePublic from '../pages/public/LibroDetallePublic'
+
 import LoginPage from '../pages/auth/LoginPage'
 import AuthCallbackPage from '../pages/auth/AuthCallbackPage'
 import RolSelectorPage from '../pages/auth/RolSelectorPage'
-import DashboardPage from '../pages/user/DashboardPage'
-import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
+import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
+
+import DashboardPage from '../pages/user/DashboardUser'
+import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 
 const AppRouter = () => {
-  const { user, loading } = useAuth()
+  const { user, loading, rolActivo } = useAuth()
 
   if (loading) return <div>Cargando...</div>
 
@@ -33,6 +36,18 @@ const AppRouter = () => {
 
         {/* Callback de Google */}
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        
+        {/* Completar datos de la cuenta del usuario */}
+         <Route
+          path="/completar-perfil"
+          element={
+            !user
+              ? <Navigate to="/login" replace />
+              : user.ci !== 'pendiente' && user.telefono
+                ? <Navigate to={rolActivo === 'bibliotecario' ? '/admin' : '/dashboard'} replace />
+                : <CompletarPerfilPage />
+          }
+        />
 
         {/* Selección de rol — solo bibliotecarios autenticados */}
         <Route

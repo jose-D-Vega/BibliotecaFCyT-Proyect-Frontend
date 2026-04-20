@@ -1,6 +1,9 @@
 import React from 'react';
 import '../styles/DashboardAdmin.css';
 
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+
 // Importación de iconos (Material Design)
 import {
   MdAccountBalance,
@@ -15,6 +18,19 @@ import {
 } from 'react-icons/md';
 
 const DashboardA = () => {
+  const { user, logout, switchRol } = useAuth()
+  const navigate = useNavigate() 
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
+  const handleSwitchRol = () => {
+    switchRol()
+    navigate('/select-rol', { replace: true })
+  }
+
   return (
     <>
       {/* ===== ENCABEZADO / TOP APP BAR ===== */}
@@ -25,6 +41,9 @@ const DashboardA = () => {
             <div className="dashboard-header__title-wrapper">
               <MdAccountBalance className="dashboard-header__icon" size={32} />
               <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
+              {/* botones simples para salir de la sesion */}
+              <button onClick={handleSwitchRol}>Cambiar rol</button>
+              <button onClick={handleLogout}>Cerrar sesión</button>
             </div>
           </div>
         </div>

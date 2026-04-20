@@ -63,8 +63,17 @@ export const AuthProvider = ({ children }) => {
     setRolActivo(null)
   }
 
+  const refreshUser = async () => {
+    try {
+      const userData = await getMe()
+      setUser(userData)
+    } catch {
+      logout()
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, rolActivo, loading, login, selectRol, switchRol, logout }}>
+    <AuthContext.Provider value={{ user, rolActivo, loading, login, selectRol, switchRol, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   )

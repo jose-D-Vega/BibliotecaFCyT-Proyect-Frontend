@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+.completar-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0c1a2e;
+  font-family: 'Source Sans 3', sans-serif;
+  padding: 2rem;
+}
+
+.completar-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.completar-card__logo {
+  padding: 2rem 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.completar-card__logo img {
+  height: 64px;
+  object-fit: contain;
+}
+
+.completar-card__body {
+  padding: 1.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.completar-card__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+}
+
+.completar-card__welcome {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  text-align: center;
+  font-weight: 300;
+}
+
+.completar-card__desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0.25rem 0 0.5rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.completar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.completar-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.completar-form__field label {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 600;
+}
+
+.completar-form__field label span {
+  font-weight: 300;
+  color: rgba(255,255,255,0.35);
+}
+
+.completar-form__field input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  color: #fff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.completar-form__field input::placeholder {
+  color: rgba(255,255,255,0.25);
+}
+
+.completar-form__field input:focus {
+  border-color: rgba(255,255,255,0.4);
+}
+
+.completar-form__field input:disabled {
+  opacity: 0.5;
+}
+
+.completar-form__error {
+  font-size: 0.85rem;
+  color: #f09595;
+  margin: 0;
+  text-align: center;
+}
+
+.completar-form__btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: #fff;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 0.25rem;
+}
+
+.completar-form__btn:hover:not(:disabled) {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.completar-form__btn:active:not(:disabled) { transform: scale(0.98); }
+
+.completar-form__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

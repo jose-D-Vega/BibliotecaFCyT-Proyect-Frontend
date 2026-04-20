@@ -29,14 +29,21 @@ const AuthCallbackPage = () => {
         login(token, userData)
 
         window.history.replaceState({}, '', '/auth/callback')
+        
+        // ¿Es usuario nuevo sin CI?
+        const esNuevo = userData.ci === 'pendiente'
 
         // Si es bibliotecario, mostrar selector de rol
         // Si es normal, ir directo al dashboard
         if (userData.rol === 'bibliotecario') {
-          navigate('/select-rol', { replace: true })
+          esNuevo
+          ? navigate('/completar-perfil', { replace: true })
+          : navigate('/select-rol', { replace: true })
         } else {
           selectRol('normal')
-          navigate('/dashboard', { replace: true })
+          esNuevo
+            ? navigate('/completar-perfil', { replace: true })
+            : navigate('/dashboard', { replace: true })
         }
       } catch {
         localStorage.removeItem('token')

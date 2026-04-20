@@ -1,6 +1,9 @@
 import React from 'react';
 import '../styles/DashboardUser.css';
 
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+
 // Importación de iconos (Material Design)
 import {
   MdSchool,
@@ -14,6 +17,14 @@ import {
 } from 'react-icons/md';
 
 const DashboardU = () => {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <>
       {/* ===== ENCABEZADO / TOP APP BAR ===== */}
@@ -25,6 +36,7 @@ const DashboardU = () => {
             <div className="dashboard-header__title-wrapper">
               <MdSchool className="dashboard-header__icon" size={32} />
               <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
+              <button onClick={handleLogout}>Cerrar sesión</button>
             </div>
           </div>
         </div>
