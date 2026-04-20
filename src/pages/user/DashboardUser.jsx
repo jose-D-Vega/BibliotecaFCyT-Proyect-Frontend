@@ -1,5 +1,5 @@
 import React from 'react';
-import './stylesU.css';
+import '../styles/DashboardUser.css';
 
 // Importación de iconos (Material Design)
 import {

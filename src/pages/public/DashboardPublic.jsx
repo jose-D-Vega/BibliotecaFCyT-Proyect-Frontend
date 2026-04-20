@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles.css';
+import '../styles/DashboardPublic.css';
 
 // Importamos los iconos de la librería React Icons (familia Material Design)
 import { 

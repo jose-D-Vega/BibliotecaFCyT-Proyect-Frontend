@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import LibroCard from "./LibroCard"
 import "../components/styles/ListaLibros.css"
 
@@ -15,6 +16,26 @@ function ListaLibros({
   orden = "",
   onVerDetalle
 }) {
+  const [librosPorPagina, setLibrosPorPagina] = useState(20)
+
+  useEffect(() => {
+    const actualizarLibrosPorPagina = () => {
+      const ancho = window.innerWidth
+
+      if (ancho <= 480) {
+        setLibrosPorPagina(10)
+      } else if (ancho <= 1024) {
+        setLibrosPorPagina(15)
+      } else {
+        setLibrosPorPagina(20)
+      }
+    }
+
+    actualizarLibrosPorPagina()
+    window.addEventListener("resize", actualizarLibrosPorPagina)
+
+    return () => window.removeEventListener("resize", actualizarLibrosPorPagina)
+  }, [])
 
   const imagenes = [calculo, electrica, informatica]
 
@@ -98,7 +119,6 @@ function ListaLibros({
   })
 
   let librosFiltrados = librosBase.filter(libro => {
-
     if (busqueda) {
       if (
         modoBusqueda === "titulo" &&
@@ -154,8 +174,6 @@ function ListaLibros({
       break
   }
 
-  const librosPorPagina = 20
-
   const totalPaginasCalc = Math.max(
     1,
     Math.ceil(librosFiltrados.length / librosPorPagina)
@@ -170,7 +188,6 @@ function ListaLibros({
 
   return (
     <div className="grid-libros">
-
       {librosPagina.length > 0 ? (
         librosPagina.map(libro => (
           <LibroCard
@@ -180,15 +197,16 @@ function ListaLibros({
           />
         ))
       ) : (
-        <p style={{
-          color: "white",
-          gridColumn: "span 4",
-          textAlign: "center"
-        }}>
+        <p
+          style={{
+            color: "white",
+            gridColumn: "span 4",
+            textAlign: "center"
+          }}
+        >
           No se encontraron libros
         </p>
       )}
-
     </div>
   )
 }

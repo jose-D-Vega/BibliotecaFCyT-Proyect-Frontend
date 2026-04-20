@@ -1,16 +1,14 @@
 .buscador {
   width: 100%;
+  box-sizing: border-box;
   padding: 12px;
-
   border-radius: 8px;
   border: none;
-
   margin-bottom: 15px;
-
   background: rgba(255,255,255,0.9);
   color: #111827;
-
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
 }
 
 .buscador::placeholder {
@@ -32,22 +30,52 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  margin-bottom: 14px;
 }
 
 .modo-btn {
   background: rgba(255,255,255,0.15);
   color: white;
-
   border: 1px solid rgba(255,255,255,0.3);
   padding: 8px 12px;
-
   border-radius: 8px;
   cursor: pointer;
-
   transition: 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .modo-btn:hover {
   background: white;
   color: #c0392b;
+}
+
+@media (max-width: 768px) {
+  .buscador-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .buscador {
+    margin-bottom: 0;
+  }
+
+  .modo-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .buscador {
+    padding: 11px 12px;
+    font-size: 14px;
+  }
+
+  .modo-btn {
+    font-size: 14px;
+  }
 }
