@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { getMe } from '../../services/auth.services'
 
 const AuthCallbackPage = () => {
-  const { login } = useAuth()
+  const { login, selectRol } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -24,18 +24,18 @@ const AuthCallbackPage = () => {
       }
 
       try {
-        // Guardar token y obtener datos del usuario
         localStorage.setItem('token', token)
         const userData = await getMe()
         login(token, userData)
 
-        // Limpiar el token de la URL
         window.history.replaceState({}, '', '/auth/callback')
 
-        // Redirigir según rol
+        // Si es bibliotecario, mostrar selector de rol
+        // Si es normal, ir directo al dashboard
         if (userData.rol === 'bibliotecario') {
-          navigate('/admin', { replace: true })
+          navigate('/select-rol', { replace: true })
         } else {
+          selectRol('normal')
           navigate('/dashboard', { replace: true })
         }
       } catch {

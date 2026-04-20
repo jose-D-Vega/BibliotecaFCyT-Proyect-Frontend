@@ -2,37 +2,55 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 
-// Páginas públicas
 import CatalogoPage from '../pages/public/CatalogoPage'
-import LoginPage from '../pages/public/LoginPage'
-import AuthCallbackPage from '../pages/public/AuthCallbackPage'
-
-// Páginas usuario normal
+import LoginPage from '../pages/auth/LoginPage'
+import AuthCallbackPage from '../pages/auth/AuthCallbackPage'
+import RolSelectorPage from '../pages/auth/RolSelectorPage'
 import DashboardPage from '../pages/user/DashboardPage'
-
-// Páginas admin/bibliotecario
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
 
 const AppRouter = () => {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
+
+  if (loading) return <div>Cargando...</div>
 
   return (
     <BrowserRouter>
       <Routes>
         {/* Públicas */}
-        <Route path="/" element={<CatalogoPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/catalogo" element={<CatalogoPage />} />
+
+        {/* Login — si ya está autenticado redirigir */}
         <Route
           path="/login"
-          element={user ? <Navigate to={user.rol === 'bibliotecario' ? '/admin' : '/dashboard'} replace /> : <LoginPage />}
+          element={
+            user
+              ? <Navigate to={user.rol === 'bibliotecario' ? '/select-rol' : '/dashboard'} replace />
+              : <LoginPage />
+          }
         />
+
+        {/* Callback de Google */}
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
+
+        {/* Selección de rol — solo bibliotecarios autenticados */}
+        <Route
+          path="/select-rol"
+          element={
+            !user
+              ? <Navigate to="/login" replace />
+              : user.rol !== 'bibliotecario'
+                ? <Navigate to="/dashboard" replace />
+                : <RolSelectorPage />
+          }
+        />
 
         {/* Usuario normal */}
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="normal">
               <DashboardPage />
             </ProtectedRoute>
           }
@@ -56,7 +74,6 @@ const AppRouter = () => {
           }
         />
 
-        {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
