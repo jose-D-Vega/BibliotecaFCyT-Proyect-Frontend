@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 
-import CatalogoPage from '../pages/public/CatalogoPage'
+import CatalogoPage from '../pages/public/CatalogoPublic'
+import LibroDetallePublic from '../pages/public/LibroDetallePublic'
 import LoginPage from '../pages/auth/LoginPage'
 import AuthCallbackPage from '../pages/auth/AuthCallbackPage'
 import RolSelectorPage from '../pages/auth/RolSelectorPage'
@@ -19,8 +20,7 @@ const AppRouter = () => {
       <Routes>
         {/* Públicas */}
         <Route path="/" element={<LoginPage />} />
-        <Route path="/catalogo" element={<CatalogoPage />} />
-
+        <Route path="/catalogo" element={<CatalogoPage></CatalogoPage>}/>
         {/* Login — si ya está autenticado redirigir */}
         <Route
           path="/login"
