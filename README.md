@@ -16,7 +16,9 @@ Alejandro Villalba
 ```bash
 npm install
 ```
-
+```bash
+npm install react-icons
+```
 ## Uso
 
 ```bash
