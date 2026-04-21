@@ -7,7 +7,7 @@ import UserLayout from '../layouts/prueba/UserLayout'
 import AdminLayout from '../layouts/prueba/AdminLayout'
 
 
-import CatalogoPage from '../pages/public/CatalogoPublic'
+import CatalogoPage from '../pages/public/CatalogoPage'
 import LibroDetallePublic from '../pages/public/LibroDetallePublic'
 
 import LoginPage from '../pages/auth/LoginPage'
@@ -16,7 +16,7 @@ import RolSelectorPage from '../pages/auth/RolSelectorPage'
 import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
 
 import DashboardPage from '../pages/user/DashboardUser'
-import CatalogoUserPage from '../pages/user/Catalogo'
+import CatalogoUserPage from '../pages/user/prueba/CatalogoUserPage'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
 import SancionesPage from '../pages/user/prueba/SancionesPage'
@@ -24,7 +24,7 @@ import SancionesPage from '../pages/user/prueba/SancionesPage'
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 import AdminPrestamosPage from '../pages/admin/prueba/AdminPrestamosPage'
 import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
-import AdminCatalogoPage from '../pages/admin/CatalogoAdmin'
+import AdminCatalogoPage from '../pages/admin/prueba/AdminCatalogoPage'
 import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
@@ -39,7 +39,12 @@ const AppRouter = () => {
       <Routes>
         {/* Públicas */}
         <Route path="/" element={<LoginPage />} />
-        <Route path="/catalogo" element={<CatalogoPage></CatalogoPage>}/>
+        <Route path="/catalogo" element={<CatalogoPage />} />
+        {/**
+         * <Route path="/catalogo/:id" element={<DetalleLibroPublicoPage />} />
+         */}
+        
+
         {/* Login — si ya está autenticado redirigir */}
         <Route
           path="/login"
@@ -88,7 +93,14 @@ const AppRouter = () => {
         >
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<DashboardPage />} />
+
           <Route path="catalogo" element={<CatalogoUserPage />} />
+          {/**
+           *  <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
+              <Route path="carrito" element={<CarritoPage />} />
+           */}
+          
+
           <Route path="prestamos" element={<PrestamosPage />} />
           <Route path="devoluciones" element={<DevolucionesPage />} />
           <Route path="sanciones" element={<SancionesPage />} />
@@ -107,7 +119,13 @@ const AppRouter = () => {
           <Route path="inicio" element={<AdminDashboardPage />} />
           <Route path="prestamos" element={<AdminPrestamosPage />} />
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
+
           <Route path="catalogo" element={<AdminCatalogoPage />} />
+          {/**
+           *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
+            <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
+           */}
+
           <Route path="usuarios" element={<UsuariosPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />

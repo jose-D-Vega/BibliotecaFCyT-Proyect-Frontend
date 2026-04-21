@@ -17,8 +17,8 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
   // Si se requiere un rol específico y el activo no coincide
   if (requiredRole && rolActivo !== requiredRole) {
-    if (rolActivo === 'bibliotecario') return <Navigate to="/admin" replace />
-    return <Navigate to="/dashboard" replace />
+    if (rolActivo === 'bibliotecario') return <Navigate to="/admin/inicio" replace />
+    return <Navigate to="/user/inicio" replace />
   }
 
   return children

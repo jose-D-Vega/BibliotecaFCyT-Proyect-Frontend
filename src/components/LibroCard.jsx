@@ -1,6 +1,6 @@
 import "../components/styles/LibroCard.css"
 
-function LibroCard({ libro, onVerDetalle }) {
+function LibroCard({ key, libro, onVerDetalle }) {
   return (
     <div className="card">
 
