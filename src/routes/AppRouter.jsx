@@ -2,6 +2,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 
+
+import UserLayout from '../layouts/prueba/UserLayout'
+import AdminLayout from '../layouts/prueba/AdminLayout'
+
+
 import CatalogoPage from '../pages/public/CatalogoPublic'
 import LibroDetallePublic from '../pages/public/LibroDetallePublic'
 
@@ -11,7 +16,18 @@ import RolSelectorPage from '../pages/auth/RolSelectorPage'
 import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
 
 import DashboardPage from '../pages/user/DashboardUser'
+import CatalogoUserPage from '../pages/user/Catalogo'
+import PrestamosPage from '../pages/user/prueba/PrestamosPage'
+import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
+import SancionesPage from '../pages/user/prueba/SancionesPage'
+
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
+import AdminPrestamosPage from '../pages/admin/prueba/AdminPrestamosPage'
+import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
+import AdminCatalogoPage from '../pages/admin/CatalogoAdmin'
+import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
+import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
+import InformesPage from '../pages/admin/prueba/InformesPage'
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -29,7 +45,7 @@ const AppRouter = () => {
           path="/login"
           element={
             user
-              ? <Navigate to={user.rol === 'bibliotecario' ? '/select-rol' : '/dashboard'} replace />
+              ? <Navigate to={user.rol === 'bibliotecario' ? '/select-rol' : '/app/inicio'} replace />
               : <LoginPage />
           }
         />
@@ -38,13 +54,13 @@ const AppRouter = () => {
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
         
         {/* Completar datos de la cuenta del usuario */}
-         <Route
+        <Route
           path="/completar-perfil"
           element={
             !user
               ? <Navigate to="/login" replace />
               : user.ci !== 'pendiente' && user.telefono
-                ? <Navigate to={rolActivo === 'bibliotecario' ? '/admin' : '/dashboard'} replace />
+                ? <Navigate to={rolActivo === 'bibliotecario' ? '/admin/inicio' : '/app/inicio'} replace />
                 : <CompletarPerfilPage />
           }
         />
@@ -56,38 +72,47 @@ const AppRouter = () => {
             !user
               ? <Navigate to="/login" replace />
               : user.rol !== 'bibliotecario'
-                ? <Navigate to="/dashboard" replace />
+                ? <Navigate to="/app/inicio" replace />
                 : <RolSelectorPage />
           }
         />
 
-        {/* Usuario normal */}
+         {/* Rutas usuario normal — con UserLayout */}
         <Route
-          path="/dashboard"
+          path="/app"
           element={
             <ProtectedRoute requiredRole="normal">
-              <DashboardPage />
+              <UserLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to="inicio" replace />} />
+          <Route path="inicio" element={<DashboardPage />} />
+          <Route path="catalogo" element={<CatalogoUserPage />} />
+          <Route path="prestamos" element={<PrestamosPage />} />
+          <Route path="devoluciones" element={<DevolucionesPage />} />
+          <Route path="sanciones" element={<SancionesPage />} />
+        </Route>
 
-        {/* Bibliotecario */}
+        {/* Rutas bibliotecario — con AdminLayout */}
         <Route
           path="/admin"
           element={
             <ProtectedRoute requiredRole="bibliotecario">
-              <AdminDashboardPage />
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute requiredRole="bibliotecario">
-              <AdminDashboardPage />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<Navigate to="inicio" replace />} />
+          <Route path="inicio" element={<AdminDashboardPage />} />
+          <Route path="prestamos" element={<AdminPrestamosPage />} />
+          <Route path="devoluciones" element={<AdminDevolucionesPage />} />
+          <Route path="catalogo" element={<AdminCatalogoPage />} />
+          <Route path="usuarios" element={<UsuariosPage />} />
+          <Route path="sanciones" element={<AdminSancionesPage />} />
+          <Route path="informes" element={<InformesPage />} />
+        </Route>
+        
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

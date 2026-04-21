@@ -36,7 +36,7 @@ const CompletarPerfilPage = () => {
             navigate('/select-rol', { replace: true })
         } else {
             selectRol('normal')
-            navigate('/dashboard', { replace: true })
+            navigate('/app/inicio', { replace: true })
         }
     } catch {
       setError('Ocurrió un error al guardar los datos. Intentá de nuevo.')

@@ -43,7 +43,7 @@ const AuthCallbackPage = () => {
           selectRol('normal')
           esNuevo
             ? navigate('/completar-perfil', { replace: true })
-            : navigate('/dashboard', { replace: true })
+            : navigate('/app/inicio', { replace: true })
         }
       } catch {
         localStorage.removeItem('token')

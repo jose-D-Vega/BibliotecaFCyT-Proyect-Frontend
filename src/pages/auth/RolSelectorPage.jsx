@@ -7,9 +7,13 @@ const RolSelectorPage = () => {
   const navigate = useNavigate();
 
   const handleSelect = (rol) => {
-    selectRol(rol);
-    navigate(rol === 'bibliotecario' ? '/admin' : '/dashboard', { replace: true });
-  };
+    selectRol(rol)
+    if (rol === 'bibliotecario') {
+      navigate('/admin/inicio', { replace: true })
+    } else {
+      navigate('/app/inicio', { replace: true })
+    }
+  }
 
   return (
     <div className="role-selector-container">
