@@ -1,63 +1,66 @@
 .detalle-page {
-  font-family: Arial, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   min-height: 100vh;
-  background: #3a4651;
-  color: #e5e7eb;
+  background: #eef3f8;
+  color: #17263c;
 }
 
 .detalle-header {
-  background: #c0392b;
+  background: linear-gradient(180deg, #fdfefe 0%, #f8fbfd 100%);
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 15px 25px;
+  padding: 16px 25px;
   flex-wrap: wrap;
+  border-bottom: 1px solid #d2dce8;
 }
 
 .header-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: white;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0c1a2e;
   flex: 1;
   min-width: 0;
+  font-family: 'Playfair Display', serif;
 }
 
 .carrito-btn-detalle {
-  background: rgba(255,255,255,0.15);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.3);
-  padding: 8px 14px;
-  border-radius: 8px;
+  background: white;
+  color: #173150;
+  border: 1px solid #d2dce8;
+  padding: 9px 14px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
   transition: 0.2s;
-  font-weight: 500;
+  font-weight: 700;
   margin-left: auto;
   flex-shrink: 0;
 }
 
 .carrito-btn-detalle:hover {
-  background: white;
-  color: #c0392b;
+  background: #173150;
+  color: white;
   transform: translateY(-2px);
 }
 
 .btn-volver {
-  background: rgba(255,255,255,0.15);
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
+  background: white;
+  border: 1px solid #d2dce8;
+  color: #173150;
+  padding: 8px 13px;
+  border-radius: 12px;
   cursor: pointer;
   transition: 0.2s;
   flex-shrink: 0;
+  font-weight: 700;
 }
 
 .btn-volver:hover {
-  background: white;
-  color: #c0392b;
+  background: #eef4fa;
+  color: #0c1a2e;
 }
 
 .detalle-container {
@@ -67,12 +70,13 @@
 }
 
 .detalle-card {
-  background: #d7dde4;
-  border-radius: 14px;
+  background: white;
+  border-radius: 18px;
   display: flex;
   gap: 30px;
-  padding: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  padding: 28px;
+  box-shadow: 0 14px 32px rgba(12, 26, 46, 0.08);
+  border: 1px solid #d2dce8;
 }
 
 .portada-wrapper {
@@ -87,28 +91,29 @@
   width: 220px;
   height: 320px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 12px;
   display: block;
+  background: #edf3f9;
 }
 
 .btn-prestamo {
   width: 220px;
   text-align: center;
   margin: 0;
-  background: #c0392b;
+  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 11px 16px;
+  border-radius: 12px;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
-  box-shadow: 0 6px 15px rgba(192, 57, 43, 0.3);
+  box-shadow: 0 10px 18px rgba(12, 26, 46, 0.14);
 }
 
 .btn-prestamo:hover {
   transform: translateY(-2px);
-  background: #a93226;
+  filter: brightness(1.04);
 }
 
 .info {
@@ -117,10 +122,12 @@
 }
 
 .titulo-libro {
-  font-size: 24px;
+  font-size: 2rem;
   margin-bottom: 12px;
-  color: #111827;
-  line-height: 1.25;
+  color: #0c1a2e;
+  line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
 }
 
 .resumen-ejemplares {
@@ -136,7 +143,7 @@
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .resumen-badge.disponible {
@@ -160,19 +167,19 @@
 }
 
 .ejemplares-dropdown {
-  background: #3a4651;
-  border-radius: 12px;
+  background: transparent;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
 }
 
 .ejemplares-title {
-  padding: 15px;
-  background: #c0392b;
+  padding: 15px 18px;
+  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   list-style: none;
+  border-radius: 14px;
 }
 
 .ejemplares-title::-webkit-details-marker {
@@ -180,17 +187,21 @@
 }
 
 .ejemplares-lista {
-  background: #d7dde4;
+  background: white;
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 10px;
+  border: 1px solid #d2dce8;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(12, 26, 46, 0.07);
 }
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.65);
+  background: rgba(12, 26, 46, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,30 +212,32 @@
 .modal-box {
   width: 100%;
   max-width: 460px;
-  background: #d7dde4;
-  border-radius: 16px;
+  background: white;
+  border-radius: 18px;
   padding: 24px;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  box-shadow: 0 20px 42px rgba(12, 26, 46, 0.24);
   box-sizing: border-box;
+  border: 1px solid #d2dce8;
 }
 
 .modal-title {
   margin: 0 0 10px;
-  color: #111827;
+  color: #0c1a2e;
   font-size: 22px;
   line-height: 1.25;
+  font-family: 'Playfair Display', serif;
 }
 
 .modal-texto {
   margin: 0 0 16px;
-  color: #374151;
+  color: #4f6279;
   line-height: 1.5;
 }
 
 .modal-libro {
-  background: #eef2f6;
-  border-left: 4px solid #c0392b;
-  border-radius: 10px;
+  background: #f3f7fb;
+  border-left: 4px solid #173150;
+  border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 18px;
   display: flex;
@@ -239,7 +252,7 @@
 }
 
 .modal-libro span {
-  color: #4b5563;
+  color: #5f7188;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -253,29 +266,29 @@
 
 .modal-btn {
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .modal-btn.primario {
-  background: #c0392b;
+  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
   color: white;
 }
 
 .modal-btn.primario:hover {
-  background: #a93226;
+  filter: brightness(1.04);
 }
 
 .modal-btn.secundario {
-  background: #c9d2db;
+  background: #e6edf5;
   color: #111827;
 }
 
 .modal-btn.secundario:hover {
-  background: #b9c4ce;
+  background: #d7e2ed;
 }
 
 @media (max-width: 1024px) {
@@ -300,7 +313,7 @@
   }
 
   .titulo-libro {
-    font-size: 22px;
+    font-size: 1.8rem;
   }
 }
 
@@ -420,7 +433,7 @@
 
   .detalle-card {
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 14px;
   }
 
   .titulo-libro {

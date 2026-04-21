@@ -1,12 +1,15 @@
 .catalogo {
-  font-family: Arial, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   min-height: 100vh;
+  background: #eef3f8;
+  color: #17263c;
 }
 
 .catalogo-header {
-  background: #c0392b;
+  background: linear-gradient(180deg, #fdfefe 0%, #f8fbfd 100%);
   padding: 30px 50px;
-  color: white;
+  color: #17263c;
+  border-bottom: 1px solid #d2dce8;
 }
 
 .header-top {
@@ -18,41 +21,43 @@
 }
 
 .carrito-btn {
-  background: rgba(255,255,255,0.15);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.3);
-  padding: 8px 14px;
-  border-radius: 8px;
+  background: white;
+  color: #173150;
+  border: 1px solid #d2dce8;
+  padding: 10px 15px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
   transition: 0.2s;
-  font-weight: 500;
+  font-weight: 700;
   flex-shrink: 0;
+  box-shadow: 0 8px 18px rgba(12, 26, 46, 0.05);
 }
 
 .carrito-btn:hover {
-  background: white;
-  color: #c0392b;
+  background: #173150;
+  color: white;
   transform: translateY(-2px);
 }
 
 .titulo {
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 2.1rem;
+  font-weight: 600;
   margin-bottom: 20px;
-  color: white;
+  color: #0c1a2e;
+  font-family: 'Playfair Display', serif;
 }
 
 .catalogo-body {
-  background: #3a4651;
-  padding: 40px 50px;
+  background: #eef3f8;
+  padding: 36px 50px;
   min-height: 60vh;
 }
 
 .paginacion {
-  background: #3a4651;
+  background: #eef3f8;
   padding: 20px 0 30px;
   display: flex;
   justify-content: center;
@@ -61,24 +66,36 @@
 }
 
 .paginacion button {
-  background: #d7dde4;
-  color: #1f2937;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  background: white;
+  color: #173150;
+  border: 1px solid #d2dce8;
+  padding: 8px 13px;
+  border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
-  min-width: 38px;
+  min-width: 40px;
+  font-weight: 700;
 }
 
 .paginacion button:hover {
-  background: white;
-  color: #c0392b;
+  background: #e8eff7;
+  color: #0c1a2e;
 }
 
 .paginacion button.active {
-  background: #c0392b;
+  background: #173150;
   color: white;
+  border-color: #173150;
+}
+
+.public-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.public-page .catalogo {
+  flex: 1;
 }
 
 @media (max-width: 1024px) {
@@ -91,7 +108,7 @@
   }
 
   .titulo {
-    font-size: 30px;
+    font-size: 1.95rem;
   }
 }
 
@@ -111,7 +128,7 @@
   }
 
   .titulo {
-    font-size: 28px;
+    font-size: 1.8rem;
     margin-bottom: 0;
     text-align: center;
   }
@@ -142,7 +159,7 @@
   }
 
   .titulo {
-    font-size: 24px;
+    font-size: 1.6rem;
   }
 
   .paginacion {

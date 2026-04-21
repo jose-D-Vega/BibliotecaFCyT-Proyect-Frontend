@@ -1,40 +1,44 @@
 .carrito-page {
-  font-family: Arial, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   min-height: 100vh;
-  background: #3a4651;
+  background: #eef3f8;
 }
 
 .carrito-header {
-  background: #c0392b;
-  color: white;
+  background: linear-gradient(180deg, #fdfefe 0%, #f8fbfd 100%);
+  color: #0c1a2e;
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 15px 25px;
+  padding: 16px 25px;
   flex-wrap: wrap;
+  border-bottom: 1px solid #d2dce8;
 }
 
 .carrito-volver-btn {
-  background: rgba(255,255,255,0.15);
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
+  background: white;
+  border: 1px solid #d2dce8;
+  color: #173150;
+  padding: 8px 13px;
+  border-radius: 12px;
   cursor: pointer;
   transition: 0.2s;
   flex-shrink: 0;
+  font-weight: 700;
 }
 
 .carrito-volver-btn:hover {
-  background: white;
-  color: #c0392b;
+  background: #eef4fa;
+  color: #0c1a2e;
 }
 
 .carrito-titulo {
-  font-size: 22px;
+  font-size: 2rem;
   font-weight: 600;
+  font-family: 'Playfair Display', serif;
   margin: 0;
   min-width: 0;
+  color: #0c1a2e;
 }
 
 .carrito-container {
@@ -59,48 +63,50 @@
 
 .carrito-accion-btn {
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 18px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .carrito-accion-btn.primario {
-  background: #c0392b;
+  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
   color: white;
 }
 
 .carrito-accion-btn.primario:hover {
-  background: #a93226;
+  filter: brightness(1.04);
 }
 
 .carrito-accion-btn.secundario {
-  background: #d7dde4;
+  background: #e5edf5;
   color: #111827;
 }
 
 .carrito-accion-btn.secundario:hover {
-  background: #c9d2db;
+  background: #d8e3ee;
 }
 
 .carrito-vacio {
-  background: #d7dde4;
-  border-radius: 14px;
+  background: white;
+  border-radius: 16px;
   padding: 40px 30px;
   text-align: center;
   color: #111827;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 28px rgba(12, 26, 46, 0.08);
+  border: 1px solid #d2dce8;
 }
 
 .carrito-vacio h2 {
   margin: 0 0 10px;
   color: #1f2937;
+  font-family: 'Playfair Display', serif;
 }
 
 .carrito-vacio p {
   margin: 0;
-  color: #4b5563;
+  color: #5f7188;
   line-height: 1.5;
 }
 
@@ -125,7 +131,7 @@
   }
 
   .carrito-titulo {
-    font-size: 24px;
+    font-size: 1.8rem;
     text-align: center;
   }
 
@@ -154,7 +160,7 @@
   }
 
   .carrito-titulo {
-    font-size: 20px;
+    font-size: 1.5rem;
   }
 
   .carrito-container {
@@ -167,7 +173,7 @@
 
   .carrito-vacio {
     padding: 26px 18px;
-    border-radius: 12px;
+    border-radius: 14px;
   }
 
   .carrito-vacio h2 {

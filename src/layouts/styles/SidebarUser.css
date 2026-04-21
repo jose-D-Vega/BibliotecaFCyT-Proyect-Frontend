@@ -1,0 +1,135 @@
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 26, 46, 0.42);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  z-index: 1190;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 290px;
+  max-width: 85vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #0d1b31 0%, #122540 55%, #173150 100%);
+  color: #f9fafb;
+  transform: translateX(-100%);
+  transition: transform 0.28s ease;
+  z-index: 1200;
+  box-shadow: 12px 0 30px rgba(12, 26, 46, 0.22);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-user__header {
+  padding: 24px 18px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sidebar-user__subtitle {
+  margin: 0 0 6px;
+  color: rgba(241, 246, 251, 0.68);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sidebar-user__title {
+  margin: 0;
+  font-size: 1.42rem;
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+}
+
+.sidebar-user__close {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.sidebar-user__close:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.sidebar-user__nav {
+  padding: 18px 12px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-user__item {
+  width: 100%;
+  background: transparent;
+  color: #f3f7fb;
+  padding: 14px 14px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sidebar-user__item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.sidebar-user__item--active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.sidebar-user__item--active .sidebar-user__bullet {
+  background: #ffffff;
+}
+
+.sidebar-user__bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #8fb1d8;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 270px;
+  }
+
+  .sidebar-user__title {
+    font-size: 1.2rem;
+  }
+
+  .sidebar-user__item {
+    font-size: 0.96rem;
+  }
+}

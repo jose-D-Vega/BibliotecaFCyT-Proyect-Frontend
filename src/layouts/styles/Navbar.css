@@ -1,0 +1,288 @@
+.app-navbar {
+  height: 82px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #d7e1ec;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  box-shadow: 0 6px 18px rgba(12, 26, 46, 0.05);
+  backdrop-filter: blur(8px);
+}
+
+.app-navbar__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.app-navbar__menu-btn {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #d1dbe7;
+  background: #ffffff;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(12, 26, 46, 0.03);
+}
+
+.app-navbar__menu-btn:hover {
+  background: #f4f8fc;
+  border-color: #9fb6d1;
+}
+
+.app-navbar__menu-btn span {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  background: #304a68;
+  border-radius: 10px;
+}
+
+.app-navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.app-navbar__logo-placeholder {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app-navbar__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.app-navbar__brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-navbar__faculty {
+  font-size: 0.84rem;
+  color: #647890;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-navbar__title {
+  margin: 0;
+  color: #0c1a2e;
+  font-size: 1.8rem;
+  font-weight: 600;
+  font-family: 'Playfair Display', serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+}
+
+.app-navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.app-navbar__link-btn,
+.app-navbar__icon-btn,
+.app-navbar__profile-btn {
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.app-navbar__link-btn {
+  background: transparent;
+  color: #4e647d;
+  font-weight: 700;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+
+.app-navbar__link-btn:hover {
+  color: #0c1a2e;
+}
+
+.app-navbar__icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #d1dbe7;
+  color: #304a68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-navbar__icon-btn:hover {
+  background: #f4f8fc;
+  border-color: #9fb6d1;
+  color: #173150;
+}
+
+.app-navbar__profile-wrapper {
+  position: relative;
+}
+
+.app-navbar__profile-btn {
+  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
+  color: #ffffff;
+  padding: 11px 15px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(12, 26, 46, 0.14);
+}
+
+.app-navbar__profile-btn:hover {
+  filter: brightness(1.04);
+}
+
+.app-navbar__profile-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-navbar__profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #dbe4ee;
+  border-radius: 16px;
+  box-shadow: 0 18px 38px rgba(12, 26, 46, 0.14);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1300;
+}
+
+.app-navbar__profile-menu-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #30455c;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.app-navbar__profile-menu-item:hover {
+  background: #f3f7fb;
+  color: #0c1a2e;
+}
+
+.app-navbar__profile-menu-item--danger {
+  color: #b43c3c;
+}
+
+.app-navbar__profile-menu-item--danger:hover {
+  background: #fff1f1;
+  color: #982f2f;
+}
+
+@media (max-width: 992px) {
+  .app-navbar {
+    padding: 0 16px;
+  }
+
+  .app-navbar__link-btn {
+    display: none;
+  }
+
+  .app-navbar__faculty {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-navbar {
+    height: auto;
+    min-height: 76px;
+    padding: 12px 14px;
+    flex-wrap: wrap;
+  }
+
+  .app-navbar__right {
+    margin-left: auto;
+  }
+
+  .app-navbar__title {
+    font-size: 1.35rem;
+  }
+
+  .app-navbar__faculty {
+    font-size: 0.76rem;
+    max-width: 160px;
+  }
+
+  .app-navbar__profile-btn span:first-child {
+    display: none;
+  }
+
+  .app-navbar__profile-btn {
+    padding: 10px;
+  }
+
+  .app-navbar__profile-menu {
+    right: 0;
+    min-width: 190px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-navbar__brand {
+    gap: 10px;
+  }
+
+  .app-navbar__logo-placeholder {
+    width: 52px;
+    height: 52px;
+  }
+
+  .app-navbar__title {
+    font-size: 1.12rem;
+  }
+
+  .app-navbar__profile-menu {
+    min-width: 175px;
+  }
+}

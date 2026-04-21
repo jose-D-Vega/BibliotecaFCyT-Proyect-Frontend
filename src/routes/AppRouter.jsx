@@ -3,8 +3,8 @@ import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 
 
-import UserLayout from '../layouts/prueba/UserLayout'
-import AdminLayout from '../layouts/prueba/AdminLayout'
+import UserLayout from '../layouts/UserLayout'
+import AdminLayout from '../layouts/AdminLayout'
 
 
 import CatalogoPage from '../pages/public/CatalogoPage'

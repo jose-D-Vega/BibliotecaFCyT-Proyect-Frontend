@@ -1,9 +1,6 @@
 import React from 'react';
 import '../styles/DashboardAdmin.css';
 
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-
 // Importación de iconos (Material Design)
 import {
   MdAccountBalance,
@@ -17,20 +14,7 @@ import {
   MdBookmark
 } from 'react-icons/md';
 
-const DashboardA = () => {
-  const { user, logout, switchRol } = useAuth()
-  const navigate = useNavigate() 
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login', { replace: true })
-  }
-
-  const handleSwitchRol = () => {
-    switchRol()
-    navigate('/select-rol', { replace: true })
-  }
-
+const DashboardAdmin = () => {
   return (
     <>
       {/* ===== ENCABEZADO / TOP APP BAR ===== */}
@@ -41,9 +25,6 @@ const DashboardA = () => {
             <div className="dashboard-header__title-wrapper">
               <MdAccountBalance className="dashboard-header__icon" size={32} />
               <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
-              {/* botones simples para salir de la sesion */}
-              <button onClick={handleSwitchRol}>Cambiar rol</button>
-              <button onClick={handleLogout}>Cerrar sesión</button>
             </div>
           </div>
         </div>
@@ -146,7 +127,7 @@ const DashboardA = () => {
                     <span className="progress-item__value">{item.V}</span>
                   </div>
                   <div className="progress-item__bar">
-                    <div className={`progress-item__fill ${item.S ? 'progress-item__fill--secondary' : ''}`} style={{width: item.V}}></div>
+                    <div className={`progress-item__fill ${item.S ? 'progress-item__fill--secondary' : ''}`} style={{ width: item.V }}></div>
                   </div>
                 </div>
               ))}
@@ -167,7 +148,7 @@ const DashboardA = () => {
                 return (
                   <div key={m} className="chart-bar">
                     <div className="chart-bar__container">
-                      <div className="chart-bar__fill" style={{height: H[i]}}></div>
+                      <div className="chart-bar__fill" style={{ height: H[i] }}></div>
                     </div>
                     <span className="chart-bar__label">{m}</span>
                   </div>
@@ -199,7 +180,7 @@ const DashboardA = () => {
                   <h3 className="book-card__title">{lib.T}</h3>
                   <p className="book-card__stats">{lib.P} préstamos</p>
                   <div className="book-card__progress">
-                    <div className="book-card__progress-fill" style={{width: lib.R}}></div>
+                    <div className="book-card__progress-fill" style={{ width: lib.R }}></div>
                   </div>
                 </div>
               </article>
@@ -211,4 +192,4 @@ const DashboardA = () => {
   );
 };
 
-export default DashboardA;
+export default DashboardAdmin;
