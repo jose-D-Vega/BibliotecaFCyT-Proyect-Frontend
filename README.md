@@ -16,9 +16,7 @@ Alejandro Villalba
 ```bash
 npm install
 ```
-```bash
-npm install react-icons
-```
+
 ## Uso
 
 ```bash
@@ -29,75 +27,131 @@ npm run dev
 
 ```
 src/
-│
-├── components/
-│   ├── ui/
-│   │   ├── Button/
-│   │   ├── Input/
-│   │   ├── Table/
-│   │   ├── Modal/
-│   │   └── Navbar/
-│   │
-│   ├── layout/
-│   │   ├── Sidebar/
-│   │   ├── Header/
-│   │   └── Footer/
-│   │
-│   ├── forms/
-│   │   ├── UserForm/
-│   │   ├── RoleForm/
-│   │   ├── BookForm/
-│   │   ├── LoanForm/
-│   │   └── ReturnForm/
-│   │
-│   ├── tables/
-│   │   ├── UserTable/
-│   │   ├── RoleTable/
-│   │   ├── BookTable/
-│   │   ├── LoanTable/
-│   │   └── FineTable/
-│   │
-│   ├── shared/
-│   │   ├── Loader/
-│   │   ├── Alert/
-│   │   └── ConfirmDialog/
-│
-├── pages/
-│   ├── Dashboard/
-│   ├── Usuarios/
-│   ├── Roles/
-│   ├── Libros/
-│   ├── Ejemplares/
-│   ├── Prestamos/
-│   ├── Devoluciones/
-│   └── Sanciones/
-│
-├── services/
-│   ├── api/
-│   │
-│   └── http/
-│       └── axiosClient.js
-│
-├── context/
-│   ├── AuthContext.jsx
-│   └── AppContext.jsx
-│
-├── hooks/
-│   ├── useAuth.js
-│   ├── useFetch.js
-│   └── useTable.js
-│
-├── utils/
-│   ├── validators.js
-│   ├── formatters.js
-│   └── constants.js
-│
-├── routes/
-│   └── AppRouter.jsx
-│
 ├── assets/
-│   ├── images/
-│   └── icons/
-│
-└── App.jsx
+│   ├── icons/
+│   │   ├── logo-web-blanco.png
+│   │   ├── LogoFCyT.png
+│   │   ├── logofcytunca.png
+│   │   ├── react.svg
+│   │   └── vite.svg
+│   └── images/
+│       ├── biblioteca-fondo.jpg
+│       ├── Calculo.jpg
+│       ├── Electrica.jpg
+│       ├── hero.png
+│       └── Informatica.jpg
+├── components/
+│   ├── styles/
+│   │   ├── Buscador.css
+│   │   ├── CarritoItem.css
+│   │   ├── EjemplarItem.css
+│   │   ├── Filtros.css
+│   │   ├── LibroCard.css
+│   │   ├── LibroInfoItem.css
+│   │   └── ListaLibros.css
+│   ├── .gitkeep
+│   ├── Buscador.jsx
+│   ├── CarritoItem.jsx
+│   ├── EjemplarItem.jsx
+│   ├── Filtros.jsx
+│   ├── FooterLogin.jsx
+│   ├── LibroCard.jsx
+│   ├── LibroInfoItem.jsx
+│   └── ListaLibros.jsx
+├── context/
+│   ├── .gitkeep
+│   └── AuthContext.jsx
+├── hooks/
+│   └── .gitkeep
+├── layouts/
+│   ├── prueba/
+│   │   ├── AdminLayout.jsx
+│   │   ├── Layout.css
+│   │   └── UserLayout.jsx
+│   ├── styles/
+│   │   ├── AdminLayout.css
+│   │   ├── Footer.css
+│   │   ├── Navbar.css
+│   │   ├── SidebarAdmin.css
+│   │   ├── SidebarUser.css
+│   │   └── UserLayout.css
+│   ├── AdminLayout.jsx
+│   ├── Footer.jsx
+│   ├── Navbar.jsx
+│   ├── SidebarAdmin.jsx
+│   ├── SidebarUser.jsx
+│   └── UserLayout.jsx
+├── pages/
+│   ├── admin/
+│   │   ├── prueba/
+│   │   │   ├── AdminCatalogoPage.jsx
+│   │   │   ├── AdminDashboardPage.jsx
+│   │   │   ├── AdminDevolucionesPage.jsx
+│   │   │   ├── AdminPrestamosPage.jsx
+│   │   │   ├── AdminSancionesPage.jsx
+│   │   │   ├── InformesPage.jsx
+│   │   │   └── UsuariosPage.jsx
+│   │   ├── .gitkeep
+│   │   ├── CatalogoAdmin.jsx
+│   │   ├── DashboardAdmin.jsx
+│   │   └── LibroDetalleAdmin.jsx
+│   ├── auth/
+│   │   ├── AuthCallbackPage.jsx
+│   │   ├── CompletarPerfilPage.css
+│   │   ├── CompletarPerfilPage.jsx
+│   │   ├── LoginPage.css
+│   │   ├── LoginPage.jsx
+│   │   ├── RolSelectorPage.css
+│   │   └── RolSelectorPage.jsx
+│   ├── public/
+│   │   ├── .gitkeep
+│   │   ├── CatalogoPage.jsx
+│   │   ├── CatalogoPublic.jsx
+│   │   ├── DashboardPublic.jsx
+│   │   └── LibroDetallePublic.jsx
+│   ├── styles/
+│   │   ├── Carrito.css
+│   │   ├── Catalogo.css
+│   │   ├── CatalogoAdmin.css
+│   │   ├── DashboardAdmin.css
+│   │   ├── DashboardPublic.css
+│   │   ├── DashboardUser.css
+│   │   ├── LibroDetalle.css
+│   │   └── LibroDetalleAdmin.css
+│   └── user/
+│       ├── prueba/
+│       │   ├── CarritoPage.jsx
+│       │   ├── CatalogoUserPage.jsx
+│       │   ├── DashboardPage.jsx
+│       │   ├── DetalleLibroUserPage.jsx
+│       │   ├── DevolucionesPage.jsx
+│       │   ├── PrestamosPage.jsx
+│       │   └── SancionesPage.jsx
+│       ├── .gitkeep
+│       ├── Carrito.jsx
+│       ├── Catalogo.jsx
+│       ├── DashboardUser.jsx
+│       └── LibroDetalle.jsx
+├── routes/
+│   ├── .gitkeep
+│   ├── AppRouter.jsx
+│   └── ProtectedRoute.jsx
+├── services/
+│   ├── .gitkeep
+│   ├── api.js
+│   ├── auth.services.js
+│   └── users.services.js
+├── App.css
+├── App.jsx
+├── index.css
+└── main.jsx
+├── .env
+├── .env.example
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+└── vite.config.js
 ```
