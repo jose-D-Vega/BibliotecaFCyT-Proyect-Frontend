@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import logoCompleto from '../../assets/icons/logo-web-blanco.png'
 import './Layout.css'
 
+
 //esto es un truco para no tener que repetir el codigo dentro del sidebar gracias a la funcion .map()
 const USER_NAV = [
   { path: '/app/inicio',       label: 'Inicio' },
@@ -49,9 +50,17 @@ const UserLayout = () => {
             </svg>
           </button>
           <div className="layout__profile">
-            <div className="layout__avatar">
+
+            {/**Aca esta el perfil */}
+            <div
+              className="layout__avatar"
+              onClick={() => navigate('/app/perfil')}
+              style={{ cursor: 'pointer' }}
+            >
               {user?.nombre?.charAt(0).toUpperCase()}
             </div>
+
+
             <div className="layout__profile-info">
               <span className="layout__profile-name">{user?.nombre}</span>
               <button className="layout__logout" onClick={handleLogout}>Cerrar sesión</button>

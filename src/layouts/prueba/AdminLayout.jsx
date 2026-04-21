@@ -54,9 +54,17 @@ const AdminLayout = () => {
             </svg>
           </button>
           <div className="layout__profile">
-            <div className="layout__avatar layout__avatar--admin">
+
+            {/**El perfil del admin */}
+            <div
+              className="layout__avatar layout__avatar--admin"
+              onClick={() => navigate('/admin/perfil')}
+              style={{ cursor: 'pointer' }}
+            >
               {user?.nombre?.charAt(0).toUpperCase()}
             </div>
+
+
             <div className="layout__profile-info">
               <span className="layout__profile-name">{user?.nombre}</span>
               <div className="layout__profile-actions">

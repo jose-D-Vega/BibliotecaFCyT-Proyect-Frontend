@@ -20,6 +20,7 @@ import CatalogoUserPage from '../pages/user/prueba/CatalogoUserPage'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
 import SancionesPage from '../pages/user/prueba/SancionesPage'
+import PerfilUserPage from '../pages/user/prueba/PerfilUserPage'
 
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 import AdminPrestamosPage from '../pages/admin/prueba/AdminPrestamosPage'
@@ -28,6 +29,7 @@ import AdminCatalogoPage from '../pages/admin/prueba/AdminCatalogoPage'
 import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
+import PerfilAdminPage from '../pages/admin/prueba/PerfilAdminPage'
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -100,6 +102,7 @@ const AppRouter = () => {
               <Route path="carrito" element={<CarritoPage />} />
            */}
           
+          <Route path="perfil" element={<PerfilUserPage />} />
 
           <Route path="prestamos" element={<PrestamosPage />} />
           <Route path="devoluciones" element={<DevolucionesPage />} />
@@ -125,6 +128,8 @@ const AppRouter = () => {
            *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
             <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
            */}
+
+           <Route path="perfil" element={<PerfilAdminPage />} />
 
           <Route path="usuarios" element={<UsuariosPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
