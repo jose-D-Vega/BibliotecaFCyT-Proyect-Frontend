@@ -17,6 +17,8 @@ import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
 
 import DashboardPage from '../pages/user/DashboardUser'
 import CatalogoUserPage from '../pages/user/prueba/CatalogoUserPage'
+import DetalleLibroPage from '../pages/user/LibroDetalle'
+import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
 import SancionesPage from '../pages/user/prueba/SancionesPage'
