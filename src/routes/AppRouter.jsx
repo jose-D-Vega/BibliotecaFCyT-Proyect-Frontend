@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
+import ScrollToTop from './ScrollToTop'
 
 
 import UserLayout from '../layouts/UserLayout'
@@ -8,7 +9,7 @@ import AdminLayout from '../layouts/AdminLayout'
 
 
 import CatalogoPage from '../pages/public/CatalogoPage'
-import LibroDetallePublic from '../pages/public/LibroDetallePublic'
+import DetalleLibroPublicPage from '../pages/public/DetalleLibroPublicPage'
 
 import LoginPage from '../pages/auth/LoginPage'
 import AuthCallbackPage from '../pages/auth/AuthCallbackPage'
@@ -17,7 +18,7 @@ import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
 
 import DashboardPage from '../pages/user/DashboardUser'
 import CatalogoUserPage from '../pages/user/prueba/CatalogoUserPage'
-import DetalleLibroPage from '../pages/user/LibroDetalle'
+import DetalleLibroUserPage from '../pages/user/prueba/DetalleLibroUserPage'
 import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
@@ -28,6 +29,9 @@ import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 import AdminPrestamosPage from '../pages/admin/prueba/AdminPrestamosPage'
 import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
 import AdminCatalogoPage from '../pages/admin/prueba/AdminCatalogoPage'
+import DetalleLibroAdminPage from '../pages/admin/prueba/DetalleLibroAdminPage'
+import NuevoLibroPage from '../pages/admin/prueba/NuevoLibroPage'
+import EditarLibroPage from '../pages/admin/prueba/EditarLibroPage'
 import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
@@ -40,10 +44,12 @@ const AppRouter = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Públicas */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/catalogo" element={<CatalogoPage />} />
+        <Route path="/catalogo/:id" element={<DetalleLibroPublicPage />} />
         {/**
          * <Route path="/catalogo/:id" element={<DetalleLibroPublicoPage />} />
          */}
@@ -99,10 +105,8 @@ const AppRouter = () => {
           <Route path="inicio" element={<DashboardPage />} />
 
           <Route path="catalogo" element={<CatalogoUserPage />} />
-          {/**
-           *  <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
-              <Route path="carrito" element={<CarritoPage />} />
-           */}
+          <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
+          <Route path="carrito" element={<CarritoPage />} />
           
           <Route path="perfil" element={<PerfilUserPage />} />
 
@@ -126,6 +130,9 @@ const AppRouter = () => {
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
 
           <Route path="catalogo" element={<AdminCatalogoPage />} />
+          <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
+          <Route path="catalogo/:id/editar" element={<EditarLibroPage />} />
+          <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
           {/**
            *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
             <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />

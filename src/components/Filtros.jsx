@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "../components/styles/Filtros.css"
+import "./Prueba/FiltrosPrueba.css"
 
 function Filtros({
   areas,
@@ -127,7 +127,7 @@ function Filtros({
           <div className="filtro-dropdown-menu">
             {[
               { label: "A-Z", value: "AZ" },
-              { label: "Z-A", value: "ZA" },
+              { label: "Z-A", value: 'ZA' },
               { label: "Ejemplares Disponibles (Mayor a Menor)", value: "EJ_DESC" },
               { label: "Ejemplares Disponibles (Menor a Mayor)", value: "EJ_ASC" }
             ].map(opt => (

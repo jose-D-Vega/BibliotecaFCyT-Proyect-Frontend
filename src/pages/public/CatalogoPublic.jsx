@@ -1,4 +1,4 @@
-import "../../pages/styles/Catalogo.css";
+import "../user/prueba/CatalogoPrueba.css";
 import Buscador from "../../components/Buscador";
 import Filtros from "../../components/Filtros";
 import ListaLibros from "../../components/ListaLibros";

@@ -1,35 +1,13 @@
-
-import { useState } from "react"
-import Catalogo from "../CatalogoAdmin"
-import LibroDetalle from "../LibroDetalleAdmin"
+import { useNavigate } from 'react-router-dom'
+import CatalogoAdmin from '../CatalogoAdmin'
 
 function AdminCatalogoPage() {
-  const [vistaActual, setVistaActual] = useState("catalogo")
-  const [vistaAnterior, setVistaAnterior] = useState("catalogo")
-  const [libroSeleccionado, setLibroSeleccionado] = useState(null)
-
-  const irADetalle = (libro) => {
-    setLibroSeleccionado(libro)
-    setVistaActual("detalle")
-  }
-
-  const volverDesdeDetalle = () => {
-    setVistaActual("catalogo")
-  }
-
-
-  if (vistaActual === "detalle") {
-    return (
-      <LibroDetalle
-        libro={libroSeleccionado}
-        onVolver={volverDesdeDetalle}
-      />
-    )
-  }
+  const navigate = useNavigate()
 
   return (
-    <Catalogo
-      onVerDetalle={irADetalle}
+    <CatalogoAdmin
+      onVerDetalle={(libro) => navigate(`/admin/catalogo/${libro.id_libro}`)}
+      onNuevoLibro={() => navigate('/admin/catalogo/nuevo')}
     />
   )
 }

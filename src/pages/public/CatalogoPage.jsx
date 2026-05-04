@@ -1,34 +1,12 @@
-import { useState } from "react"
-import Catalogo from "./CatalogoPublic"
-import LibroDetalle from "./LibroDetallePublic"
+import { useNavigate } from 'react-router-dom'
+import CatalogoPublic from './CatalogoPublic'
 
 function CatalogoPage() {
-  const [vistaActual, setVistaActual] = useState("catalogo")
-  const [vistaAnterior, setVistaAnterior] = useState("catalogo")
-  const [libroSeleccionado, setLibroSeleccionado] = useState(null)
-
-  const irADetalle = (libro) => {
-    setLibroSeleccionado(libro)
-    setVistaActual("detalle")
-  }
-
-  const volverDesdeDetalle = () => {
-    setVistaActual("catalogo")
-  }
-
-
-  if (vistaActual === "detalle") {
-    return (
-      <LibroDetalle
-        libro={libroSeleccionado}
-        onVolver={volverDesdeDetalle}
-      />
-    )
-  }
+  const navigate = useNavigate()
 
   return (
-    <Catalogo
-      onVerDetalle={irADetalle}
+    <CatalogoPublic
+      onVerDetalle={(libro) => navigate(`/catalogo/${libro.id_libro}`)}
     />
   )
 }
