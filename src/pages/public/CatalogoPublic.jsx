@@ -2,7 +2,7 @@ import "../user/prueba/CatalogoPrueba.css";
 import Buscador from "../../components/Buscador";
 import Filtros from "../../components/Filtros";
 import ListaLibros from "../../components/ListaLibros";
-import Footer from "../../layouts/Footer";
+import FooterLogin from "../../components/FooterLogin";
 import { useState, useEffect } from "react";
 
 function CatalogoPublic({ onVerDetalle }) {
@@ -89,7 +89,7 @@ function CatalogoPublic({ onVerDetalle }) {
         </div>
       </div>
 
-      <Footer />
+      <FooterLogin />
     </div>
   );
 }

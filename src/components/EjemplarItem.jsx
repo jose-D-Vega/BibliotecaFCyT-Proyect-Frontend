@@ -1,10 +1,10 @@
-import "./styles/EjemplarItem.css"
+import "./Prueba/EjemplarItemPrueba.css"
 
 function EjemplarItem({ ejemplar }) {
   return (
     <div className="ejemplar">
       <div className="ejemplar-info">
-        <span className="ejemplar-codigo">{ejemplar.id_ejemplar}</span>
+        <span className="ejemplar-codigo">Ejemplar #{ejemplar.id_ejemplar}</span>
       </div>
 
       <span

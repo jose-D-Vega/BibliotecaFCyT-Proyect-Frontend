@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
-import "../../pages/styles/LibroDetalle.css"
-import "../../pages/styles/LibroDetalleAdmin.css"
+import "../user/prueba/LibroDetallePrueba.css"
+import "./prueba/LibroDetalleAdminPrueba.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
 import { useNavigate } from "react-router-dom"
 import { deleteBook } from "../../services/books.services"
@@ -160,7 +160,7 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
               <strong>{data.titulo}</strong>
               <span>{data.autor}</span>
             </div>
-            {error && <p style={{ color: '#a32d2d', fontSize: '0.875rem' }}>{error}</p>}
+            {error && <p className="modal-error">{error}</p>}
             <div className="modal-actions">
               <button className="modal-btn secundario" onClick={cerrarModal} disabled={loading}>
                 Cancelar
@@ -183,7 +183,7 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
               <strong>Ejemplar #{ejemplarSeleccionado?.id_ejemplar}</strong>
               <span>{data.titulo}</span>
             </div>
-            {error && <p style={{ color: '#a32d2d', fontSize: '0.875rem' }}>{error}</p>}
+            {error && <p className="modal-error">{error}</p>}
             <div className="modal-actions">
               <button className="modal-btn secundario" onClick={cerrarModal} disabled={loading}>
                 Cancelar

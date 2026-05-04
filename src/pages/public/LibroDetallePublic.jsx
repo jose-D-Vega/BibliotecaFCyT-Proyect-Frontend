@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react"
-import "../styles/LibroDetalle.css"
-import "../styles/LibroDetalleAdmin.css"
+import "../user/prueba/LibroDetallePrueba.css"
+
 import LibroInfoItem from "../../components/LibroInfoItem"
+import EjemplarItem from "../../components/EjemplarItem"
+import FooterLogin from "../../components/FooterLogin"
 import { useNavigate } from "react-router-dom"
 
-function LibroDetallePublic({ libro, ejemplares: ejemplaresProp, onVolver, onRefresh }) {
+function LibroDetallePublic({ libro, ejemplares: ejemplaresProp, onVolver }) {
  
   const navigate = useNavigate()
 
@@ -75,25 +77,14 @@ function LibroDetallePublic({ libro, ejemplares: ejemplaresProp, onVolver, onRef
           <details className="ejemplares-dropdown">
             <summary className="ejemplares-title">Ejemplares</summary>
             <div className="ejemplares-lista">
-              {ejemplares.map((ejemplar) => (
-                <div key={ejemplar.id_ejemplar} className="admin-ejemplar-item">
-                  <div className="admin-ejemplar-info">
-                    <span className="admin-ejemplar-codigo">
-                      Ejemplar #{ejemplar.id_ejemplar}
-                    </span>
-                  </div>
-                  <div className="admin-ejemplar-actions">
-                    <span className={`admin-ejemplar-estado ${ejemplar.estado_ejemplar}`}>
-                      {ejemplar.estado_ejemplar}
-                    </span>
-                    
-                  </div>
-                </div>
+              {ejemplares.map((ejemplar, i) => (
+                <EjemplarItem key={i} ejemplar={ejemplar} />
               ))}
             </div>
           </details>
         </section>
       </main>
+      <FooterLogin />
 
     </div>
   )

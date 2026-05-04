@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import { useCart } from '../../context/CartContext'
 
-import "../../pages/styles/LibroDetalle.css"
+import "./prueba/LibroDetallePrueba.css"
 
 import LibroInfoItem from "../../components/LibroInfoItem"
 import EjemplarItem from "../../components/EjemplarItem"
