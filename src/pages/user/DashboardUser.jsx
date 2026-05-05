@@ -143,14 +143,24 @@ const DashboardUser = () => {
             <p className="books-section__subtitle">Historial de devoluciones</p>
           </div>
 
-          <div className="books-grid">
-            {[1, 2, 3].map((_, i) => (
+           <div className="books-grid">
+            {[
+              { T: 'Cálculo de Granville', P: 24, R: '90%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAsm2sbkf5zlAwm2cvGw3EwttE4d9b8Fi5f3MzavP9UEqFGqT_mF-6PXPekcUQNCHdwNrhI_M7CxbT4ykSYwUrxfD3hVFWvEAf7pH_XkZ5qucM0683aZ43rgEvXBJS6iJvTYqrFzwBUAkgZ3GDXe0v0Z70KRfMd6H_zKp43qCVjlF_Y6z4ms7-TD5fb_vpmDG0_DvDNvGJf2VnY6_Glzi_1mRo3Vz0v5nOp1X1tFxHvBNb2k1J02r3Mxd75ymXeWxOpkYPOo1Eabko' },
+              { T: 'Clean Code', P: 19, R: '75%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGbY_xx1a-jyihnxMMUSb1aldZAHPGj3KGllR2Fi7dQAIX_rHDG8BOkPziksGFcd9hjK6FBOuG_2gJLqbXHUfY3ieoONSvP7WQgaxtr4IVFZd-XabfbrMvQ07RMSOntBef_uMvMefGn_3UvMNSisDPupQM3AMP5nYfy_BeIG6X5pt6wTVQvRR-xz1zJA-IxazZNUlY0nJt2bGX9KlUB5vIbpHBadcwTyWhzuQSnfNAirtfCShU-pcbmlTtQO5pe10qsUwJyUWt5ms' },
+              { T: 'Mecánica de Suelos', P: 15, R: '60%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDSAkaZJFAg3dYfw_S-mLWD6gGYA3nfIKEWHH2ynTP0q7L5zxs-PIc5Q9PRmpvDcB5Amiv-WrhatsHNMcR6V-QofZl9qlf31j-Bf-jfSM3CJ7EZI8BoHQpmpYCBZAdJYm_GOQ-SI1l8Yxtj2RyNSjPR6UmD_y3gohtGAVzXJNMW1GJzwaZwFlCEyhrYI27PUHZJF5VDjXtOXcBiTvdQ3ziQX4QhL_2kodFlsfxaxEiLb2e3I7Fr_bJTD7E3WkDG1dj3B1zGSUVDrDM' },
+              { T: 'Máquinas Eléctricas', P: 12, R: '45%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuADUhGtKkt-X3ZkXdWwfSPPa3eBYxYvep5uOR8d-e6rSdqf_C4ruR4LLr1SXZbMURQOhcpMH19tnZQDJbViVaVdFY1LSVzK4RSeT_-fUALLtWuKtMWx-n-zjGLo03pwKdIAu8zQZdPD6xMhyzxtHxje542e9HQCrhfsDeqISizyqImZSM5TK6_vapm_fvedAR2JvdbxTeEnHoF_q1Q7UjIpod7jiPrAmapQHuyCxg_Q1vihw0yjDTFhzms_XODFnYsxrhBtIyYQWWg' },
+              { T: 'Sistemas Digitales', P: 10, R: '35%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDMRrReMOvwIEmk4KBKtNCjZx1b0VsdOgEJ7OyIL4gA6J_y55SOUyGPzFXAFOSfQYe5ILDYr1Jc2mHJUYa8yTdBzJnz6uHXS9jPaalIaiJgM4UcXIvalXIUFqjrVGMHgscE5PG5Bn_qgj6Sx5eXfDvmmIvOAH7n5ukndWfv9yAJtgpW24xuU9gjJkAGbv78FG88_yqOqueRLl_VtAHAcuNe82mAexWz87FI1A4LkGjmJwHUL8gbd5TtLKcCD_MpFdnNADcOmzk5ULQ' }
+            ].map((lib, i) => (
               <article key={i} className="book-card">
-                <div className="book-card__image-wrapper"></div>
-                <h3 className="book-card__title">Libro ejemplo</h3>
-                <p className="book-card__stats">Finalizado</p>
-                <div className="book-card__progress">
-                  <div className="book-card__progress-fill"></div>
+                <div className="book-card__content">
+                  <div className="book-card__image-wrapper">
+                    <img className="book-card__image" src={lib.I} alt={lib.T} />
+                  </div>
+                  <h3 className="book-card__title">{lib.T}</h3>
+                  <p className="book-card__stats">Finalizado</p>
+                  <div className="book-card__progress">
+                    <div className="book-card__progress-fill" ></div>
+                  </div>
                 </div>
               </article>
             ))}

@@ -2,13 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 
-
 import UserLayout from '../layouts/UserLayout'
 import AdminLayout from '../layouts/AdminLayout'
 
-
 import CatalogoPage from '../pages/public/CatalogoPage'
 import LibroDetallePublic from '../pages/public/LibroDetallePublic'
+import NuevoMaterial from '../pages/admin/NuevoMaterial'
 
 import LoginPage from '../pages/auth/LoginPage'
 import AuthCallbackPage from '../pages/auth/AuthCallbackPage'
@@ -39,15 +38,10 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Públicas */}
+
         <Route path="/" element={<LoginPage />} />
         <Route path="/catalogo" element={<CatalogoPage />} />
-        {/**
-         * <Route path="/catalogo/:id" element={<DetalleLibroPublicoPage />} />
-         */}
-        
 
-        {/* Login — si ya está autenticado redirigir */}
         <Route
           path="/login"
           element={
@@ -57,10 +51,8 @@ const AppRouter = () => {
           }
         />
 
-        {/* Callback de Google */}
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
-        
-        {/* Completar datos de la cuenta del usuario */}
+
         <Route
           path="/completar-perfil"
           element={
@@ -72,7 +64,6 @@ const AppRouter = () => {
           }
         />
 
-        {/* Selección de rol — solo bibliotecarios autenticados */}
         <Route
           path="/select-rol"
           element={
@@ -84,7 +75,7 @@ const AppRouter = () => {
           }
         />
 
-         {/* Rutas usuario normal — con UserLayout */}
+        {/* USER */}
         <Route
           path="/app"
           element={
@@ -95,21 +86,14 @@ const AppRouter = () => {
         >
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<DashboardPage />} />
-
           <Route path="catalogo" element={<CatalogoUserPage />} />
-          {/**
-           *  <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
-              <Route path="carrito" element={<CarritoPage />} />
-           */}
-          
           <Route path="perfil" element={<PerfilUserPage />} />
-
           <Route path="prestamos" element={<PrestamosPage />} />
           <Route path="devoluciones" element={<DevolucionesPage />} />
           <Route path="sanciones" element={<SancionesPage />} />
         </Route>
 
-        {/* Rutas bibliotecario — con AdminLayout */}
+        {/* ADMIN */}
         <Route
           path="/admin"
           element={
@@ -124,18 +108,13 @@ const AppRouter = () => {
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
 
           <Route path="catalogo" element={<AdminCatalogoPage />} />
-          {/**
-           *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
-            <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
-           */}
+          <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
 
-           <Route path="perfil" element={<PerfilAdminPage />} />
-
+          <Route path="perfil" element={<PerfilAdminPage />} />
           <Route path="usuarios" element={<UsuariosPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
         </Route>
-        
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -4,8 +4,11 @@ import Buscador from "../../components/Buscador"
 import Filtros from "../../components/Filtros"
 import ListaLibros from "../../components/ListaLibros"
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 function CatalogoAdmin({ onVerDetalle }) {
+  const navigate = useNavigate()
+
   const [pagina, setPagina] = useState(1)
 
   const [busqueda, setBusqueda] = useState("")
@@ -57,7 +60,10 @@ function CatalogoAdmin({ onVerDetalle }) {
           todosActivos={todosActivos}
         />
 
-        <button className="admin-add-material-btn">
+        <button
+          className="admin-add-material-btn"
+          onClick={() => navigate("/admin/catalogo/nuevo")}
+        >
           Añadir nuevo material
         </button>
       </div>
