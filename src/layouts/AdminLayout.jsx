@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "./styles/AdminLayout.css";
+import "./prueba/AdminLayoutPrueba.css";
 import Navbar from "./Navbar";
 import SidebarAdmin from "./SidebarAdmin";
 import Footer from "./Footer";

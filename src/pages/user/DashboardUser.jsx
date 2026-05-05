@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/DashboardUser.css';
+import './prueba/DashboardUserPrueba.css';
 
 // Importación de iconos
 import {

@@ -1,0 +1,9 @@
+@import '../../styles/Dashboard.css';
+
+.books-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.book-card__image-wrapper {
+  height: 130px;
+}
