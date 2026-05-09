@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import "../styles/styles_admin/NuevoMaterial.css"
+import "../styles/styles_admin/prueba/NuevoMaterialPrueba.css"
+import { createBook } from '../../services/books.services'
 
 function NuevoMaterial() {
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const [form, setForm] = useState({
     tipo: "",
@@ -34,7 +36,6 @@ function NuevoMaterial() {
     "Civil"
   ]
 
-  // 🔥 refs para detectar click afuera
   const tipoRef = useRef(null)
   const carreraRef = useRef(null)
 
@@ -99,34 +100,58 @@ function NuevoMaterial() {
 
   const validate = () => {
     let errs = {}
-
-    if (!form.tipo) errs.tipo = "Seleccione un tipo"
-    if (!form.titulo.trim()) errs.titulo = "Ingrese título"
-
+    if (!form.tipo) errs.tipo = 'Seleccione un tipo'
+    if (!form.titulo.trim()) errs.titulo = 'Ingrese título'
+    if (!form.cantidad || form.cantidad < 1) errs.cantidad = 'Ingrese una cantidad válida'
+    if (!form.anio) errs.anio = 'Ingrese el año de publicación'
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!validate()) return
+const handleSubmit = async (e) => {
+  e.preventDefault()
+  if (!validate()) return
 
-    console.log({
-      ...form,
-      autores: autores.join(", "),
-      carreras
-    })
+  try {
+    setLoading(true)
+    const formData = new FormData()
+
+    formData.append('titulo', form.titulo)
+    formData.append('autor', autores.filter(a => a.trim()).join(', '))
+    formData.append('tipo_material', form.tipo)
+    formData.append('anio_publicacion', form.anio)
+    formData.append('cantidad_ejemplar', form.cantidad)
+    formData.append('editorial', form.editorial)
+    formData.append('ciudad', form.ciudad)
+    formData.append('facultad', form.facultad)
+
+    if (carreras.length > 0) {
+      formData.append('carrera', carreras.join(', '))
+    }
+
+    if (form.imagen) {
+      formData.append('imagen', form.imagen)
+    }
+
+    await createBook(formData)
+    navigate('/admin/catalogo')
+  } catch (err) {
+    setErrors({ submit: err.response?.data?.error || 'Error al guardar el material. Intentá de nuevo.' })
+  } finally {
+    setLoading(false)
   }
+}
 
   return (
     <div className="nuevo-material-page">
       <div className="nuevo-material-content">
 
         <div className="header">
-          <h1>Añadir nuevo material</h1>
           <button className="btn-secondary" onClick={() => navigate("/admin/catalogo")}>
             ← Volver
           </button>
+          <h1>Añadir nuevo material</h1>
+
         </div>
 
         <form className="nuevo-material-form" onSubmit={handleSubmit}>
@@ -140,7 +165,7 @@ function NuevoMaterial() {
               ref={tipoRef}
               onClick={() => setOpenTipo(!openTipo)}
             >
-              <div className="selected">
+              <div className={`selected ${!form.tipo ? 'placeholder' : ''}`}>
                 {form.tipo === "libro"
                   ? "Libro"
                   : form.tipo === "tfg"
@@ -170,7 +195,7 @@ function NuevoMaterial() {
               ref={carreraRef}
               onClick={() => setOpenCarrera(!openCarrera)}
             >
-              <div className="selected">
+              <div className={`selected ${!form.carrera ? 'placeholder' : ''}`}>
                 {carreras.length === 0 ? "Seleccione" : carreras.join(", ")}
               </div>
 
@@ -222,6 +247,7 @@ function NuevoMaterial() {
             <div className="form-group">
               <label>Año de publicación</label>
               <input type="number" name="anio" placeholder="Ej: 2020" onChange={handleChange}/>
+              {errors.anio && <span className="error-msg">{errors.anio}</span>}
             </div>
           </div>
 
@@ -238,6 +264,7 @@ function NuevoMaterial() {
             <div className="form-group">
               <label>Cantidad de ejemplares</label>
               <input type="number" min="1" name="cantidad" placeholder="Ej: 5" onChange={handleChange}/>
+              {errors.cantidad && <span className="error-msg">{errors.cantidad}</span>}
             </div>
 
             <div className="form-group">
@@ -267,8 +294,14 @@ function NuevoMaterial() {
             )}
           </div>
 
-          <button className="btn-primary">
-            Añadir material
+          {errors.submit && (
+            <p style={{ color: '#a32d2d', background: '#fcebeb', padding: '0.6rem 1rem', borderRadius: 8, fontSize: '0.875rem' }}>
+              {errors.submit}
+            </p>
+          )}
+
+          <button className="btn-primary" disabled={loading}>
+            {loading ? 'Guardando...' : 'Añadir material'}
           </button>
 
         </form>
