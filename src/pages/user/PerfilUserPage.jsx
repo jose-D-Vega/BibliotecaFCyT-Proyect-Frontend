@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { updateProfile } from '../../services/users.services'
-import '../styles/styles_user/PerfilUserPage.css'
-
+import '../styles/PerfilPage.css'
 const PerfilUserPage = () => {
   const { user, refreshUser } = useAuth()
   const [telefono, setTelefono] = useState(user?.telefono || '')

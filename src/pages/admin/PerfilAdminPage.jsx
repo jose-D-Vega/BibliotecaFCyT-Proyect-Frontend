@@ -2,7 +2,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { updateProfile } from '../../services/users.services'
-import '../styles/styles_admin/PerfilPage.css'
+import '../styles/PerfilPage.css'
 
 const PerfilAdminPage = () => {
   const { user, rolActivo, refreshUser, switchRol } = useAuth()
@@ -101,7 +101,7 @@ const PerfilAdminPage = () => {
           <div className="perfil__field">
             <span className="perfil__label">Rol activo</span>
             <div className="perfil__value-row">
-              <span className="perfil__badge perfil__badge--admin">
+              <span className={`perfil__badge ${rolActivo === 'bibliotecario' ? 'perfil__badge--admin' : ''}`}>
                 {rolActivo === 'bibliotecario' ? 'Bibliotecario' : 'Usuario'}
               </span>
               <button className="perfil__btn perfil__btn--ghost" onClick={handleSwitchRol}>

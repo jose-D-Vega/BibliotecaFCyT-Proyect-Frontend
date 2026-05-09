@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;600&display=swap');
+
 .perfil {
   width: 100%;
   max-width: 760px;
@@ -6,6 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Source Sans 3', sans-serif; 
 }
 
 .perfil__title {
@@ -14,21 +17,28 @@
   font-size: 2.15rem;
   font-weight: 600;
   font-family: 'Playfair Display', serif;
-  color: #0c1a2e;
+  color: #fff; 
   margin: 0 0 1.75rem;
   line-height: 1.15;
 }
 
 .perfil__card {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #d7e1ec;
+  background: rgba(255, 255, 255, 0.04); 
+  border: 1px solid rgba(255, 255, 255, 0.12); 
   border-radius: 22px;
   padding: 2.2rem;
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
-  box-shadow: 0 18px 40px rgba(12, 26, 46, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25); 
+  backdrop-filter: blur(20px); 
+  animation: fadeUp 0.5s ease both; 
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .perfil__avatar {
@@ -61,7 +71,7 @@
   flex-direction: column;
   gap: 0.35rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #edf2f7;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* ← cambiar */
 }
 
 .perfil__field:last-child {
@@ -71,7 +81,7 @@
 
 .perfil__label {
   font-size: 0.78rem;
-  color: #70839a;
+  color: rgba(255, 255, 255, 0.45); /* ← cambiar */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -79,7 +89,7 @@
 
 .perfil__value {
   font-size: 1rem;
-  color: #17263c;
+  color: rgba(255, 255, 255, 0.9); /* ← cambiar */
   font-weight: 600;
   line-height: 1.45;
 }
@@ -99,23 +109,28 @@
 
 .perfil__input {
   padding: 0.78rem 0.95rem;
-  border: 1px solid #ced9e5;
+  border: 1px solid rgba(255, 255, 255, 0.15); /* ← cambiar */
   border-radius: 13px;
   font-size: 0.95rem;
   font-family: inherit;
-  color: #17263c;
+  color: #fff; /* ← cambiar */
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   width: 100%;
   max-width: 320px;
-  background: #fbfdff;
+  background: rgba(255, 255, 255, 0.06); /* ← cambiar */
+}
+
+.perfil__input::placeholder {
+  color: rgba(255, 255, 255, 0.25); /* ← agregar */
 }
 
 .perfil__input:focus {
-  border-color: #8ca8c8;
-  box-shadow: 0 0 0 4px rgba(52, 95, 147, 0.10);
-  background: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35); /* ← cambiar */
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06); /* ← cambiar */
+  background: rgba(255, 255, 255, 0.09); /* ← cambiar */
 }
+
 
 .perfil__edit-actions {
   display: flex;
@@ -152,28 +167,30 @@
 }
 
 .perfil__btn--ghost {
-  background: #ffffff;
-  color: #2f537d;
-  border-color: #d1dbe7;
+  background: rgba(255, 255, 255, 0.06); /* ← cambiar */
+  color: rgba(255, 255, 255, 0.7); /* ← cambiar */
+  border-color: rgba(255, 255, 255, 0.15); /* ← cambiar */
 }
 
 .perfil__btn--ghost:hover {
-  background: #f3f7fb;
+  background: rgba(255, 255, 255, 0.1); /* ← cambiar */
+  color: #fff; /* ← agregar */
 }
 
 .perfil__badge {
   display: inline-block;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #14543d;
-  background: #e2f6ee;
-  padding: 5px 12px;
+  background-color: #0b7e54;
+  padding: 10px 18px;
   border-radius: 999px;
+  color: #e2f6ee;
+  width: 7rem;
+  text-align: center;
 }
 
 .perfil__badge--admin {
-  color: #1e558d;
-  background: #e8f1fb;
+  background-color: #1e558d;
 }
 
 .perfil__mensaje {
@@ -185,13 +202,13 @@
 }
 
 .perfil__mensaje--ok {
-  background: #e2f6ee;
-  color: #14543d;
+  background: rgba(20, 84, 61, 0.3); /* ← cambiar */
+  color: #7de3b8; /* ← cambiar */
 }
 
 .perfil__mensaje--error {
-  background: #fdeeee;
-  color: #a33333;
+  background: rgba(163, 51, 51, 0.3); /* ← cambiar */
+  color: #f09595; /* ← cambiar */
 }
 
 @media (max-width: 768px) {
