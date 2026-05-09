@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import "../../pages/styles/NuevoMaterial.css"
+import "../styles/styles_admin/NuevoMaterial.css"
 
 function NuevoMaterial() {
   const navigate = useNavigate()

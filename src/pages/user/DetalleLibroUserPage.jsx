@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { getBookById, getCopiesByBook } from '../../../services/books.services'
-import LibroDetalle from '../LibroDetalle'
+import { getBookById, getCopiesByBook } from '../../services/books.services'
+import LibroDetalle from './LibroDetalle'
 
 function DetalleLibroUserPage() {
   const { id } = useParams()

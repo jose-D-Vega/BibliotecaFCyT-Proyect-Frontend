@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import CatalogoAdmin from '../CatalogoAdmin'
+import CatalogoAdmin from './CatalogoAdmin'
 
 function AdminCatalogoPage() {
   const navigate = useNavigate()

@@ -76,6 +76,7 @@
   transition: 0.2s;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.75);
+  margin : 5px 0;
 }
 
 .option:hover {

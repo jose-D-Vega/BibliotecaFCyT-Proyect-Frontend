@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "./styles/SidebarAdmin.css";
+import "../styles/SidebarAdmin.css";
 
 const ADMIN_NAV = [
   { path: "/admin/inicio", label: "Inicio" },

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "./styles/SidebarUser.css";
+import "../styles/SidebarUser.css";
 
 const USER_NAV = [
   { path: "/app/inicio", label: "Inicio" },

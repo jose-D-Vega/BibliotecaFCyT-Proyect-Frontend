@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "./Prueba/FiltrosPrueba.css"
+import "./styles/prueba/FiltrosPrueba.css"
 
 function Filtros({
   areas,

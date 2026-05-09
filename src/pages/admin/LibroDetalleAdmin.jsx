@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
-import "../user/prueba/LibroDetallePrueba.css"
-import "./prueba/LibroDetalleAdminPrueba.css"
+import "../styles/styles_user/prueba/LibroDetallePrueba.css"
+import "../styles/styles_admin/prueba/LibroDetalleAdminPrueba.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
 import { useNavigate } from "react-router-dom"
 import { deleteBook } from "../../services/books.services"

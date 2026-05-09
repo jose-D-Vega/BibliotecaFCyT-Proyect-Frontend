@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import Buscador from "../../components/Buscador"
 import Filtros from "../../components/Filtros"
 import ListaLibros from "../../components/ListaLibros"
-import "./prueba/CatalogoPrueba.css"
+import "../styles/styles_user/prueba/CatalogoPrueba.css"
 
 function Catalogo({ onVerDetalle, onIrAlCarrito }) {
   const [pagina, setPagina] = useState(1)

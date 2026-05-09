@@ -1,4 +1,4 @@
-import "../../pages/styles/Carrito.css"
+import "../styles/styles_user/Carrito.css"
 import CarritoItem from "../../components/CarritoItem"
 import { useCart } from '../../context/CartContext'
 import { useNavigate } from 'react-router-dom'

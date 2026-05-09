@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { getBookById, getCopiesByBook } from '../../../services/books.services'
-import LibroDetalleAdmin from '../LibroDetalleAdmin'
+import { getBookById, getCopiesByBook } from '../../services/books.services'
+import LibroDetallePublic from './LibroDetallePublic'
 
-function DetalleLibroAdminPage() {
+function LibroDetallePublicPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [libro, setLibro] = useState(null)
@@ -19,7 +19,7 @@ function DetalleLibroAdminPage() {
       setLibro(libroData)
       setEjemplares(copiesData)
     } catch {
-      navigate('/admin/catalogo', { replace: true })
+      navigate('/catalogo', { replace: true })
     } finally {
       setLoading(false)
     }
@@ -32,13 +32,13 @@ function DetalleLibroAdminPage() {
   if (loading) return <p>Cargando...</p>
 
   return (
-    <LibroDetalleAdmin
+    <LibroDetallePublic
       libro={libro}
       ejemplares={ejemplares}
-      onVolver={() => navigate('/admin/catalogo')}
+      onVolver={() => navigate('/catalogo')}
       onRefresh={fetchData}
     />
   )
 }
 
-export default DetalleLibroAdminPage
+export default LibroDetallePublicPage

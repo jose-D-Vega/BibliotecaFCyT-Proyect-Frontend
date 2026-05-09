@@ -1,8 +1,8 @@
-import { useAuth } from '../../../context/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { updateProfile } from '../../../services/users.services'
-import './PerfilPage.css'
+import { updateProfile } from '../../services/users.services'
+import '../styles/styles_admin/PerfilPage.css'
 
 const PerfilAdminPage = () => {
   const { user, rolActivo, refreshUser, switchRol } = useAuth()

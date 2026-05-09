@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useAuth } from '../../../context/AuthContext'
-import { updateProfile } from '../../../services/users.services'
-import './PerfilPage.css'
+import { useAuth } from '../../context/AuthContext'
+import { updateProfile } from '../../services/users.services'
+import '../styles/styles_user/PerfilUserPage.css'
 
 const PerfilUserPage = () => {
   const { user, refreshUser } = useAuth()

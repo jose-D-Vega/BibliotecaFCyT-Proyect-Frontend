@@ -1,4 +1,4 @@
-import "./Prueba/Buscador.css"
+import "./styles/prueba/BuscadorPrueba.css"
 
 function Buscador({ busqueda, setBusqueda, modoBusqueda, setModoBusqueda }) {
   return (

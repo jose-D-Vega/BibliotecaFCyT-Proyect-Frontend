@@ -1,5 +1,5 @@
-import "./styles/Footer.css";
-import logoCompleto from "../assets/icons/logo-web-blanco.png";
+import "../styles/Footer.css";
+import logoCompleto from "../../assets/icons/logo-web-blanco.png";
 
 const Footer = () => {
   return (

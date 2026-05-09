@@ -1,5 +1,5 @@
-import "../user/prueba/CatalogoPrueba.css"
-import "../../pages/styles/CatalogoAdmin.css"
+import "../styles/styles_user/prueba/CatalogoPrueba.css"
+import "../styles/styles_admin/CatalogoAdmin.css"
 import Buscador from "../../components/Buscador"
 import Filtros from "../../components/Filtros"
 import ListaLibros from "../../components/ListaLibros"
@@ -34,9 +34,6 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
       <div className="catalogo-header">
         <div className="header-top">
           <h1 className="titulo">Catálogo</h1>
-          <button onClick={onNuevoLibro}>
-            Añadir nuevo material
-          </button>
         </div>
         <Buscador
           busqueda={busqueda}
@@ -57,7 +54,7 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
 
         <button
           className="admin-add-material-btn"
-          onClick={() => navigate("/admin/catalogo/nuevo")}
+          onClick={onNuevoLibro}
         >
           Añadir nuevo material
         </button>

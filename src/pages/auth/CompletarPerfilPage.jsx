@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { updateProfile } from '../../services/users.services'
 import logoFCyT from '../../assets/icons/LogoFCyT.png'
-import './CompletarPerfilPage.css'
+import './auth_styles/CompletarPerfilPage.css'
 
 const CompletarPerfilPage = () => {
   const { user, rolActivo, selectRol, refreshUser } = useAuth()

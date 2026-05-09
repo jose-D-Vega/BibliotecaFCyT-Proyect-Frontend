@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import "./prueba/NavbarPrueba.css";
-import logoFcyt from "../assets/icons/LogoFCyT.png";
+import "../styles/prueba/NavbarPrueba.css";
+import logoFcyt from "../../assets/icons/LogoFCyT.png";
 
 const Navbar = ({
   onToggleSidebar,
