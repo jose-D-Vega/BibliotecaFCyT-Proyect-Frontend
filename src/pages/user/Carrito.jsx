@@ -1,20 +1,18 @@
-import "../../pages/styles/Carrito.css"
+import "../styles/styles_user/Carrito.css"
 import CarritoItem from "../../components/CarritoItem"
+import { useCart } from '../../context/CartContext'
+import { useNavigate } from 'react-router-dom'
 
-function Carrito({
-  carrito,
-  onVolver,
-  onVerDetalle,
-  onRemover,
-  onVaciarCarrito
-}) {
+function CarritoPage() {
+  const { carrito, removerDelCarrito, vaciarCarrito } = useCart()
+  const navigate = useNavigate()
+
   return (
     <div className="carrito-page">
       <header className="carrito-header">
-        <button className="carrito-volver-btn" onClick={onVolver}>
+        <button className="carrito-volver-btn" onClick={() => navigate('/app/catalogo')}>
           ← Volver
         </button>
-
         <h1 className="carrito-titulo">Carrito de Préstamos</h1>
       </header>
 
@@ -22,24 +20,19 @@ function Carrito({
         {carrito.length > 0 ? (
           <>
             <div className="carrito-lista">
-              {carrito.map((libro) => (
+              {carrito.map(libro => (
                 <CarritoItem
-                  key={libro.id}
+                  key={libro.id_libro}
                   libro={libro}
-                  onVerDetalle={onVerDetalle}
-                  onRemover={onRemover}
+                  onVerDetalle={() => navigate(`/app/catalogo/${libro.id_libro}`)}
+                  onRemover={() => removerDelCarrito(libro.id_libro)}
                 />
               ))}
             </div>
-
             <div className="carrito-acciones">
-              <button
-                className="carrito-accion-btn secundario"
-                onClick={onVaciarCarrito}
-              >
+              <button className="carrito-accion-btn secundario" onClick={vaciarCarrito}>
                 Vaciar Carrito
               </button>
-
               <button className="carrito-accion-btn primario">
                 Realizar préstamo
               </button>
@@ -56,4 +49,4 @@ function Carrito({
   )
 }
 
-export default Carrito
+export default CarritoPage

@@ -182,7 +182,9 @@
 
   .filtro-dropdown-menu,
   .filtro-dropdown-orden .filtro-dropdown-menu {
-    width: min(92vw, 300px);
+    width: min(88vw, 280px);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .option {

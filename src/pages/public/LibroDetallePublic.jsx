@@ -1,50 +1,42 @@
-import { useMemo } from "react"
-import "../../pages/styles/LibroDetalle.css"
+import { useMemo, useState } from "react"
+import "../styles/styles_user/prueba/LibroDetallePrueba.css"
 
 import LibroInfoItem from "../../components/LibroInfoItem"
 import EjemplarItem from "../../components/EjemplarItem"
+import FooterLogin from "../../components/FooterLogin"
+import { useNavigate } from "react-router-dom"
 
-function LibroDetallePublic({ libro, onVolver }) {
+function LibroDetallePublic({ libro, ejemplares: ejemplaresProp, onVolver }) {
+ 
+  const navigate = useNavigate()
+
   const data = useMemo(() => {
-    const fallbackEjemplares = [
-      { codigo: "Ejemplar #1", estado: "Disponible" },
-      { codigo: "Ejemplar #2", estado: "Disponible" },
-      { codigo: "Ejemplar #3", estado: "En préstamo" }
-    ]
-
     return libro || {
-      id: 0,
+      id_libro: 0,
       titulo: "Libro de Ejemplo",
       autor: "Autor Ejemplo",
       editorial: "Editorial Ejemplo",
-      anio: "2023",
+      anio_publicacion: "2023",
       facultad: "Facultad de Ciencias y Tecnologías UNCA",
       ciudad: "Coronel Oviedo",
-      area: ["Informática"],
-      imagen: "https://covers.openlibrary.org/b/id/10523338-L.jpg",
-      ejemplaresDetalle: fallbackEjemplares,
-      ejemplares: fallbackEjemplares.length
+      carrera: "Informática",
+      cantidad_ejemplar: 0
     }
   }, [libro])
 
-  const ejemplares = data.ejemplaresDetalle || []
+  const ejemplares = ejemplaresProp || []
   const ejemplaresTotal = ejemplares.length
-  const disponibles = ejemplares.filter(
-    (ejemplar) => ejemplar.estado === "Disponible"
-  ).length
-  const enPrestamo = ejemplaresTotal - disponibles
+  const disponibles = ejemplares.filter(e => e.estado_ejemplar === "disponible").length
+  const enPrestamo = ejemplares.filter(e => e.estado_ejemplar === "prestado").length
+  const reservados = ejemplares.filter(e => e.estado_ejemplar === "reservado").length
 
-  const areaTexto = Array.isArray(data.area)
-    ? data.area.join(", ")
-    : data.area
+
+
 
   return (
     <div className="detalle-page">
       <header className="detalle-header">
-        <button className="btn-volver" onClick={onVolver}>
-          ← Volver
-        </button>
-
+        <button className="btn-volver" onClick={onVolver}>← Volver</button>
         <h2 className="header-title">Detalles del libro</h2>
       </header>
 
@@ -52,40 +44,38 @@ function LibroDetallePublic({ libro, onVolver }) {
         <section className="detalle-card">
           <div className="portada-wrapper">
             <div className="portada">
-              <img src={data.imagen} alt="portada" />
+              {data.imagen_url
+                ? <img src={data.imagen_url} alt="portada" />
+                : <div className="portada-placeholder">{data.titulo?.charAt(0)}</div>
+              }
             </div>
+
           </div>
 
           <div className="info">
             <h1 className="titulo-libro">{data.titulo}</h1>
-
             <div className="resumen-ejemplares">
-              <span className="resumen-badge disponible">
-                {disponibles} disponibles
-              </span>
-              <span className="resumen-badge prestamo">
-                {enPrestamo} en préstamo
-              </span>
+              <span className="resumen-badge disponible">{disponibles} disponibles</span>
+              <span className="resumen-badge prestamo">{enPrestamo} en préstamo</span>
+              {reservados > 0 && (
+                <span className="resumen-badge reservado">{reservados} reservados</span>
+              )}
             </div>
-
             <div className="info-grid">
               <LibroInfoItem label="Autor" value={data.autor} />
               <LibroInfoItem label="Editorial" value={data.editorial} />
-              <LibroInfoItem label="Año de publicación" value={data.anio} />
-              <LibroInfoItem label="Ejemplares" value={ejemplaresTotal} />
+              <LibroInfoItem label="Año de publicación" value={data.anio_publicacion} />
+              <LibroInfoItem label="Ejemplares" value={data.cantidad_ejemplar} />
               <LibroInfoItem label="Facultad" value={data.facultad} />
               <LibroInfoItem label="Ciudad" value={data.ciudad} />
-              <LibroInfoItem label="Área" value={areaTexto} full />
+              <LibroInfoItem label="Carrera" value={data.carrera} full />
             </div>
           </div>
         </section>
 
         <section className="ejemplares-section">
           <details className="ejemplares-dropdown">
-            <summary className="ejemplares-title">
-              Ejemplares
-            </summary>
-
+            <summary className="ejemplares-title">Ejemplares</summary>
             <div className="ejemplares-lista">
               {ejemplares.map((ejemplar, i) => (
                 <EjemplarItem key={i} ejemplar={ejemplar} />
@@ -94,6 +84,8 @@ function LibroDetallePublic({ libro, onVolver }) {
           </details>
         </section>
       </main>
+      <FooterLogin />
+
     </div>
   )
 }

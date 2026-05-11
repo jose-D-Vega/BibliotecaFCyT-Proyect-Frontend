@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "./styles/UserLayout.css";
-import Navbar from "./Navbar";
-import SidebarUser from "./SidebarUser";
-import Footer from "./Footer";
+import "./styles/prueba/UserLayoutPrueba.css";
+import Navbar from "./layouts_components/Navbar";
+import SidebarUser from "./layouts_components/SidebarUser";
+import Footer from "./layouts_components/Footer";
 
 const UserLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

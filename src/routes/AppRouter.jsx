@@ -1,35 +1,39 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
+import ScrollToTop from './ScrollToTop'
 
 
 import UserLayout from '../layouts/UserLayout'
 import AdminLayout from '../layouts/AdminLayout'
 
-
-import CatalogoPage from '../pages/public/CatalogoPage'
-import LibroDetallePublic from '../pages/public/LibroDetallePublic'
-
+import CatalogoPublicPage from '../pages/public/CatalogoPublicPage'
+import LibroDetallePublicPage from '../pages/public/LibroDetallePublicPage'
 import LoginPage from '../pages/auth/LoginPage'
 import AuthCallbackPage from '../pages/auth/AuthCallbackPage'
 import RolSelectorPage from '../pages/auth/RolSelectorPage'
 import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
 
-import DashboardPage from '../pages/user/DashboardUser'
-import CatalogoUserPage from '../pages/user/prueba/CatalogoUserPage'
+import DashboardUser from '../pages/user/DashboardUser'
+import CatalogoUserPage from '../pages/user/CatalogoUserPage'
+import DetalleLibroUserPage from '../pages/user/DetalleLibroUserPage'
+import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
 import SancionesPage from '../pages/user/prueba/SancionesPage'
-import PerfilUserPage from '../pages/user/prueba/PerfilUserPage'
+import PerfilUserPage from '../pages/user/PerfilUserPage'
 
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 import AdminPrestamosPage from '../pages/admin/prueba/AdminPrestamosPage'
 import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
-import AdminCatalogoPage from '../pages/admin/prueba/AdminCatalogoPage'
+import AdminCatalogoPage from '../pages/admin/AdminCatalogoPage'
+import DetalleLibroAdminPage from '../pages/admin/DetalleLibroAdminPage'
+import NuevoMaterial from '../pages/admin/NuevoMaterial'
+import EditarLibroPage from '../pages/admin/ModificarLibro'
 import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
-import PerfilAdminPage from '../pages/admin/prueba/PerfilAdminPage'
+import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 
 // Importamos el componente de modificar libro
 import ModificarLibro from '../pages/admin/ModificarLibro'
@@ -41,16 +45,19 @@ const AppRouter = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
-        {/* Públicas */}
+
         <Route path="/" element={<LoginPage />} />
-        <Route path="/catalogo" element={<CatalogoPage />} />
+        <Route path="/catalogo" element={<CatalogoPublicPage />} />
+        <Route path="/catalogo/:id" element={<LibroDetallePublicPage />} />
         {/**
          * <Route path="/catalogo/:id" element={<DetalleLibroPublicoPage />} />
          */}
         
 
         {/* Login — si ya está autenticado redirigir */}
+
         <Route
           path="/login"
           element={
@@ -60,10 +67,8 @@ const AppRouter = () => {
           }
         />
 
-        {/* Callback de Google */}
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
-        
-        {/* Completar datos de la cuenta del usuario */}
+
         <Route
           path="/completar-perfil"
           element={
@@ -75,7 +80,6 @@ const AppRouter = () => {
           }
         />
 
-        {/* Selección de rol — solo bibliotecarios autenticados */}
         <Route
           path="/select-rol"
           element={
@@ -87,7 +91,7 @@ const AppRouter = () => {
           }
         />
 
-         {/* Rutas usuario normal — con UserLayout */}
+               {/* USER */}
         <Route
           path="/app"
           element={
@@ -97,22 +101,20 @@ const AppRouter = () => {
           }
         >
           <Route index element={<Navigate to="inicio" replace />} />
-          <Route path="inicio" element={<DashboardPage />} />
-
+          <Route path="inicio" element={<DashboardUser />} />
           <Route path="catalogo" element={<CatalogoUserPage />} />
-          {/**
-           * <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
-              <Route path="carrito" element={<CarritoPage />} />
-           */}
+          
+          {/* ✅ Rutas activas para usuario */}
+          <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
+          <Route path="carrito" element={<CarritoPage />} />
           
           <Route path="perfil" element={<PerfilUserPage />} />
-
           <Route path="prestamos" element={<PrestamosPage />} />
           <Route path="devoluciones" element={<DevolucionesPage />} />
           <Route path="sanciones" element={<SancionesPage />} />
         </Route>
 
-        {/* Rutas bibliotecario — con AdminLayout */}
+        {/* ADMIN */}
         <Route
           path="/admin"
           element={
@@ -128,23 +130,17 @@ const AppRouter = () => {
 
           <Route path="catalogo" element={<AdminCatalogoPage />} />
           
-          {/* NUEVA RUTA: Modificar Libro */}
-          <Route path="catalogo/editar" element={<ModificarLibro />} />
+          {/* ✅ Rutas de admin con ID dinámico */}
+          <Route path="catalogo/:id/editar" element={<EditarLibroPage />} />
+          <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
+          
+          <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
 
-          {/**
-           *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
-            <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
-           */}
-
-           <Route path="perfil" element={<PerfilAdminPage />} />
-
+          <Route path="perfil" element={<PerfilAdminPage />} />
           <Route path="usuarios" element={<UsuariosPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
         </Route>
-        
-
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   )

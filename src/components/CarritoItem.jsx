@@ -4,7 +4,11 @@ function CarritoItem({ libro, onVerDetalle, onRemover }) {
   return (
     <div className="carrito-item">
       <div className="carrito-item-imagen">
-        <img src={libro.imagen} alt={libro.titulo} />
+        {libro.imagen_url
+          ? <img src={libro.imagen_url} alt={libro.titulo} />
+          : <div className="portada-placeholder">{libro.titulo?.charAt(0)}</div>
+        }
+        
       </div>
 
       <div className="carrito-item-info">

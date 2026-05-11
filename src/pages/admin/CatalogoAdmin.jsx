@@ -1,21 +1,21 @@
-import "../../pages/styles/Catalogo.css"
-import "../../pages/styles/CatalogoAdmin.css"
+import "../styles/styles_user/prueba/CatalogoPrueba.css"
+import "../styles/styles_admin/CatalogoAdmin.css"
 import Buscador from "../../components/Buscador"
 import Filtros from "../../components/Filtros"
 import ListaLibros from "../../components/ListaLibros"
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
-function CatalogoAdmin({ onVerDetalle }) {
+function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
+  const navigate = useNavigate()
+
   const [pagina, setPagina] = useState(1)
-
   const [busqueda, setBusqueda] = useState("")
   const [modoBusqueda, setModoBusqueda] = useState("titulo")
-
   const [areas, setAreas] = useState([])
   const [tipo, setTipo] = useState("")
   const [orden, setOrden] = useState("AZ")
-
-  const [totalPaginas, setTotalPaginas] = useState(3)
+  const [totalPaginas, setTotalPaginas] = useState(1)
 
   useEffect(() => {
     setPagina(1)
@@ -27,10 +27,7 @@ function CatalogoAdmin({ onVerDetalle }) {
     setOrden("AZ")
   }
 
-  const todosActivos =
-    areas.length === 0 &&
-    tipo === "" &&
-    orden === "AZ"
+  const todosActivos = areas.length === 0 && tipo === "" && orden === "AZ"
 
   return (
     <div className="catalogo">
@@ -38,14 +35,12 @@ function CatalogoAdmin({ onVerDetalle }) {
         <div className="header-top">
           <h1 className="titulo">Catálogo</h1>
         </div>
-
         <Buscador
           busqueda={busqueda}
           setBusqueda={setBusqueda}
           modoBusqueda={modoBusqueda}
           setModoBusqueda={setModoBusqueda}
         />
-
         <Filtros
           areas={areas}
           setAreas={setAreas}
@@ -57,7 +52,10 @@ function CatalogoAdmin({ onVerDetalle }) {
           todosActivos={todosActivos}
         />
 
-        <button className="admin-add-material-btn">
+        <button
+          className="admin-add-material-btn"
+          onClick={onNuevoLibro}
+        >
           Añadir nuevo material
         </button>
       </div>

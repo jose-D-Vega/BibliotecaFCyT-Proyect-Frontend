@@ -1,10 +1,16 @@
 import { useMemo, useState } from "react"
-import "../../pages/styles/LibroDetalle.css"
+import { useCart } from '../../context/CartContext'
+
+import "../styles/styles_user/prueba/LibroDetallePrueba.css"
 
 import LibroInfoItem from "../../components/LibroInfoItem"
 import EjemplarItem from "../../components/EjemplarItem"
 
-function LibroDetalle({ libro, onVolver, onIrAlCarrito, onAgregarAlCarrito }) {
+function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarrito }) {
+  const { agregarAlCarrito, estaEnCarrito } = useCart()
+
+  
+
   const [modal, setModal] = useState(null)
 
   const data = useMemo(() => {
@@ -15,30 +21,32 @@ function LibroDetalle({ libro, onVolver, onIrAlCarrito, onAgregarAlCarrito }) {
     ]
 
     return libro || {
-      id: 0,
+      id_libro: 0,
       titulo: "Libro de Ejemplo",
       autor: "Autor Ejemplo",
       editorial: "Editorial Ejemplo",
-      anio: "2023",
+      anio_publicacion: "2023",
       facultad: "Facultad de Ciencias y Tecnologías UNCA",
       ciudad: "Coronel Oviedo",
-      area: ["Informática"],
+      carrera: ["Informática"],
       imagen: "https://covers.openlibrary.org/b/id/10523338-L.jpg",
       ejemplaresDetalle: fallbackEjemplares,
       ejemplares: fallbackEjemplares.length
     }
   }, [libro])
 
-  const ejemplares = data.ejemplaresDetalle || []
-  const ejemplaresTotal = ejemplares.length
-  const disponibles = ejemplares.filter(
-    (ejemplar) => ejemplar.estado === "Disponible"
-  ).length
-  const enPrestamo = ejemplaresTotal - disponibles
+  const yaEnCarrito = estaEnCarrito(data.id_libro)
 
-  const areaTexto = Array.isArray(data.area)
-    ? data.area.join(", ")
-    : data.area
+  const ejemplares = ejemplaresProp || data.ejemplaresDetalle || []
+  const ejemplaresTotal = ejemplares.length
+  const disponibles = ejemplares.filter(e => e.estado_ejemplar === "disponible").length
+  const enPrestamo = ejemplares.filter(e => e.estado_ejemplar === "prestado").length  
+  const reservados = ejemplares.filter(e => e.estado_ejemplar === "reservado").length
+
+
+  const areaTexto = Array.isArray(data.carrera)
+    ? data.carrera.join(", ")
+    : data.carrera
 
   const abrirConfirmacion = () => {
     setModal("confirmar")
@@ -49,7 +57,7 @@ function LibroDetalle({ libro, onVolver, onIrAlCarrito, onAgregarAlCarrito }) {
   }
 
   const aceptarAgregar = () => {
-    onAgregarAlCarrito?.(data)
+    agregarAlCarrito(data)
     setModal("agregado")
   }
 
@@ -81,11 +89,18 @@ function LibroDetalle({ libro, onVolver, onIrAlCarrito, onAgregarAlCarrito }) {
         <section className="detalle-card">
           <div className="portada-wrapper">
             <div className="portada">
-              <img src={data.imagen} alt="portada" />
+              {data.imagen_url
+                ? <img src={data.imagen_url} alt={data.titulo} />
+                : <div className="portada-placeholder">{data.titulo?.charAt(0)}</div>
+              }
             </div>
 
-            <button className="btn-prestamo" onClick={abrirConfirmacion}>
-              Solicitar préstamo
+            <button
+              className="btn-prestamo"
+              onClick={yaEnCarrito ? undefined : abrirConfirmacion}
+              disabled={yaEnCarrito}
+            >
+              {yaEnCarrito ? 'En el carrito' : 'Solicitar préstamo'}
             </button>
           </div>
 
@@ -104,7 +119,7 @@ function LibroDetalle({ libro, onVolver, onIrAlCarrito, onAgregarAlCarrito }) {
             <div className="info-grid">
               <LibroInfoItem label="Autor" value={data.autor} />
               <LibroInfoItem label="Editorial" value={data.editorial} />
-              <LibroInfoItem label="Año de publicación" value={data.anio} />
+              <LibroInfoItem label="Año de publicación" value={data.anio_publicacion} />
               <LibroInfoItem label="Ejemplares" value={ejemplaresTotal} />
               <LibroInfoItem label="Facultad" value={data.facultad} />
               <LibroInfoItem label="Ciudad" value={data.ciudad} />
