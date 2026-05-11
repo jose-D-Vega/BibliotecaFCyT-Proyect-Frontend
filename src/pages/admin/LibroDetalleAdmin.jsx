@@ -2,8 +2,13 @@ import { useMemo, useState } from "react"
 import "../../pages/styles/LibroDetalle.css"
 import "../../pages/styles/LibroDetalleAdmin.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
+// Importamos useNavigate para la navegación
+import { useNavigate } from "react-router-dom"
 
 function LibroDetalleAdmin({ libro, onVolver }) {
+  // Inicializamos el hook de navegación
+  const navigate = useNavigate()
+  
   const [modal, setModal] = useState(null)
   const [ejemplarSeleccionado, setEjemplarSeleccionado] = useState(null)
 
@@ -54,6 +59,11 @@ function LibroDetalleAdmin({ libro, onVolver }) {
     setEjemplarSeleccionado(null)
   }
 
+  // Función para manejar la navegación a la vista de modificar
+  const manejarModificar = () => {
+    navigate("/admin/catalogo/editar", { state: data })
+  }
+
   return (
     <div className="detalle-page">
       <header className="detalle-header">
@@ -71,7 +81,11 @@ function LibroDetalleAdmin({ libro, onVolver }) {
               <img src={data.imagen} alt="portada" />
             </div>
 
-            <button className="admin-action-btn admin-modify-btn">
+            {/* Agregamos el onClick para navegar a modificar */}
+            <button 
+              className="admin-action-btn admin-modify-btn"
+              onClick={manejarModificar}
+            >
               Modificar material
             </button>
 

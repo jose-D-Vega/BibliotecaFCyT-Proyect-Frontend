@@ -1,0 +1,91 @@
+/* CONTENEDOR PRINCIPAL */
+.contenedor {
+  width: 70%;
+  margin: 30px auto;
+  background: #f3f3f3;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+/* TITULO */
+h2 {
+  text-align: center;
+  color: #1b2157;
+  margin-bottom: 20px;
+}
+
+/* LISTA DE LIBROS */
+.lista {
+  border-bottom: 2px solid #1b2157;
+  margin-bottom: 20px;
+}
+
+.lista-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.lista-item:hover {
+  background-color: #eaeaea;
+}
+
+/* DETALLE DEL LIBRO */
+.detalle {
+  margin-bottom: 20px;
+}
+
+.detalle p {
+  margin: 5px 0;
+}
+
+/* FORMULARIO */
+.formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+/* LABELS */
+.formulario label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* INPUTS */
+.formulario input {
+  padding: 8px;
+  border: 1px solid #1b2157;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+/* INPUT FILE */
+.formulario input[type="file"] {
+  border: none;
+}
+
+/* IMAGEN PREVIEW */
+.preview {
+  margin-top: 10px;
+}
+
+.preview img {
+  width: 120px;
+  border-radius: 5px;
+}
+
+/* BOTON */
+button {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #1b2157;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1b2157;
+}

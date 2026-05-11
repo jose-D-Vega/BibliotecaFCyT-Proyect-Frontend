@@ -31,6 +31,9 @@ import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/prueba/PerfilAdminPage'
 
+// Importamos el componente de modificar libro
+import ModificarLibro from '../pages/admin/ModificarLibro'
+
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
 
@@ -98,7 +101,7 @@ const AppRouter = () => {
 
           <Route path="catalogo" element={<CatalogoUserPage />} />
           {/**
-           *  <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
+           * <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
               <Route path="carrito" element={<CarritoPage />} />
            */}
           
@@ -124,6 +127,10 @@ const AppRouter = () => {
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
 
           <Route path="catalogo" element={<AdminCatalogoPage />} />
+          
+          {/* NUEVA RUTA: Modificar Libro */}
+          <Route path="catalogo/editar" element={<ModificarLibro />} />
+
           {/**
            *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
             <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
