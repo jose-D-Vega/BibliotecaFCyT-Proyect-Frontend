@@ -30,8 +30,8 @@ function NuevoMaterial() {
 
   const opcionesCarrera = [
     "General",
-    "Informatica",
-    "Electronica",
+    "Informática",
+    "Electrónica",
     "Electricidad",
     "Civil"
   ]
