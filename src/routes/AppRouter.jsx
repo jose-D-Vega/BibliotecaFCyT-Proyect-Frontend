@@ -29,14 +29,12 @@ import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
 import AdminCatalogoPage from '../pages/admin/AdminCatalogoPage'
 import DetalleLibroAdminPage from '../pages/admin/DetalleLibroAdminPage'
 import NuevoMaterial from '../pages/admin/NuevoMaterial'
-import EditarLibroPage from '../pages/admin/ModificarLibro'
+import ModificarMaterial from '../pages/admin/ModificarMaterial'
 import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 
-// Importamos el componente de modificar libro
-import ModificarLibro from '../pages/admin/ModificarLibro'
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -131,7 +129,7 @@ const AppRouter = () => {
           <Route path="catalogo" element={<AdminCatalogoPage />} />
           
           {/* ✅ Rutas de admin con ID dinámico */}
-          <Route path="catalogo/:id/editar" element={<EditarLibroPage />} />
+          <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
           <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
           
           <Route path="catalogo/nuevo" element={<NuevoMaterial />} />

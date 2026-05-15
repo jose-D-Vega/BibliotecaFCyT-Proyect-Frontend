@@ -2,10 +2,6 @@ import { useMemo, useState } from "react"
 import "../styles/styles_user/prueba/LibroDetallePrueba.css"
 import "../styles/styles_admin/prueba/LibroDetalleAdminPrueba.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
-import { useMemo, useState } from "react"
-import "../styles/styles_user/prueba/LibroDetallePrueba.css"
-import "../styles/styles_admin/prueba/LibroDetalleAdminPrueba.css"
-import LibroInfoItem from "../../components/LibroInfoItem"
 import { useNavigate } from "react-router-dom"
 import { deleteBook } from "../../services/books.services"
 import { deleteCopy } from "../../services/copies.services"
@@ -76,7 +72,7 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
 
   // Función para manejar la navegación a la vista de modificar
   const manejarModificar = () => {
-    navigate("/admin/catalogo/editar", { state: data })
+    navigate(`/admin/catalogo/${data.id_libro}/editar`, { state: data })
   }
 
   return (

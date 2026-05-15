@@ -1,0 +1,336 @@
+/* ModificarMaterial.css */
+
+.contenedor {
+  min-height: 100vh;
+  padding: 40px 30px 80px;
+
+  background: linear-gradient(
+    135deg,
+    #03152e 0%,
+    #071c3b 45%,
+    #0a2550 100%
+  );
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-sizing: border-box;
+}
+
+/* HEADER */
+
+.detalle-header {
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  margin-bottom: 25px;
+}
+
+.detalle-header h2 {
+  font-size: 42px;
+  margin: 0;
+}
+
+/* BOTON */
+
+.btn-volver {
+  background: rgba(255,255,255,0.08);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.btn-volver:hover {
+  background: rgba(255,255,255,0.14);
+
+  transform: translateY(-2px);
+}
+
+/* INFO */
+
+.info-actual-mini {
+  width: 100%;
+  max-width: 900px;
+
+  margin-bottom: 20px;
+}
+
+.info-actual-mini p {
+  color: #dbeafe;
+}
+
+/* FORM */
+
+.form-modificar {
+  width: 100%;
+  max-width: 900px;
+
+  background: rgba(255,255,255,0.06);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(14px);
+
+  border-radius: 24px;
+
+  padding: 35px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* GRID */
+
+.form-row-2 {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+}
+
+.form-row-3 {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+  gap: 16px;
+}
+
+/* CAMPOS */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo label {
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,0.7);
+}
+
+/* INPUTS */
+
+.campo input,
+.campo textarea,
+.campo select {
+
+  width: 100%;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.07);
+
+  color: white;
+
+  font-size: 15px;
+
+  transition: 0.2s;
+
+  box-sizing: border-box;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+
+  outline: none;
+
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 4px rgba(59,130,246,0.18);
+}
+
+/* CUSTOM SELECT */
+
+.custom-select {
+  position: relative;
+
+  background: rgba(255,255,255,0.08);
+
+  border-radius: 14px;
+
+  padding: 16px;
+
+  cursor: pointer;
+
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.selected {
+  color: white;
+}
+
+.options {
+  position: absolute;
+
+  top: 110%;
+  left: 0;
+
+  width: 100%;
+
+  background: #1e293b;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transform: translateY(-10px);
+
+  transition: 0.2s;
+
+  z-index: 20;
+}
+
+.options.open {
+  opacity: 1;
+
+  pointer-events: all;
+
+  transform: translateY(0);
+}
+
+.options div {
+  padding: 14px;
+
+  transition: 0.2s;
+}
+
+.options div:hover {
+  background: #2563eb;
+}
+
+.active-option {
+  background: #1d4ed8;
+}
+
+/* PREVIEW */
+
+.preview-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.preview-seccion img {
+  width: 160px;
+
+  border-radius: 14px;
+}
+
+/* BOTONES */
+
+.acciones-finales {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-confirmar,
+.btn-cancelar {
+
+  flex: 1;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  border: none;
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  transition: 0.2s;
+}
+
+.btn-confirmar {
+  background: linear-gradient(
+    135deg,
+    #fbfbfc,
+    #f5f6f7
+  );
+
+  color: rgb(53, 52, 52);
+}
+
+.btn-confirmar:hover {
+  transform: translateY(-2px);
+}
+
+.btn-cancelar {
+  background: rgba(255,255,255,0.08);
+
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+/* ERROR */
+
+.error {
+  color: #f87171;
+
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+  .contenedor {
+    padding: 20px;
+  }
+
+  .detalle-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detalle-header h2 {
+    font-size: 30px;
+  }
+
+  .form-row-2,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones-finales {
+    flex-direction: column;
+  }
+
+}
