@@ -12,8 +12,8 @@ export const authorRegex =
 
 export const opcionesCarrera = [
   "General",
-  "Informatica",
-  "Electronica",
+  "Informática",
+  "Electrónica",
   "Electricidad",
   "Civil"
 ]

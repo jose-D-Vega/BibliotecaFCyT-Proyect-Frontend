@@ -41,7 +41,7 @@ function ListaLibros({
           limit: librosPorPagina,
           ...(tipo && { tipo_material: tipo }),
           ...(busqueda.trim() && { search: busqueda.trim() }),
-          ...(areas.length === 1 && { carrera: areas[0] }),
+          ...(areas.length > 0 && { carrera: areas }),
           ...(orden && { orden }),
         }
 
@@ -77,7 +77,7 @@ function ListaLibros({
           />
         ))
       ) : (
-        <p style={{ color: 'white', gridColumn: 'span 4', textAlign: 'center' }}>
+        <p style={{ color: 'white', gridColumn: '1 / -1', textAlign: 'center' }}>
           No se encontraron libros
         </p>
       )}

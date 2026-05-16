@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,  useRef, useEffect  } from "react"
 import "./styles/prueba/FiltrosPrueba.css"
 
 function Filtros({
@@ -13,6 +13,17 @@ function Filtros({
 }) {
 
   const [open, setOpen] = useState(null)
+  const filtrosRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (filtrosRef.current && !filtrosRef.current.contains(e.target)) {
+        setOpen(null)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const toggle = (menu) => {
     setOpen(open === menu ? null : menu)
@@ -56,7 +67,7 @@ function Filtros({
   }
 
   return (
-    <div className="filtros">
+    <div className="filtros" ref={filtrosRef}>
 
       <button
         className={`filter-btn todos-btn ${todosActivos ? "active" : ""}`}

@@ -4,7 +4,11 @@ export const getBooks = async ({ search, tipo_material, carrera, page, limit, or
   const params = new URLSearchParams()
   if (search) params.append('search', search)
   if (tipo_material) params.append('tipo_material', tipo_material)
-  if (carrera) params.append('carrera', carrera)
+  if (carrera && carrera.length > 0) {
+    // Si es array lo unimos, si es string lo mandamos directo
+    const carreraStr = Array.isArray(carrera) ? carrera.join(',') : carrera
+    params.append('carrera', carreraStr)
+  }
   if (orden) params.append('orden', orden)
   if (page) params.append('page', page)
   if (limit) params.append('limit', limit)
