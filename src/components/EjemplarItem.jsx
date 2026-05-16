@@ -1,4 +1,4 @@
-import "./styles/prueba/EjemplarItemPrueba.css"
+import "./styles/EjemplarItem.css"
 
 function EjemplarItem({ ejemplar }) {
   return (

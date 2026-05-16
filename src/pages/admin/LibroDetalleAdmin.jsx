@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
-import "../styles/styles_user/prueba/LibroDetallePrueba.css"
-import "../styles/styles_admin/prueba/LibroDetalleAdminPrueba.css"
+import "../styles/styles_user/LibroDetalle.css"
+import "../styles/styles_admin/LibroDetalleAdmin.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
 import { useNavigate } from "react-router-dom"
 import { deleteBook } from "../../services/books.services"
@@ -80,9 +80,6 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
       <header className="detalle-header">
         <button className="btn-volver" onClick={onVolver}>← Volver</button>
         <h2 className="header-title">Detalles del libro</h2>
-        <button onClick={() => navigate(`/admin/catalogo/${data.id_libro}/editar`)}>
-          Editar libro
-        </button>
       </header>
 
       <main className="detalle-container">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import LibroCard from "./LibroCard"
 import { getBooks } from "../services/books.services"
-import "./styles/prueba/ListaLibrosPrueba.css"
+import "./styles/ListaLibros.css"
 
 function ListaLibros({
   pagina,

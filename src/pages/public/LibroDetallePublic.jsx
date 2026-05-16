@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import "../styles/styles_user/prueba/LibroDetallePrueba.css"
+import "../styles/styles_user/LibroDetalle.css"
 
 import LibroInfoItem from "../../components/LibroInfoItem"
 import EjemplarItem from "../../components/EjemplarItem"

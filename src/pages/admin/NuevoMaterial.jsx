@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import "../styles/styles_admin/prueba/NuevoMaterialPrueba.css"
+import "../styles/styles_admin/NuevoMaterial.css"
 
 import { createBook } from "../../services/books.services"
 

@@ -1,4 +1,4 @@
-import "./styles/prueba/LibroInfoItemPrueba.css";
+import "./styles/LibroInfoItem.css";
 
 function LibroInfoItem({ label, value, full }) {
   return (

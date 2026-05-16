@@ -1,4 +1,4 @@
-import "./styles/prueba/LibroCardPrueba.css"
+import "./styles/LibroCard.css"
 
 function LibroCard({ libro, onVerDetalle }) {
   return (

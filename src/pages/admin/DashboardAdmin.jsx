@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/styles_admin/prueba/DashboardAdminPrueba.css';
+import '../styles/styles_admin/DashboardAdmin.css';
 
 // Importación de iconos (Material Design)
 import {

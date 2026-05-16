@@ -367,7 +367,7 @@ function ModificarMaterial() {
     <div className="contenedor">
 
       {/* HEADER */}
-      <header className="detalle-header">
+      <header className="detalle-header-modificarLibro">
 
         <button
           className="btn-volver"

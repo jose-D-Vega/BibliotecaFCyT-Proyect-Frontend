@@ -1,9 +1,8 @@
 .ejemplar {
-  background: #f4f7fb;
+  background: rgba(255, 255, 255, 0.04);
   padding: 12px 14px;
   border-radius: 12px;
-  border-left: 3px solid #173150;
-  color: #111827;
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
   transition: 0.2s;
   display: flex;
   align-items: center;
@@ -13,7 +12,7 @@
 
 .ejemplar:hover {
   transform: translateX(4px);
-  background: #ebf1f7;
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .ejemplar-info {
@@ -25,7 +24,7 @@
 
 .ejemplar-codigo {
   font-weight: 700;
-  color: #1f2937;
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.35;
 }
 
@@ -39,39 +38,22 @@
 }
 
 .ejemplar-estado.disponible {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
 }
 
 .ejemplar-estado.prestamo {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
 }
 
 @media (max-width: 768px) {
-  .ejemplar {
-    padding: 11px 12px;
-  }
-
-  .ejemplar-codigo {
-    font-size: 14px;
-  }
+  .ejemplar { padding: 11px 12px; }
+  .ejemplar-codigo { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
-  .ejemplar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 12px;
-  }
-
-  .ejemplar:hover {
-    transform: none;
-  }
-
-  .ejemplar-estado {
-    align-self: flex-start;
-    font-size: 11px;
-  }
+  .ejemplar { flex-direction: column; align-items: flex-start; gap: 10px; padding: 10px 12px; }
+  .ejemplar:hover { transform: none; }
+  .ejemplar-estado { align-self: flex-start; font-size: 11px; }
 }

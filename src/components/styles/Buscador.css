@@ -1,84 +1,62 @@
-.buscador {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 13px 14px;
-  border-radius: 12px;
-  border: 1px solid #d2dce8;
-  margin-bottom: 15px;
-  background: #ffffff;
-  color: #17263c;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  min-width: 0;
-  font-family: 'Source Sans 3', sans-serif;
-}
-
-.buscador::placeholder {
-  color: #6b7280;
-}
-
-.buscador:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(12, 26, 46, 0.07);
-}
-
-.buscador:focus {
-  outline: none;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(12, 26, 46, 0.1);
-  border-color: #8ea7c7;
-}
-
 .buscador-container {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 15px;
+}
+
+.buscador {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f6fb;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.buscador::placeholder { color: rgba(255, 255, 255, 0.35); }
+
+.buscador:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.buscador:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .modo-btn {
-  background: white;
-  color: #173150;
-  border: 1px solid #d2dce8;
-  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 13px 14px;
   border-radius: 12px;
   cursor: pointer;
   transition: 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
+  font-family: 'Source Sans 3', sans-serif;
   font-weight: 700;
+  font-size: 1rem;
 }
 
 .modo-btn:hover {
-  background: #173150;
-  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {
-  .buscador-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  .buscador {
-    margin-bottom: 0;
-  }
-
-  .modo-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 10px 12px;
-  }
+  .buscador-container { flex-direction: column; align-items: stretch; }
+  .modo-btn { width: 100%; text-align: center; }
 }
 
 @media (max-width: 480px) {
-  .buscador {
-    padding: 11px 12px;
-    font-size: 14px;
-  }
-
-  .modo-btn {
-    font-size: 14px;
-  }
+  .buscador, .modo-btn { padding: 11px 12px; font-size: 14px; }
 }

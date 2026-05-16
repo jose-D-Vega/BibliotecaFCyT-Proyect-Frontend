@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { useCart } from '../../context/CartContext'
-import "../styles/styles_user/prueba/LibroDetallePrueba.css"
+import "../styles/styles_user/LibroDetalle.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
 import EjemplarItem from "../../components/EjemplarItem"
 

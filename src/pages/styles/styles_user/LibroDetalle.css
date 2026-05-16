@@ -1,33 +1,51 @@
 .detalle-page {
   font-family: 'Source Sans 3', sans-serif;
   min-height: 100vh;
-  background: #eef3f8;
-  color: #17263c;
+  background: #0c1a2e;
+  color: #f1f6fb;
 }
 
 .detalle-header {
-  background: linear-gradient(180deg, #fdfefe 0%, #f8fbfd 100%);
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   gap: 15px;
   padding: 16px 25px;
   flex-wrap: wrap;
-  border-bottom: 1px solid #d2dce8;
 }
 
 .header-title {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #0c1a2e;
+  color: #ffffff;
   flex: 1;
   min-width: 0;
   font-family: 'Playfair Display', serif;
 }
 
+.btn-volver {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 8px 13px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.btn-volver:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
+}
+
 .carrito-btn-detalle {
-  background: white;
-  color: #173150;
-  border: 1px solid #d2dce8;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 9px 14px;
   border-radius: 12px;
   cursor: pointer;
@@ -36,47 +54,30 @@
   gap: 6px;
   transition: 0.2s;
   font-weight: 700;
+  font-family: 'Source Sans 3', sans-serif;
   margin-left: auto;
   flex-shrink: 0;
 }
 
 .carrito-btn-detalle:hover {
-  background: #173150;
-  color: white;
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
   transform: translateY(-2px);
-}
-
-.btn-volver {
-  background: white;
-  border: 1px solid #d2dce8;
-  color: #173150;
-  padding: 8px 13px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-  flex-shrink: 0;
-  font-weight: 700;
-}
-
-.btn-volver:hover {
-  background: #eef4fa;
-  color: #0c1a2e;
 }
 
 .detalle-container {
   max-width: 1100px;
-  margin: 30px auto;
+  margin: 30px auto 0 auto;
   padding: 0 20px 30px;
 }
 
 .detalle-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   display: flex;
   gap: 30px;
   padding: 28px;
-  box-shadow: 0 14px 32px rgba(12, 26, 46, 0.08);
-  border: 1px solid #d2dce8;
 }
 
 .portada-wrapper {
@@ -87,33 +88,55 @@
   flex-shrink: 0;
 }
 
-.portada img {
+.portada {
   width: 220px;
   height: 320px;
-  object-fit: cover;
   border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.portada img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  background: #edf3f9;
+}
+
+.portada-placeholder {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.2);
+  user-select: none;
 }
 
 .btn-prestamo {
   width: 220px;
   text-align: center;
-  margin: 0;
-  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
-  color: white;
-  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   padding: 11px 16px;
   border-radius: 12px;
+  font-family: 'Source Sans 3', sans-serif;
   font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
-  box-shadow: 0 10px 18px rgba(12, 26, 46, 0.14);
 }
 
-.btn-prestamo:hover {
+.btn-prestamo:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
   transform: translateY(-2px);
-  filter: brightness(1.04);
+}
+
+.btn-prestamo:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .info {
@@ -123,8 +146,8 @@
 
 .titulo-libro {
   font-size: 2rem;
-  margin-bottom: 12px;
-  color: #0c1a2e;
+  margin: 0 0 12px;
+  color: #ffffff;
   line-height: 1.2;
   font-family: 'Playfair Display', serif;
   font-weight: 600;
@@ -147,13 +170,13 @@
 }
 
 .resumen-badge.disponible {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
 }
 
 .resumen-badge.prestamo {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
 }
 
 .info-grid {
@@ -167,62 +190,67 @@
 }
 
 .ejemplares-dropdown {
-  background: transparent;
   border-radius: 14px;
   overflow: hidden;
 }
 
 .ejemplares-title {
   padding: 15px 18px;
-  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
-  color: white;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
   list-style: none;
   border-radius: 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: background 0.2s;
 }
 
-.ejemplares-title::-webkit-details-marker {
-  display: none;
+.ejemplares-title::-webkit-details-marker { display: none; }
+
+.ejemplares-title:hover {
+  background: rgba(255, 255, 255, 0.11);
 }
 
 .ejemplares-lista {
-  background: white;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
-  border: 1px solid #d2dce8;
   border-radius: 14px;
-  box-shadow: 0 10px 24px rgba(12, 26, 46, 0.07);
 }
 
+/* Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(12, 26, 46, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3000;
   padding: 20px;
+  backdrop-filter: blur(4px);
 }
 
 .modal-box {
   width: 100%;
   max-width: 460px;
-  background: white;
+  background: #122540;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   padding: 24px;
-  box-shadow: 0 20px 42px rgba(12, 26, 46, 0.24);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
   box-sizing: border-box;
-  border: 1px solid #d2dce8;
 }
 
 .modal-title {
   margin: 0 0 10px;
-  color: #0c1a2e;
+  color: #ffffff;
   font-size: 22px;
   line-height: 1.25;
   font-family: 'Playfair Display', serif;
@@ -230,29 +258,29 @@
 
 .modal-texto {
   margin: 0 0 16px;
-  color: #4f6279;
+  color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
 }
 
 .modal-libro {
-  background: #f3f7fb;
-  border-left: 4px solid #173150;
+  background: rgba(255, 255, 255, 0.06);
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 18px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  color: #111827;
 }
 
 .modal-libro strong {
   font-size: 16px;
+  color: #ffffff;
   line-height: 1.3;
 }
 
 .modal-libro span {
-  color: #5f7188;
+  color: rgba(255, 255, 255, 0.55);
   font-size: 14px;
   line-height: 1.4;
 }
@@ -269,226 +297,188 @@
   border-radius: 12px;
   padding: 10px 16px;
   font-weight: 700;
+  font-family: 'Source Sans 3', sans-serif;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .modal-btn.primario {
-  background: linear-gradient(180deg, #173150 0%, #0c1a2e 100%);
-  color: white;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .modal-btn.primario:hover {
-  filter: brightness(1.04);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .modal-btn.secundario {
-  background: #e6edf5;
-  color: #111827;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modal-btn.secundario:hover {
-  background: #d7e2ed;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 @media (max-width: 1024px) {
-  .detalle-container {
-    max-width: 960px;
-    margin: 24px auto;
-    padding: 0 18px 26px;
-  }
-
-  .detalle-card {
-    gap: 22px;
-    padding: 20px;
-  }
-
-  .portada img,
-  .btn-prestamo {
-    width: 200px;
-  }
-
-  .portada img {
-    height: 290px;
-  }
-
-  .titulo-libro {
-    font-size: 1.8rem;
-  }
+  .detalle-container { max-width: 960px; margin: 24px auto; padding: 0 18px 26px; }
+  .detalle-card { gap: 22px; padding: 20px; }
+  .portada { width: 200px; height: 290px; }
+  .btn-prestamo { width: 200px; }
+  .titulo-libro { font-size: 1.8rem; }
 }
 
 @media (max-width: 768px) {
-  .detalle-header {
-    padding: 14px 18px;
-    gap: 12px;
-  }
-
-  .header-title {
-    width: 100%;
-    order: -1;
-    text-align: center;
-    font-size: 20px;
-    flex: unset;
-  }
-
-  .btn-volver,
-  .carrito-btn-detalle {
-    flex: 1;
-    justify-content: center;
-    margin-left: 0;
-  }
-
-  .detalle-container {
-    margin: 20px auto;
-    padding: 0 16px 24px;
-  }
-
-  .detalle-card {
-    flex-direction: column;
-    align-items: center;
-    padding: 18px;
-    gap: 18px;
-  }
-
-  .portada-wrapper {
-    width: 100%;
-  }
-
-  .portada img,
-  .btn-prestamo {
-    width: min(100%, 240px);
-  }
-
-  .portada img {
-    height: auto;
-    aspect-ratio: 11 / 16;
-  }
-
-  .info {
-    width: 100%;
-  }
-
-  .titulo-libro {
-    text-align: center;
-    font-size: 22px;
-  }
-
-  .resumen-ejemplares {
-    justify-content: center;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .ejemplares-section {
-    margin-top: 20px;
-  }
-
-  .ejemplares-title {
-    padding: 14px;
-    text-align: center;
-  }
-
-  .ejemplares-lista {
-    padding: 14px;
-  }
-
-  .modal-box {
-    padding: 20px;
-  }
-
-  .modal-title {
-    font-size: 20px;
-  }
-
-  .modal-actions {
-    justify-content: stretch;
-  }
-
-  .modal-btn {
-    flex: 1;
-  }
+  .detalle-header { padding: 14px 18px; gap: 12px; }
+  .header-title { width: 100%; order: -1; text-align: center; font-size: 20px; flex: unset; }
+  .btn-volver, .carrito-btn-detalle { flex: 1; justify-content: center; margin-left: 0; }
+  .detalle-container { margin: 20px auto; padding: 0 16px 24px; }
+  .detalle-card { flex-direction: column; align-items: center; padding: 18px; gap: 18px; }
+  .portada-wrapper { width: 100%; }
+  .portada { width: min(100%, 240px); height: auto; aspect-ratio: 11 / 16; margin: 0 auto; }
+  .btn-prestamo { width: min(100%, 240px); }
+  .info { width: 100%; }
+  .titulo-libro { text-align: center; font-size: 22px; }
+  .resumen-ejemplares { justify-content: center; }
+  .info-grid { grid-template-columns: 1fr; }
+  .ejemplares-section { margin-top: 20px; }
+  .ejemplares-title { padding: 14px; text-align: center; }
+  .ejemplares-lista { padding: 14px; }
+  .modal-box { padding: 20px; }
+  .modal-title { font-size: 20px; }
+  .modal-actions { justify-content: stretch; }
+  .modal-btn { flex: 1; }
 }
 
 @media (max-width: 480px) {
-  .detalle-header {
-    padding: 12px 12px;
-  }
+  .detalle-header { padding: 12px; }
+  .header-title { font-size: 18px; }
+  .btn-volver, .carrito-btn-detalle { font-size: 14px; padding: 9px 10px; }
+  .detalle-container { margin: 16px auto; padding: 0 12px 20px; }
+  .detalle-card { padding: 14px; border-radius: 14px; }
+  .titulo-libro { font-size: 19px; }
+  .resumen-badge { font-size: 11px; padding: 6px 9px; }
+  .ejemplares-title { padding: 13px; font-size: 15px; }
+  .ejemplares-lista { padding: 12px; gap: 8px; }
+  .modal-overlay { padding: 12px; }
+  .modal-box { padding: 16px; border-radius: 14px; }
+  .modal-title { font-size: 18px; }
+  .modal-texto { font-size: 14px; }
+  .modal-libro { padding: 12px 14px; }
+  .modal-libro strong { font-size: 15px; }
+  .modal-libro span { font-size: 13px; }
+  .modal-actions { flex-direction: column; }
+  .modal-btn { width: 100%; }
+}
 
-  .header-title {
-    font-size: 18px;
-  }
 
-  .btn-volver,
-  .carrito-btn-detalle {
-    font-size: 14px;
-    padding: 9px 10px;
-  }
+/*Nueva seccion agregada para arreglar el carrito*/
 
-  .detalle-container {
-    margin: 16px auto;
-    padding: 0 12px 20px;
-  }
+/* Selector de cantidad */
+.modal-cantidad-wrapper {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .detalle-card {
-    padding: 14px;
-    border-radius: 14px;
-  }
+.modal-cantidad-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
 
-  .titulo-libro {
-    font-size: 19px;
-  }
+.modal-cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-  .resumen-badge {
-    font-size: 11px;
-    padding: 6px 9px;
-  }
+.modal-cantidad-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 
-  .ejemplares-title {
-    padding: 13px;
-    font-size: 15px;
-  }
+.modal-cantidad-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+}
 
-  .ejemplares-lista {
-    padding: 12px;
-    gap: 8px;
-  }
+.modal-cantidad-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
 
-  .modal-overlay {
-    padding: 12px;
-  }
+.modal-cantidad-valor {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 32px;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+}
 
-  .modal-box {
-    padding: 16px;
-    border-radius: 14px;
-  }
+.modal-cantidad-max {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
 
-  .modal-title {
-    font-size: 18px;
-  }
+/* Distribución préstamo/reserva */
+.modal-distribucion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 
-  .modal-texto {
-    font-size: 14px;
-  }
+.modal-dist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
 
-  .modal-libro {
-    padding: 12px 14px;
-  }
+.modal-dist-item strong { color: #ffffff; }
 
-  .modal-libro strong {
-    font-size: 15px;
-  }
+.modal-dist-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
 
-  .modal-libro span {
-    font-size: 13px;
-  }
+.modal-dist-item.disponible .modal-dist-dot {
+  background: #4ade80;
+}
 
-  .modal-actions {
-    flex-direction: column;
-  }
+.modal-dist-item.reserva .modal-dist-dot {
+  background: #fbbf24;
+}
 
-  .modal-btn {
-    width: 100%;
-  }
+/* Badge reservado */
+.resumen-badge.reservado {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
 }

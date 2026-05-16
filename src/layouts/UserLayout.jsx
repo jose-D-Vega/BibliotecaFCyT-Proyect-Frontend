@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "./styles/prueba/UserLayoutPrueba.css";
+import "./styles/UserLayout.css";
 import Navbar from "./layouts_components/Navbar";
 import SidebarUser from "./layouts_components/SidebarUser";
 import Footer from "./layouts_components/Footer";

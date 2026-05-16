@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useCart } from '../../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import { createLoan } from '../../services/loans.services'
-import "../styles/styles_user/prueba/CarritoPrueba.css"
+import "../styles/styles_user/Carrito.css"
 
 function CarritoPage() {
   const {
