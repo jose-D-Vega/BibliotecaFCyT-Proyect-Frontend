@@ -12,7 +12,6 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
-
   const data = useMemo(() => {
     return libro || {
       id_libro: 0,
@@ -71,6 +70,11 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
     }
   }
 
+  // Función para manejar la navegación a la vista de modificar
+  const manejarModificar = () => {
+    navigate(`/admin/catalogo/${data.id_libro}/editar`, { state: data })
+  }
+
   return (
     <div className="detalle-page">
       <header className="detalle-header">
@@ -90,13 +94,22 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
                 : <div className="portada-placeholder">{data.titulo?.charAt(0)}</div>
               }
             </div>
-            <button
-              className="admin-action-btn admin-delete-material-btn"
-              onClick={abrirEliminarMaterial}
-            >
-              Eliminar material
-            </button>
-          </div>
+                    {/* Botón para modificar */}
+          <button 
+            className="admin-action-btn admin-modify-btn"
+            onClick={manejarModificar}
+          >
+            Modificar material
+          </button>
+
+          {/* Botón para eliminar */}
+          <button
+            className="admin-action-btn admin-delete-material-btn"
+            onClick={abrirEliminarMaterial}
+          >
+            Eliminar material
+          </button>
+        </div>
 
           <div className="info">
             <h1 className="titulo-libro">{data.titulo}</h1>

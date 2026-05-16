@@ -29,11 +29,12 @@ import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
 import AdminCatalogoPage from '../pages/admin/AdminCatalogoPage'
 import DetalleLibroAdminPage from '../pages/admin/DetalleLibroAdminPage'
 import NuevoMaterial from '../pages/admin/NuevoMaterial'
-import EditarLibroPage from '../pages/admin/prueba/EditarLibroPage'
+import ModificarMaterial from '../pages/admin/ModificarMaterial'
 import UsuariosPage from '../pages/admin/prueba/UsuariosPage'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
+
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -88,7 +89,7 @@ const AppRouter = () => {
           }
         />
 
-        {/* USER */}
+               {/* USER */}
         <Route
           path="/app"
           element={
@@ -100,6 +101,8 @@ const AppRouter = () => {
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<DashboardUser />} />
           <Route path="catalogo" element={<CatalogoUserPage />} />
+          
+          {/* ✅ Rutas activas para usuario */}
           <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
           <Route path="carrito" element={<CarritoPage />} />
           
@@ -124,12 +127,11 @@ const AppRouter = () => {
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
 
           <Route path="catalogo" element={<AdminCatalogoPage />} />
-          <Route path="catalogo/:id/editar" element={<EditarLibroPage />} />
+          
+          {/* ✅ Rutas de admin con ID dinámico */}
+          <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
           <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
-          {/**
-           *<Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
-            <Route path="catalogo/nuevo" element={<NuevoLibroPage />} />
-           */}
+          
           <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
 
           <Route path="perfil" element={<PerfilAdminPage />} />
@@ -137,8 +139,6 @@ const AppRouter = () => {
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
         </Route>
-
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   )
