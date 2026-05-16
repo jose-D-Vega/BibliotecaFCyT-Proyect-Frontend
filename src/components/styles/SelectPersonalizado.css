@@ -1,0 +1,70 @@
+.custom-select {
+  position: relative;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.7rem 0.95rem;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  font-size: 0.95rem;
+}
+
+.custom-select:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.selected {
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.selected.placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: #1a2a3f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  z-index: 50;
+}
+
+.options.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.options div {
+  padding: 0.7rem 0.95rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.options div:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.active-option {
+  background:
+    rgba(55, 138, 221, 0.25) !important;
+
+  color: #fff !important;
+}

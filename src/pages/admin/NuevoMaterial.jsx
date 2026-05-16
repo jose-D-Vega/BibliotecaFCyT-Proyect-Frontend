@@ -1,11 +1,42 @@
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+
 import "../styles/styles_admin/prueba/NuevoMaterialPrueba.css"
-import { createBook } from '../../services/books.services'
+
+import { createBook } from "../../services/books.services"
+
+import ModalExito from "../../components/ModalExito"
+import SelectPersonalizado from "../../components/SelectPersonalizado"
+import CamposAutores from "../../components/CamposAutores"
+import InputImagen from "../../components/InputImagen"
+
+import {
+  opcionesCarrera,
+  validateNuevoMaterial,
+  onlyLettersRegex,
+  onlyNumbersRegex,
+  authorRegex
+} from "../../components/nuevoMaterialHelpers"
 
 function NuevoMaterial() {
+
   const navigate = useNavigate()
+
   const [loading, setLoading] = useState(false)
+
+  const [successModal, setSuccessModal] =
+    useState(false)
+
+  const [errors, setErrors] = useState({})
+
+  const [preview, setPreview] =
+    useState(null)
+
+  const [autores, setAutores] =
+    useState([""])
+
+  const [carreras, setCarreras] =
+    useState([])
 
   const [form, setForm] = useState({
     tipo: "",
@@ -19,293 +50,437 @@ function NuevoMaterial() {
     imagen: null
   })
 
-  const [autores, setAutores] = useState([""])
-  const [preview, setPreview] = useState(null)
-  const [errors, setErrors] = useState({})
+  const clearError = (field) => {
 
-  const [openTipo, setOpenTipo] = useState(false)
-  const [openCarrera, setOpenCarrera] = useState(false)
+    setErrors(prev => ({
+      ...prev,
+      [field]: "",
+      submit: ""
+    }))
+  }
 
-  const [carreras, setCarreras] = useState([])
+  const handleChange = ({
+    target: { name, value }
+  }) => {
 
-  const opcionesCarrera = [
-    "General",
-    "Informatica",
-    "Electronica",
-    "Electricidad",
-    "Civil"
-  ]
-
-  const tipoRef = useRef(null)
-  const carreraRef = useRef(null)
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (tipoRef.current && !tipoRef.current.contains(e.target)) {
-        setOpenTipo(false)
-      }
-
-      if (carreraRef.current && !carreraRef.current.contains(e.target)) {
-        setOpenCarrera(false)
-      }
+    if (
+      ["anio", "cantidad"].includes(name) &&
+      value &&
+      !onlyNumbersRegex.test(value)
+    ) {
+      return
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    if (
+      ["ciudad", "facultad"].includes(name) &&
+      value &&
+      !onlyLettersRegex.test(value)
+    ) {
+      return
+    }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm({ ...form, [name]: value })
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }))
+
+    clearError(name)
   }
 
-  const handleTipoSelect = (value) => {
-    setForm({ ...form, tipo: value })
-    setOpenTipo(false)
-  }
+  const handleCarrera = (c) => {
 
-  const handleCarreraSelect = (c) => {
     if (c === "General") {
       setCarreras(["General"])
       return
     }
 
-    let updated = [...carreras]
-    updated = updated.filter(x => x !== "General")
+    let updated =
+      carreras.filter(x => x !== "General")
 
-    if (updated.includes(c)) {
-      updated = updated.filter(x => x !== c)
-    } else {
-      updated.push(c)
-    }
+    updated = updated.includes(c)
+      ? updated.filter(x => x !== c)
+      : [...updated, c]
 
     setCarreras(updated)
+
+    clearError("carrera")
   }
 
-  const handleAutorChange = (index, value) => {
-    const nuevos = [...autores]
-    nuevos[index] = value
-    setAutores(nuevos)
-  }
+  const handleSubmit = async (e) => {
 
-  const addAutor = () => setAutores([...autores, ""])
-  const removeAutor = (index) => setAutores(autores.filter((_, i) => i !== index))
+    e.preventDefault()
 
-  const handleImage = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    setForm({ ...form, imagen: file })
-    setPreview(URL.createObjectURL(file))
-  }
+    const errs =
+      validateNuevoMaterial({
+        form,
+        carreras,
+        autores
+      })
 
-  const validate = () => {
-    let errs = {}
-    if (!form.tipo) errs.tipo = 'Seleccione un tipo'
-    if (!form.titulo.trim()) errs.titulo = 'Ingrese título'
-    if (!form.cantidad || form.cantidad < 1) errs.cantidad = 'Ingrese una cantidad válida'
-    if (!form.anio) errs.anio = 'Ingrese el año de publicación'
     setErrors(errs)
-    return Object.keys(errs).length === 0
-  }
 
-const handleSubmit = async (e) => {
-  e.preventDefault()
-  if (!validate()) return
+    if (Object.keys(errs).length > 0) {
 
-  try {
-    setLoading(true)
-    const formData = new FormData()
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      })
 
-    formData.append('titulo', form.titulo)
-    formData.append('autor', autores.filter(a => a.trim()).join(', '))
-    formData.append('tipo_material', form.tipo)
-    formData.append('anio_publicacion', form.anio)
-    formData.append('cantidad_ejemplar', form.cantidad)
-    formData.append('editorial', form.editorial)
-    formData.append('ciudad', form.ciudad)
-    formData.append('facultad', form.facultad)
-
-    if (carreras.length > 0) {
-      formData.append('carrera', carreras.join(', '))
+      return
     }
 
-    if (form.imagen) {
-      formData.append('imagen', form.imagen)
-    }
+    try {
 
-    await createBook(formData)
-    navigate('/admin/catalogo')
-  } catch (err) {
-    setErrors({ submit: err.response?.data?.error || 'Error al guardar el material. Intentá de nuevo.' })
-  } finally {
-    setLoading(false)
+      setLoading(true)
+
+      const formData = new FormData()
+
+      formData.append(
+        "titulo",
+        form.titulo.trim()
+      )
+
+      formData.append(
+        "autor",
+        autores
+          .filter(a => a.trim())
+          .join(", ")
+      )
+
+      formData.append(
+        "tipo_material",
+        form.tipo
+      )
+
+      formData.append(
+        "anio_publicacion",
+        form.anio
+      )
+
+      formData.append(
+        "cantidad_ejemplar",
+        form.cantidad
+      )
+
+      formData.append(
+        "editorial",
+        form.editorial.trim()
+      )
+
+      formData.append(
+        "ciudad",
+        form.ciudad.trim()
+      )
+
+      formData.append(
+        "facultad",
+        form.facultad.trim()
+      )
+
+      formData.append(
+        "descripcion",
+        form.descripcion.trim()
+      )
+
+      if (carreras.length > 0) {
+        formData.append(
+          "carrera",
+          carreras.join(", ")
+        )
+      }
+
+      if (form.imagen) {
+        formData.append(
+          "imagen",
+          form.imagen
+        )
+      }
+
+      await createBook(formData)
+
+      setSuccessModal(true)
+
+    } catch (err) {
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      })
+
+      setErrors({
+        submit:
+          err.response?.data?.error ||
+          "Error al guardar el material. Intentá de nuevo."
+      })
+
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
   return (
     <div className="nuevo-material-page">
+
+      <ModalExito
+        open={successModal}
+        onClose={() => {
+          setSuccessModal(false)
+          navigate("/admin/catalogo")
+        }}
+      />
+
       <div className="nuevo-material-content">
 
         <div className="header">
-          <button className="btn-secondary" onClick={() => navigate("/admin/catalogo")}>
+
+          <button
+            className="btn-secondary"
+            onClick={() =>
+              navigate("/admin/catalogo")
+            }
+          >
             ← Volver
           </button>
-          <h1>Añadir nuevo material</h1>
+
+          <h1>
+            Añadir nuevo material
+          </h1>
 
         </div>
 
-        <form className="nuevo-material-form" onSubmit={handleSubmit}>
+        <form
+          className="nuevo-material-form"
+          onSubmit={handleSubmit}
+        >
 
-          {/* TIPO */}
+          <SelectPersonalizado
+            label="Tipo de material"
+            value={
+              form.tipo === "libro"
+                ? "Libro"
+                : form.tipo === "tfg"
+                ? "TFG (Trabajo Final de Grado)"
+                : ""
+            }
+            options={[
+              {
+                label: "Libro",
+                value: "libro"
+              },
+              {
+                label:
+                  "TFG (Trabajo Final de Grado)",
+                value: "tfg"
+              }
+            ]}
+            onChange={(value) =>
+              setForm(prev => ({
+                ...prev,
+                tipo: value
+              }))
+            }
+            error={errors.tipo}
+          />
+
           <div className="form-group">
-            <label>Tipo de material</label>
 
-            <div
-              className="custom-select"
-              ref={tipoRef}
-              onClick={() => setOpenTipo(!openTipo)}
-            >
-              <div className={`selected ${!form.tipo ? 'placeholder' : ''}`}>
-                {form.tipo === "libro"
-                  ? "Libro"
-                  : form.tipo === "tfg"
-                  ? "TFG (Trabajo Final de Grado)"
-                  : "Seleccione"}
-              </div>
-
-              <div className={`options ${openTipo ? "open" : ""}`}>
-                <div onClick={() => handleTipoSelect("libro")}>Libro</div>
-                <div onClick={() => handleTipoSelect("tfg")}>TFG (Trabajo Final de Grado)</div>
-              </div>
-            </div>
-          </div>
-
-          {/* TITULO */}
-          <div className="form-group">
             <label>Título</label>
-            <input name="titulo" placeholder="Ej: Cálculo Diferencial e Integral" onChange={handleChange}/>
+
+            <input
+              name="titulo"
+              value={form.titulo}
+              maxLength={120}
+              placeholder="Ej: Cálculo Diferencial e Integral"
+              onChange={handleChange}
+            />
+
+            {errors.titulo && (
+              <span className="error-msg">
+                {errors.titulo}
+              </span>
+            )}
+
           </div>
 
-          {/* CARRERA */}
-          <div className="form-group">
-            <label>Carrera</label>
+          <SelectPersonalizado
+            label="Carrera"
+            multiple
+            value={carreras}
+            options={opcionesCarrera.map(c => ({
+              label: c,
+              value: c
+            }))}
+            onChange={handleCarrera}
+            error={errors.carrera}
+          />
 
-            <div
-              className="custom-select"
-              ref={carreraRef}
-              onClick={() => setOpenCarrera(!openCarrera)}
-            >
-              <div className={`selected ${!form.carrera ? 'placeholder' : ''}`}>
-                {carreras.length === 0 ? "Seleccione" : carreras.join(", ")}
-              </div>
-
-              <div className={`options ${openCarrera ? "open" : ""}`}>
-                {opcionesCarrera.map((c) => (
-                  <div
-                    key={c}
-                    className={carreras.includes(c) ? "active-option" : ""}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleCarreraSelect(c)
-                    }}
-                  >
-                    {c}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* RESTO IGUAL */}
-          <div className="form-group">
-            <label>Autor(es)</label>
-
-            {autores.map((autor, i) => (
-              <div key={i} className="autor-row">
-                <input
-                  value={autor}
-                  placeholder={`Autor ${i + 1}`}
-                  onChange={(e) => handleAutorChange(i, e.target.value)}
-                />
-                {autores.length > 1 && (
-                  <button type="button" onClick={() => removeAutor(i)}>✕</button>
-                )}
-              </div>
-            ))}
-
-            <button type="button" className="btn-secondary add-autor" onClick={addAutor}>
-              + Añadir autor
-            </button>
-          </div>
+          <CamposAutores
+            autores={autores}
+            setAutores={setAutores}
+            error={errors.autores}
+            clearError={clearError}
+            regex={authorRegex}
+          />
 
           <div className="form-row-2">
-            <div className="form-group">
-              <label>Editorial</label>
-              <input name="editorial" placeholder="Ej: McGraw-Hill" onChange={handleChange}/>
-            </div>
 
-            <div className="form-group">
-              <label>Año de publicación</label>
-              <input type="number" name="anio" placeholder="Ej: 2020" onChange={handleChange}/>
-              {errors.anio && <span className="error-msg">{errors.anio}</span>}
-            </div>
+            {[
+              {
+                label: "Editorial",
+                name: "editorial",
+                max: 100,
+                placeholder:
+                  "Ej: McGraw-Hill"
+              },
+              {
+                label:
+                  "Año de publicación",
+                name: "anio",
+                max: 4,
+                placeholder: "Ej: 2020"
+              }
+            ].map(field => (
+
+              <div
+                className="form-group"
+                key={field.name}
+              >
+
+                <label>
+                  {field.label}
+                </label>
+
+                <input
+                  name={field.name}
+                  value={form[field.name]}
+                  maxLength={field.max}
+                  placeholder={
+                    field.placeholder
+                  }
+                  onChange={handleChange}
+                />
+
+                {errors[field.name] && (
+                  <span className="error-msg">
+                    {errors[field.name]}
+                  </span>
+                )}
+
+              </div>
+
+            ))}
+
           </div>
 
           <div className="form-group">
+
             <label>Descripción</label>
+
             <textarea
               name="descripcion"
+              value={form.descripcion}
+              maxLength={500}
               placeholder="Escribe aquí la descripción del material"
               onChange={handleChange}
             />
+
+            {errors.descripcion && (
+              <span className="error-msg">
+                {errors.descripcion}
+              </span>
+            )}
+
           </div>
 
           <div className="form-row-3">
-            <div className="form-group">
-              <label>Cantidad de ejemplares</label>
-              <input type="number" min="1" name="cantidad" placeholder="Ej: 5" onChange={handleChange}/>
-              {errors.cantidad && <span className="error-msg">{errors.cantidad}</span>}
-            </div>
 
-            <div className="form-group">
-              <label>Ciudad</label>
-              <input name="ciudad" placeholder="Ej: Asunción" onChange={handleChange}/>
-            </div>
+            {[
+              {
+                label:
+                  "Cantidad de ejemplares",
+                name: "cantidad",
+                max: 4,
+                placeholder: "Ej: 5"
+              },
+              {
+                label: "Ciudad",
+                name: "ciudad",
+                max: 100,
+                placeholder:
+                  "Ej: Asunción"
+              },
+              {
+                label: "Facultad",
+                name: "facultad",
+                max: 100,
+                placeholder: "Ej: FCyT"
+              }
+            ].map(field => (
 
-            <div className="form-group">
-              <label>Facultad</label>
-              <input name="facultad" placeholder="Ej: FCyT" onChange={handleChange}/>
-            </div>
-          </div>
+              <div
+                className="form-group"
+                key={field.name}
+              >
 
-          <div className="form-group">
-            <label>Imagen de portada</label>
+                <label>
+                  {field.label}
+                </label>
 
-            <label className="file-input">
-              Seleccionar imagen
-              <input type="file" accept="image/*" onChange={handleImage}/>
-            </label>
+                <input
+                  name={field.name}
+                  value={form[field.name]}
+                  maxLength={field.max}
+                  placeholder={
+                    field.placeholder
+                  }
+                  onChange={handleChange}
+                />
 
-            {preview && (
-              <div className="preview">
-                <img src={preview} alt="preview"/>
-                <span>{form.imagen?.name}</span>
+                {errors[field.name] && (
+                  <span className="error-msg">
+                    {errors[field.name]}
+                  </span>
+                )}
+
               </div>
-            )}
+
+            ))}
+
           </div>
+
+          <InputImagen
+            imagen={form.imagen}
+            setImagen={(img) =>
+              setForm(prev => ({
+                ...prev,
+                imagen: img
+              }))
+            }
+            preview={preview}
+            setPreview={setPreview}
+            error={errors.imagen}
+            clearError={clearError}
+          />
 
           {errors.submit && (
-            <p style={{ color: '#a32d2d', background: '#fcebeb', padding: '0.6rem 1rem', borderRadius: 8, fontSize: '0.875rem' }}>
+            <p className="submit-error">
               {errors.submit}
             </p>
           )}
 
-          <button className="btn-primary" disabled={loading}>
-            {loading ? 'Guardando...' : 'Añadir material'}
+          <button
+            className="btn-primary"
+            disabled={loading}
+          >
+            {loading
+              ? "Guardando..."
+              : "Añadir material"}
           </button>
 
         </form>
+
       </div>
+
     </div>
   )
 }

@@ -1,0 +1,42 @@
+.autor-row {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.autor-row input {
+  flex: 1;
+}
+
+.autor-row button {
+  background:
+    rgba(239, 68, 68, 0.2);
+
+  border:
+    1px solid rgba(239, 68, 68, 0.3);
+
+  color: #f09595;
+
+  border-radius: 8px;
+
+  padding: 0.5rem 0.75rem;
+
+  cursor: pointer;
+
+  font-size: 0.85rem;
+
+  transition: background 0.2s;
+
+  flex-shrink: 0;
+}
+
+.autor-row button:hover {
+  background:
+    rgba(239, 68, 68, 0.35);
+}
+
+.add-autor {
+  margin-top: 0.25rem;
+  align-self: flex-start;
+}
