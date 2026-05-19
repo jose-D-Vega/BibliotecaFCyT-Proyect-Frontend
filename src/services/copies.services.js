@@ -14,3 +14,8 @@ export const addCopies = async (id_libro, cantidad) => {
   const { data } = await api.post(`/books/${id_libro}/copies`, { cantidad })
   return data
 }
+
+export const updateCopyStatus = async (id_libro, id_ejemplar, estado_ejemplar) => {
+  const { data } = await api.patch(`/books/${id_libro}/copies/${id_ejemplar}/estado`, { estado_ejemplar })
+  return data
+}

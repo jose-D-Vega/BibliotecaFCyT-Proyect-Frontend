@@ -161,3 +161,93 @@
   .admin-ejemplar-estado { align-self: flex-start; font-size: 11px; }
   .admin-ejemplar-delete-btn { width: 100%; text-align: center; font-size: 13px; }
 }
+
+/* Nuevos estilos agregados para la gestión de ejemplares*/
+
+.admin-add-btn {
+  float: right;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(29, 158, 117, 0.15);
+  border: 1px solid rgba(29, 158, 117, 0.3);
+  color: #7de3b8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-add-btn:hover { background: rgba(29, 158, 117, 0.25); }
+
+.admin-ejemplar-disable-btn {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-ejemplar-disable-btn:hover { background: rgba(245, 158, 11, 0.25); }
+
+.admin-ejemplar-enable-btn {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  background: rgba(29, 158, 117, 0.15);
+  border: 1px solid rgba(29, 158, 117, 0.3);
+  color: #7de3b8;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-ejemplar-enable-btn:hover { background: rgba(29, 158, 117, 0.25); }
+
+.admin-ejemplar-readonly {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.25);
+  font-style: italic;
+}
+
+.admin-ejemplar-estado.inhabilitado {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+}
+
+.modal-cantidad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.modal-cantidad-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-cantidad-btn:hover:not(:disabled) { background: rgba(255,255,255,0.12); }
+.modal-cantidad-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.modal-cantidad-input {
+  width: 60px;
+  text-align: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.4rem;
+}

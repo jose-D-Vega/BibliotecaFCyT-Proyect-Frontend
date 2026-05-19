@@ -12,11 +12,13 @@ import {
 } from "react";
 
 import "../../pages/styles/styles_admin/ModificarMaterial.css";
+import { updateBook } from '../../services/books.services'
 
 function ModificarMaterial() {
 
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   /* REDIRECCIÓN SEGURA */
   useEffect(() => {
@@ -332,33 +334,39 @@ function ModificarMaterial() {
         GUARDAR
   ========================== */
 
-  const guardarCambios = () => {
+  const guardarCambios = async () => {
+    if (!validarFormulario()) return
 
-    if (!validarFormulario()) {
-      return;
+    try {
+      setLoading(true)
+
+      const formData = new FormData()
+
+      formData.append('titulo', libro.titulo)
+      formData.append('autor', libro.autor)
+      formData.append('editorial', libro.editorial || '')
+      formData.append('anio_publicacion', libro.anio_publicacion)
+      formData.append('cantidad_ejemplar', libro.cantidad_ejemplar)
+      formData.append('ciudad', libro.ciudad || '')
+      formData.append('facultad', libro.facultad || '')
+      formData.append('tipo_material', libro.tipo_material || '')
+      formData.append('carrera', carreras.join(', '))
+
+      if (imagen) {
+        formData.append('imagen', imagen)
+      }
+
+      await updateBook(libro.id_libro, formData)
+      navigate('/admin/catalogo')
+    } catch (err) {
+      setErrores({
+        ...errores,
+        submit: err.response?.data?.error || 'Error al guardar los cambios'
+      })
+    } finally {
+      setLoading(false)
     }
-
-    console.log(
-      "Datos:",
-      libro
-    );
-
-    console.log(
-      "Carreras:",
-      carreras
-    );
-
-    console.log(
-      "Imagen:",
-      imagen
-    );
-
-    alert(
-      "Cambios guardados correctamente"
-    );
-
-    navigate("/admin/catalogo");
-  };
+  }
 
   if (!state) return null;
 
@@ -648,14 +656,21 @@ function ModificarMaterial() {
 
         )}
 
+        {errores.submit && (
+          <p className="error" style={{ marginBottom: '0.5rem' }}>
+            {errores.submit}
+          </p>
+        )}
+
         {/* BOTONES */}
         <div className="acciones-finales">
 
           <button
             className="btn-confirmar"
             onClick={guardarCambios}
+            disabled={loading}
           >
-            Confirmar cambios
+            {loading ? 'Guardando...' : 'Confirmar cambios'}
           </button>
 
           <button
