@@ -101,12 +101,19 @@ function ModificarMaterial() {
       name === "autor" ||
       name === "ciudad" ||
       name === "facultad"
-    ) {
-
-      nuevoValor = value.replace(
-        /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
-        ""
-      );
+    ) { if (name === "autor") {
+    // Para autor: permite letras, espacios, acentos, ñ y comas
+    nuevoValor = value.replace(
+      /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s,]/g,
+      ""
+    );
+  } else {
+    // Para ciudad y facultad: mantiene la validación original
+    nuevoValor = value.replace(
+      /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+      ""
+    );
+  }
     }
 
     /* SOLO NUMEROS */
@@ -620,47 +627,48 @@ function ModificarMaterial() {
         </div>
 
         {/* IMAGEN */}
-        <div className="campo">
 
-          <label>
-            Imagen de portada
-          </label>
+          <div className="campo">
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImagen}
-          />
+            <label>Imagen de portada</label>
 
-          {errores.imagen && (
-            <span className="error">
-              {errores.imagen}
-            </span>
-          )}
+            <div className="upload-container">
 
-        </div>
+              <label className="custom-file-upload">
+                Seleccionar imagen
 
-        {/* PREVIEW */}
-        {preview && (
+                <input
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.webp"
+                  onChange={handleImagen}
+                  hidden
+                />
+              </label>
 
-          <div className="preview-seccion">
+              {preview && (
+                <div className="preview-seccion">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                  />
+                </div>
+              )}
 
-            <p>Vista previa:</p>
+            </div>
 
-            <img
-              src={preview}
-              alt="preview"
-            />
+            {errores.imagen && (
+              <span className="error">
+                {errores.imagen}
+              </span>
+            )}
 
           </div>
 
-        )}
-
-        {errores.submit && (
-          <p className="error" style={{ marginBottom: '0.5rem' }}>
-            {errores.submit}
-          </p>
-        )}
+          {errores.submit && (
+            <p className="submit-errorM">
+              {errores.submit}
+            </p>
+          )}
 
         {/* BOTONES */}
         <div className="acciones-finales">
