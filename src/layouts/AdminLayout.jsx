@@ -8,7 +8,7 @@ import Footer from "./layouts_components/Footer";
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { logout, switchRol } = useAuth();
+  const { user, rolActivo, logout, switchRol } = useAuth();
   const navigate = useNavigate();
 
   const handleToggleSidebar = () => {

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/Navbar.css";
 import logoFcyt from "../../assets/icons/LogoFCyT.png";
+import NotificacionesBadge from '../../components/NotificacionesBadge'
 
 const Navbar = ({
   onToggleSidebar,
@@ -74,7 +75,7 @@ const Navbar = ({
           Ir a la web de la FCyT
         </a>
 
-        <button
+        {/*<button
           className="app-navbar__icon-btn"
           type="button"
           aria-label="Notificaciones"
@@ -89,7 +90,8 @@ const Navbar = ({
               strokeLinejoin="round"
             />
           </svg>
-        </button>
+        </button>*/}
+        <NotificacionesBadge />
 
         <div className="app-navbar__profile-wrapper" ref={profileMenuRef}>
           <button
