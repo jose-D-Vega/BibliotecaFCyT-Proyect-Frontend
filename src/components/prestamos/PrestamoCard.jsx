@@ -50,6 +50,7 @@ function PrestamoCard({ prestamo, onAccion }) {
   const estaVencido = prestamo.estado_prestamo === 'vencido'
 
   const totalEjemplares = prestamo.detalles?.length || 0
+  const totalLibros = new Set(prestamo.detalles?.map(d => d.titulo)).size || 0
 
   const handleCancelar = async () => {
     setLoading(true)
@@ -116,6 +117,7 @@ function PrestamoCard({ prestamo, onAccion }) {
               onClick={() => setDesplegado(d => !d)}
             >
               <span>
+                {totalLibros} libro{totalLibros !== 1 ? 's' : ''} —{' '}
                 {totalEjemplares} ejemplar{totalEjemplares !== 1 ? 'es' : ''}
               </span>
               <span className={`prestamo-card__toggle-arrow ${desplegado ? 'open' : ''}`}>
@@ -130,6 +132,7 @@ function PrestamoCard({ prestamo, onAccion }) {
                     <div className="prestamo-card__ejemplar-info">
                       <span className="prestamo-card__ejemplar-titulo">{det.titulo}</span>
                       <span className="prestamo-card__ejemplar-autor">{det.autor}</span>
+                      <span className="prestamo-card__ejemplar-id">Ejemplar #{det.id_ejemplar}</span>
                       {det.observaciones && (
                         <span className="prestamo-card__ejemplar-obs">
                           {det.observaciones}

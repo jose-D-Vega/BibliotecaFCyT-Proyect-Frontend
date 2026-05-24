@@ -58,6 +58,12 @@
 }
 
 /* Ejemplares admin */
+.ejemplares-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .admin-ejemplar-item {
   background: rgba(255, 255, 255, 0.04);
   padding: 12px 14px;
@@ -251,3 +257,4 @@
   font-size: 1rem;
   padding: 0.4rem;
 }
+

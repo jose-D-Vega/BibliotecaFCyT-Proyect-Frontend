@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import LibroCard from "./LibroCard"
 import { getBooks } from "../services/books.services"
 import "./styles/ListaLibros.css"
@@ -13,24 +13,42 @@ function ListaLibros({
   orden = "",
   onVerDetalle
 }) {
+  const gridRef = useRef(null)
   const [libros, setLibros] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [librosPorPagina, setLibrosPorPagina] = useState(20)
+  const [librosPorPagina, setLibrosPorPagina] = useState(null) 
+  const [gridListo, setGridListo] = useState(false)
 
   useEffect(() => {
     const actualizar = () => {
+      if (!gridRef.current) return
+      const anchoContenedor = gridRef.current.offsetWidth
+      if (anchoContenedor === 0) return
+
       const ancho = window.innerWidth
-      if (ancho <= 480) setLibrosPorPagina(10)
-      else if (ancho <= 1024) setLibrosPorPagina(15)
-      else setLibrosPorPagina(20)
+      let anchoMinCard, filas
+      if (ancho <= 480) { anchoMinCard = 110; filas = 5 }
+      else if (ancho <= 768) { anchoMinCard = 130; filas = 4 }
+      else { anchoMinCard = 150; filas = 3 }
+
+      const gap = ancho <= 480 ? 10 : ancho <= 768 ? 12 : 16
+      const columnas = Math.max(1, Math.floor((anchoContenedor + gap) / (anchoMinCard + gap)))
+      setLibrosPorPagina(columnas * filas)
+      setGridListo(true) // señal de que ya tenemos el valor real
     }
-    actualizar()
-    window.addEventListener("resize", actualizar)
-    return () => window.removeEventListener("resize", actualizar)
+
+    const observer = new ResizeObserver(actualizar)
+    if (gridRef.current) observer.observe(gridRef.current)
+    window.addEventListener('resize', actualizar)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', actualizar)
+    }
   }, [])
 
   useEffect(() => {
+    if (!gridListo) return
     const fetchLibros = async () => {
       try {
         setLoading(true)
@@ -61,13 +79,22 @@ function ListaLibros({
     }
 
     fetchLibros()
-  }, [pagina, areas, busqueda, modoBusqueda, tipo, orden, librosPorPagina])
+  }, [pagina, areas, busqueda, modoBusqueda, tipo, orden, librosPorPagina, gridListo])
 
-  if (loading) return <p style={{ color: 'white', textAlign: 'center', gridColumn: 'span 4' }}>Cargando libros...</p>
-  if (error) return <p style={{ color: '#f09595', textAlign: 'center', gridColumn: 'span 4' }}>{error}</p>
+  if (!gridListo) return <div className="grid-libros" ref={gridRef} />
+  if (loading) return (
+    <div className="grid-libros" ref={gridRef}>
+      <p style={{ color: 'white', textAlign: 'center', gridColumn: '1 / -1' }}>Cargando libros...</p>
+    </div>
+  )
+  if (error) return (
+    <div className="grid-libros" ref={gridRef}>
+      <p style={{ color: '#f09595', textAlign: 'center', gridColumn: '1 / -1' }}>{error}</p>
+    </div>
+  )
 
   return (
-    <div className="grid-libros">
+    <div className="grid-libros" ref={gridRef}>
       {libros.length > 0 ? (
         libros.map(libro => (
           <LibroCard
