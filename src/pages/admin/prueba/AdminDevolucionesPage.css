@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+.devoluciones-page {
+  font-family: 'Source Sans 3', sans-serif;
+  max-width: 1000px;
+}
+
+.devoluciones-page__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 1.75rem;
+}
+
+/* BUSCADOR */
+.devoluciones-search {
+  margin-bottom: 1.5rem;
+}
+
+.devoluciones-search__form {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.devoluciones-search__input {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.devoluciones-search__input::placeholder { color: rgba(255,255,255,0.25); }
+.devoluciones-search__input:focus {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.09);
+}
+
+.devoluciones-search__btn {
+  padding: 0.7rem 1.5rem;
+  background: #fff;
+  color: #0c1a2e;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.devoluciones-search__btn:hover:not(:disabled) {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.devoluciones-search__btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* LAYOUT */
+.devoluciones-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* RESULTADOS */
+.devoluciones-resultados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.devoluciones-section__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.devoluciones-resultado-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.devoluciones-resultado-item:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.devoluciones-resultado-item.activo {
+  background: rgba(55,138,221,0.1);
+  border-color: rgba(55,138,221,0.35);
+}
+
+.devoluciones-resultado-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.devoluciones-resultado-item__nombre {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.devoluciones-resultado-item__detalle {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.devoluciones-resultado-item__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.devoluciones-estado {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.estado-activo {
+  background: rgba(29,158,117,0.2);
+  color: #7de3b8;
+}
+
+.estado-pendiente_devolucion {
+  background: rgba(245,158,11,0.2);
+  color: #fcd34d;
+}
+
+.devoluciones-fecha {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.devoluciones-fecha.vencida { color: #f09595; }
+
+/* PANEL DE DEVOLUCIÓN */
+.devoluciones-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.devoluciones-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.devoluciones-panel__usuario {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  margin: 4px 0 0;
+}
+
+.devoluciones-select-all {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.devoluciones-select-all:hover {
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+}
+
+.devoluciones-resultado-msg {
+  background: rgba(29,158,117,0.15);
+  border: 1px solid rgba(29,158,117,0.3);
+  color: #7de3b8;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+/* EJEMPLARES */
+.devoluciones-ejemplares {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.devoluciones-ejemplar {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 0.875rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.devoluciones-ejemplar.seleccionado {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.18);
+  flex-wrap: wrap;
+}
+
+.devoluciones-ejemplar__check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #378add;
+  margin-top: 2px;
+}
+
+.devoluciones-ejemplar__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.devoluciones-ejemplar__titulo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.devoluciones-ejemplar__autor {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.devoluciones-ejemplar__id {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  font-style: italic;
+}
+
+.devoluciones-ejemplar__estado {
+  width: 100%;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+  padding-left: calc(16px + 0.75rem);
+}
+
+.devoluciones-select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.devoluciones-obs-input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  min-width: 0;
+}
+
+.devoluciones-obs-input::placeholder { color: rgba(255,255,255,0.2); }
+
+/* FOOTER PANEL */
+.devoluciones-panel__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.devoluciones-panel__count {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.devoluciones-confirmar-btn {
+  padding: 0.7rem 1.5rem;
+  background: #fff;
+  color: #0c1a2e;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.devoluciones-confirmar-btn:hover:not(:disabled) {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.devoluciones-confirmar-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ESTADOS VARIOS */
+.devoluciones-error {
+  color: #f09595;
+  font-size: 0.875rem;
+  background: rgba(163,51,51,0.15);
+  border: 1px solid rgba(163,51,51,0.3);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.devoluciones-vacio {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.875rem;
+  grid-column: 1 / -1;
+}
+
+.devoluciones-loading {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .devoluciones-content { grid-template-columns: 1fr; }
+  .devoluciones-search__form { flex-direction: column; }
+}
