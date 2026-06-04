@@ -12,7 +12,7 @@ export const getLoans = async (params = {}) => {
 
 export const getLoanById = async (id) => {
   const { data } = await api.get(`/loans/${id}`)
-  return data
+  return data.data
 }
 
 export const cancelLoan = async (id) => {
@@ -22,5 +22,15 @@ export const cancelLoan = async (id) => {
 
 export const renewLoan = async (id) => {
   const { data } = await api.patch(`/loans/${id}/renew`)
+  return data
+}
+
+export const respondDetalle = async (id_prestamo, id_ejemplar, estado) => {
+  const { data } = await api.patch(`/loans/${id_prestamo}/detalle/${id_ejemplar}`, { estado })
+  return data
+}
+
+export const activateLoan = async (id) => {
+  const { data } = await api.patch(`/loans/${id}/activate`)
   return data
 }

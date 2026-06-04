@@ -35,6 +35,9 @@ import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 
+import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
+
+
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -123,12 +126,12 @@ const AppRouter = () => {
         >
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<AdminDashboardPage />} />
-          <Route path="prestamos" element={<AdminPrestamosPage />} />
+          <Route path="prestamos" element={<GestionPrestamosPage />} />
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
 
           <Route path="catalogo" element={<AdminCatalogoPage />} />
           
-          {/* ✅ Rutas de admin con ID dinámico */}
+          {/* Rutas de admin con ID dinámico */}
           <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
           <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
           

@@ -14,3 +14,19 @@ export const registerReturn = async (id_prestamo, devoluciones) => {
   const { data } = await api.post(`/returns/${id_prestamo}/devolver`, { devoluciones })
   return data
 }
+
+export const getHistorialDevoluciones = async ({ search, fecha_desde, fecha_hasta, page, limit }) => {
+  const params = new URLSearchParams()
+  if (search) params.append('search', search)
+  if (fecha_desde) params.append('fecha_desde', fecha_desde)
+  if (fecha_hasta) params.append('fecha_hasta', fecha_hasta)
+  if (page) params.append('page', page)
+  if (limit) params.append('limit', limit)
+  const { data } = await api.get(`/returns/historial?${params.toString()}`)
+  return data
+}
+
+export const getAllActiveLoans = async () => {
+  const { data } = await api.get('/returns/activos')
+  return data.data
+}
