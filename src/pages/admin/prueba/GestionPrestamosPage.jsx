@@ -131,6 +131,27 @@ const GestionPrestamosPage = () => {
     }
   }
 
+  const handleAprobarTodos = async () => {
+    if (!window.confirm('¿Aprobar todos los ejemplares solicitados?')) return
+    try {
+      setLoadingAccion(true)
+      setMensajeAccion(null)
+      const detallesPendientes = prestamoDetalle.detalles.filter(
+        d => d.estado_prestamo_ejemplar === 'solicitado'
+      )
+      for (const det of detallesPendientes) {
+        await respondDetalle(prestamoDetalle.id_prestamo, det.id_ejemplar, 'aprobado')
+      }
+      setMensajeAccion({ tipo: 'ok', texto: 'Todos los ejemplares aprobados' })
+      await handleVerDetalle(prestamoDetalle.id_prestamo)
+      fetchPrestamos(filtroEstado, page)
+    } catch (err) {
+      setMensajeAccion({ tipo: 'error', texto: err.response?.data?.error || 'Error al aprobar' })
+    } finally {
+      setLoadingAccion(false)
+    }
+  }
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', fontFamily: 'sans-serif', color: '#fff' }}>
 
@@ -313,6 +334,16 @@ const GestionPrestamosPage = () => {
 
             {/* Acciones globales */}
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {ESTADOS_APROBABLES.includes(prestamoDetalle.estado_prestamo) &&
+                prestamoDetalle.detalles?.some(d => d.estado_prestamo_ejemplar === 'solicitado') && (
+                <button
+                  onClick={handleAprobarTodos}
+                  disabled={loadingAccion}
+                  style={{ padding: '0.5rem 1rem', borderRadius: 8, border: 'none', background: '#93c5fd', color: '#0c1a2e', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}
+                >
+                  Aprobar todos
+                </button>
+              )}
               {ESTADOS_ACTIVABLES.includes(prestamoDetalle.estado_prestamo) && (
                 <button
                   onClick={handleActivar}

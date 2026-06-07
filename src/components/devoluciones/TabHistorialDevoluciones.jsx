@@ -1,50 +1,32 @@
 import { useState, useEffect } from 'react'
-import { getHistorialDevoluciones } from '../../services/returns.services'
+import { getPrestamosConDevoluciones } from '../../services/returns.services'
+import HistorialPrestamoCard from './HistorialPrestamoCard'
+import ModalDetalleDevolucion from './ModalDetalleDevolucion'
 import './DevolucionesComponents.css'
-
-const formatFecha = (fecha) => {
-  if (!fecha) return '—'
-  const d = new Date(fecha)
-  return d.toLocaleDateString('es-PY', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
-    hour: '2-digit', minute: '2-digit'
-  })
-}
-
-const ESTADO_COLORS = {
-  bueno: 'badge--verde',
-  deteriorado: 'badge--amarillo',
-  danado: 'badge--rojo'
-}
-
-const ESTADO_LABELS = {
-  bueno: 'Buen estado',
-  deteriorado: 'Deteriorado',
-  danado: 'Dañado'
-}
 
 const TabHistorialDevoluciones = () => {
   const [search, setSearch] = useState('')
   const [fechaDesde, setFechaDesde] = useState('')
   const [fechaHasta, setFechaHasta] = useState('')
-  const [devoluciones, setDevoluciones] = useState([])
+  const [prestamos, setPrestamos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [pagina, setPagina] = useState(1)
   const [totalPaginas, setTotalPaginas] = useState(1)
+  const [prestamoDetalle, setPrestamoDetalle] = useState(null)
 
   const fetchHistorial = async (params = {}) => {
     try {
       setLoading(true)
       setError(null)
-      const data = await getHistorialDevoluciones({
+      const data = await getPrestamosConDevoluciones({
         search: params.search ?? search,
         fecha_desde: params.fecha_desde ?? fechaDesde,
         fecha_hasta: params.fecha_hasta ?? fechaHasta,
         page: params.page ?? pagina,
-        limit: 20
+        limit: 12
       })
-      setDevoluciones(data.data)
+      setPrestamos(data.data)
       setTotalPaginas(data.pagination.totalPages)
     } catch {
       setError('Error al cargar el historial')
@@ -76,7 +58,7 @@ const TabHistorialDevoluciones = () => {
       <form className="historial-filtros" onSubmit={handleFiltrar}>
         <input
           type="text"
-          placeholder="Buscar por nombre, cédula o correo..."
+          placeholder="Nombre, cédula o correo..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="tab-search__input"
@@ -96,58 +78,31 @@ const TabHistorialDevoluciones = () => {
             className="tab-search__input historial-fecha-input"
           />
         </div>
-        <button type="submit" className="tab-search__btn">Filtrar</button>
-        <button type="button" className="tab-search__clear" onClick={handleLimpiar}>
-          Limpiar
-        </button>
+        <div className='tab-btn'>
+          <button type="submit" className="tab-search__btn">Filtrar</button>
+          <button type="button" className="tab-search__clear" onClick={handleLimpiar}>
+            Limpiar
+          </button>
+        </div>
+        
       </form>
 
       {loading && <p className="tab-loading">Cargando historial...</p>}
       {error && <p className="tab-error">{error}</p>}
 
-      {!loading && !error && devoluciones.length === 0 && (
+      {!loading && !error && prestamos.length === 0 && (
         <p className="tab-vacio">No se encontraron devoluciones.</p>
       )}
 
-      {!loading && devoluciones.length > 0 && (
+      {!loading && prestamos.length > 0 && (
         <>
-          <div className="historial-tabla">
-            <div className="historial-tabla__header">
-              <span>Usuario</span>
-              <span>Libro</span>
-              <span>Ejemplar</span>
-              <span>Estado</span>
-              <span>Fecha devolución</span>
-              <span>Bibliotecario</span>
-            </div>
-            {devoluciones.map(dev => (
-              <div key={dev.id_devolucion} className="historial-tabla__row">
-                <div className="historial-tabla__cell">
-                  <span className="historial-nombre">{dev.nombre_apellido}</span>
-                  <span className="historial-detalle">{dev.correo}</span>
-                </div>
-                <div className="historial-tabla__cell">
-                  <span className="historial-nombre">{dev.titulo}</span>
-                  <span className="historial-detalle">{dev.autor}</span>
-                </div>
-                <div className="historial-tabla__cell">
-                  <span>#{dev.id_ejemplar}</span>
-                </div>
-                <div className="historial-tabla__cell">
-                  <span className={`pcard__badge ${ESTADO_COLORS[dev.estado_devuelto]}`}>
-                    {ESTADO_LABELS[dev.estado_devuelto] || dev.estado_devuelto}
-                  </span>
-                  {dev.observaciones && (
-                    <span className="historial-detalle">{dev.observaciones}</span>
-                  )}
-                </div>
-                <div className="historial-tabla__cell">
-                  <span>{formatFecha(dev.fecha_devolucion)}</span>
-                </div>
-                <div className="historial-tabla__cell">
-                  <span>{dev.bibliotecario}</span>
-                </div>
-              </div>
+          <div className="pcard-grid">
+            {prestamos.map(p => (
+              <HistorialPrestamoCard
+                key={p.id_prestamo}
+                prestamo={p}
+                onVerDetalle={setPrestamoDetalle}
+              />
             ))}
           </div>
 
@@ -165,6 +120,13 @@ const TabHistorialDevoluciones = () => {
             </div>
           )}
         </>
+      )}
+
+      {prestamoDetalle && (
+        <ModalDetalleDevolucion
+          prestamo={prestamoDetalle}
+          onCerrar={() => setPrestamoDetalle(null)}
+        />
       )}
     </div>
   )

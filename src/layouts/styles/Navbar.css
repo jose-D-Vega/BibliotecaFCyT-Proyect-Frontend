@@ -237,8 +237,9 @@
 }
 
 @media (max-width: 480px) {
-  .app-navbar__brand { gap: 10px; }
-  .app-navbar__logo-placeholder { width: 52px; height: 52px; }
-  .app-navbar__title { font-size: 1.12rem; }
+  .app-navbar__brand { gap: 5px; }
+  .app-navbar__logo-placeholder { width: 42px; height: 42px; }
+  .app-navbar__title { font-size: 1rem; }
   .app-navbar__profile-menu { min-width: 175px; }
+  .app-navbar__faculty {display: none;}
 }
