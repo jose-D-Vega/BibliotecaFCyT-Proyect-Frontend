@@ -52,7 +52,7 @@ export default function GestionUsuarios() {
     }
   }, [usuarios])
 
-  // FILTRADO DINÁMICO (Incluye la selección de las tarjetas)
+  // FILTRADO DINÁMICO
   const usuariosFiltrados = useMemo(() => {
     let lista = [...usuarios]
     
@@ -84,14 +84,13 @@ export default function GestionUsuarios() {
     setCambiosPendientes({
       id_tipo_usuario: usuario.id_tipo_usuario,
       activo: usuario.activo,
-      telefono: usuario.telefono // <-- Cargamos el teléfono en lugar del CI
+      telefono: usuario.telefono
     })
   }
 
   // 2. GUARDAR ACTUALIZACIONES
   const handleGuardar = async (id_usuario, usuarioOriginal) => {
     try {
-      // ¿Cambió el Rol?
       if (cambiosPendientes.id_tipo_usuario !== usuarioOriginal.id_tipo_usuario) {
         await fetch(`${API_URL}/${id_usuario}/rol`, {
           method: "PATCH",
@@ -100,7 +99,6 @@ export default function GestionUsuarios() {
         })
       }
 
-      // ¿Cambió el Estado Activo?
       if (cambiosPendientes.activo !== usuarioOriginal.activo) {
         await fetch(`${API_URL}/${id_usuario}/activo`, {
           method: "PATCH",
@@ -109,7 +107,6 @@ export default function GestionUsuarios() {
         })
       }
 
-      // ¿Cambió el Teléfono? -> Usamos tu endpoint para modificar datos de perfil (updateUser)
       if (cambiosPendientes.telefono !== usuarioOriginal.telefono) {
         await fetch(`${API_URL}/me`, {
           method: "PUT",
@@ -125,7 +122,7 @@ export default function GestionUsuarios() {
           id_tipo_usuario: cambiosPendientes.id_tipo_usuario,
           rol: rolSeleccionado ? rolSeleccionado.nombre_tipo : u.rol,
           activo: cambiosPendientes.activo,
-          telefono: cambiosPendientes.telefono // <-- Guardamos el teléfono editado localmente
+          telefono: cambiosPendientes.telefono 
         } : u))
       )
       setEditandoId(null)
@@ -134,21 +131,29 @@ export default function GestionUsuarios() {
     }
   }
 
-  // 3. BORRADO LÓGICO
-  const handleEliminar = async (id_usuario) => {
-    if (window.confirm("¿Está seguro que desea desactivar esta cuenta de usuario?")) {
+  // 3. CAMBIAR ESTADO (ACTIVAR / DESACTIVAR) INTERACTIVO 🔄
+  const handleToggleEstado = async (usuario) => {
+    const nuevoEstado = !usuario.activo
+    const mensaje = nuevoEstado 
+      ? `¿Está seguro que desea ACTIVAR la cuenta de ${usuario.nombre_apellido}?`
+      : `¿Está seguro que desea DESACTIVAR la cuenta de ${usuario.nombre_apellido}?`
+
+    if (window.confirm(mensaje)) {
       try {
-        const response = await fetch(`${API_URL}/${id_usuario}`, {
-          method: "DELETE",
-          headers
+        // Ejecutamos la petición PATCH de estado que ya tienes construida en tu backend
+        const response = await fetch(`${API_URL}/${usuario.id_usuario}/activo`, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({ activo: nuevoEstado })
         })
+        
         if (response.ok) {
           setUsuarios((prev) => 
-            prev.map((u) => u.id_usuario === id_usuario ? { ...u, activo: false } : u)
+            prev.map((u) => u.id_usuario === usuario.id_usuario ? { ...u, activo: nuevoEstado } : u)
           )
         }
       } catch (error) {
-        console.error("Error al eliminar:", error)
+        console.error("Error al cambiar el estado del usuario:", error)
       }
     }
   }
@@ -167,7 +172,6 @@ export default function GestionUsuarios() {
 
         {/* 📊 SECCIÓN DE TARJETAS INTERACTIVAS */}
         <div className="tarjetas-estadisticas" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '25px' }}>
-          
           <div 
             className="tarjeta-kpi" 
             onClick={() => setFiltroActivo("Todos")}
@@ -194,7 +198,6 @@ export default function GestionUsuarios() {
             <span style={{ color: '#f87171', fontSize: '14px', textTransform: 'uppercase', fontWeight: '600' }}>Usuarios Sancionados</span>
             <h2 style={{ fontSize: '28px', margin: '5px 0 0 0', color: '#f87171' }}>{estadisticas.sancionados}</h2>
           </div>
-
         </div>
 
         <div className="toolbar">
@@ -241,11 +244,9 @@ export default function GestionUsuarios() {
                   return (
                     <tr key={usuario.id_usuario}>
                       <td>{usuario.nombre_apellido}</td>
-                      
-                      {/* CI Bloqueado / No editable */}
                       <td>{usuario.ci}</td>
 
-                      {/* Teléfono Editable 📞 */}
+                      {/* Teléfono Editable */}
                       <td>
                         {editando ? (
                           <input 
@@ -260,7 +261,7 @@ export default function GestionUsuarios() {
 
                       <td>{usuario.correo}</td>
                       
-                      {/* Cambiar Rol */}
+                      {/* Rol */}
                       <td>
                         <select 
                           className="select-estado" 
@@ -276,17 +277,18 @@ export default function GestionUsuarios() {
                         </select>
                       </td>
 
-                      {/* Activar/Desactivar */}
+                      {/* Estado */}
                       <td>
-                        <select 
-                          className="select-estado" 
-                          value={editando ? cambiosPendientes.activo : usuario.activo} 
-                          onChange={(e) => setCambiosPendientes({...cambiosPendientes, activo: e.target.value === "true" || e.target.value === true})} 
-                          disabled={!editando}
-                        >
-                          <option value={true}>Activo</option>
-                          <option value={false}>Inactivo</option>
-                        </select>
+                        <span style={{
+                          padding: '4px 8px', 
+                          borderRadius: '4px', 
+                          fontSize: '13px',
+                          fontWeight: '500',
+                          background: usuario.activo ? 'rgba(74,222,128,0.15)' : 'rgba(248,113,113,0.15)', 
+                          color: usuario.activo ? '#4ade80' : '#f87171'
+                        }}>
+                          {usuario.activo ? "Activo" : "Inactivo"}
+                        </span>
                       </td>
 
                       <td className="acciones">
@@ -298,7 +300,19 @@ export default function GestionUsuarios() {
                         ) : (
                           <>
                             <button className="admin-user-edit-btn" onClick={() => handleEditarClick(usuario)}>Editar</button>
-                            <button className="admin-user-delete-btn" disabled={!usuario.activo} onClick={() => handleEliminar(usuario.id_usuario)}>Desactivar</button>
+                            
+                            {/* 🔄 BOTÓN DINÁMICO ACTIVAR / DESACTIVAR */}
+                            <button 
+                              className="admin-user-delete-btn" 
+                              style={{
+                                background: usuario.activo ? 'rgba(248,113,113,0.1)' : 'rgba(74,222,128,0.1)',
+                                color: usuario.activo ? '#f87171' : '#4ade80',
+                                borderColor: usuario.activo ? 'rgba(248,113,113,0.2)' : 'rgba(74,222,128,0.2)'
+                              }}
+                              onClick={() => handleToggleEstado(usuario)}
+                            >
+                              {usuario.activo ? "Desactivar" : "Activar"}
+                            </button>
                           </>
                         )}
                       </td>
