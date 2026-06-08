@@ -36,7 +36,7 @@ import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 
 import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
-
+import GestionUsuarios from '../pages/admin/GestionUsuarios'
 
 
 const AppRouter = () => {
@@ -138,7 +138,7 @@ const AppRouter = () => {
           <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
 
           <Route path="perfil" element={<PerfilAdminPage />} />
-          <Route path="usuarios" element={<UsuariosPage />} />
+          <Route path="usuarios" element={<GestionUsuarios />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
         </Route>

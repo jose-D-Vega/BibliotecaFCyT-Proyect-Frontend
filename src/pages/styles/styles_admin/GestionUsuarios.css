@@ -1,0 +1,270 @@
+/* ==========================================
+   CONTENEDOR PRINCIPAL Y LAYOUT (DARK MODE)
+   ========================================== */
+.contenedor-usuarios {
+  padding: 24px;
+  background-color: #0f172a; /* Fondo oscuro base de la app */
+  min-height: 100vh;
+  font-family: 'Source Sans 3', sans-serif;
+  color: #ffffff;
+}
+
+.contenido {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 4px;
+}
+
+.header p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+/* ==========================================
+   TARJETAS DE REPORTE (CARDS)
+   ========================================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ==========================================
+   BARRA DE HERRAMIENTAS (BUSCADOR Y CHIPS)
+   ========================================== */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 11px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.search-type {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 11px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.search-type:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
+}
+
+/* Filtros (Chips) */
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.chip.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================
+   TABLA DE USUARIOS
+   ========================================== */
+.tabla-contenedor {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 14px 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.85);
+  vertical-align: middle;
+}
+
+tr:hover td {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* Selects Interactivos dentro de la Tabla */
+.select-estado {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.select-estado:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Estilización de los options internos (depende del navegador) */
+.select-estado option {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+/* ==========================================
+   BOTONES DE ACCIONES (SEGUIDORES DEL PATRÓN)
+   ========================================== */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botón Editar (Estilo secundario/habilitar) */
+.admin-user-edit-btn {
+  background: rgba(245, 158, 11, 0.15); /* Ámbar sutil */
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.admin-user-edit-btn:hover {
+  background: rgba(245, 158, 11, 0.25);
+}
+
+/* Botón Eliminar (Estilo crítico/eliminar) */
+.admin-user-delete-btn {
+  background: rgba(239, 68, 68, 0.12); /* Rojo sutil */
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.admin-user-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.22);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .toolbar { padding: 14px; }
+  .search-box { flex-direction: column; }
+  .search-type { width: 100%; text-align: center; }
+}
