@@ -434,7 +434,7 @@
 .modal-dev__btn-confirmar:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── HISTORIAL TABLA ── */
-.historial-filtros {
+.historial-dev-filtros {
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;

@@ -19,7 +19,7 @@ import CatalogoUserPage from '../pages/user/CatalogoUserPage'
 import DetalleLibroUserPage from '../pages/user/DetalleLibroUserPage'
 import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
-import DevolucionesPage from '../pages/user/prueba/DevolucionesPage'
+import DevolucionesUserPage from '../pages/user/prueba/DevolucionesUserPage'
 import SancionesPage from '../pages/user/prueba/SancionesPage'
 import PerfilUserPage from '../pages/user/PerfilUserPage'
 
@@ -111,7 +111,7 @@ const AppRouter = () => {
           
           <Route path="perfil" element={<PerfilUserPage />} />
           <Route path="prestamos" element={<PrestamosPage />} />
-          <Route path="devoluciones" element={<DevolucionesPage />} />
+          <Route path="devoluciones" element={<DevolucionesUserPage />} />
           <Route path="sanciones" element={<SancionesPage />} />
         </Route>
 

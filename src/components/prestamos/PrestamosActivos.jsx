@@ -31,7 +31,7 @@ function PrestamosActivos() {
       const conDetalles = await Promise.all(
         activos.map(p => getLoanById(p.id_prestamo))
       )
-      setPrestamos(conDetalles.map(r => r.data))
+      setPrestamos(conDetalles)
     } catch (err) {
       console.error('Error al cargar préstamos activos:', err)
     } finally {
