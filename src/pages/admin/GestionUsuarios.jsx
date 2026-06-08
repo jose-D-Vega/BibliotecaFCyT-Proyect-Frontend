@@ -32,7 +32,7 @@ export default function GestionUsuarios() {
         const jsonUsers = await resUsers.json()
         setUsuarios(Array.isArray(jsonUsers.data) ? jsonUsers.data : [])
 
-        setLoading(false)
+        loading && setLoading(false)
       } catch (err) {
         console.error("Error al sincronizar con el backend:", err)
         setLoading(false)
@@ -107,9 +107,10 @@ export default function GestionUsuarios() {
         })
       }
 
+      // 📞 ¡CORREGIDO AQUÍ! Ahora edita al usuario seleccionado mediante su ID usando PATCH
       if (cambiosPendientes.telefono !== usuarioOriginal.telefono) {
-        await fetch(`${API_URL}/me`, {
-          method: "PUT",
+        await fetch(`${API_URL}/${id_usuario}/telefono`, {
+          method: "PATCH",
           headers,
           body: JSON.stringify({ telefono: cambiosPendientes.telefono })
         })
@@ -140,7 +141,6 @@ export default function GestionUsuarios() {
 
     if (window.confirm(mensaje)) {
       try {
-        // Ejecutamos la petición PATCH de estado que ya tienes construida en tu backend
         const response = await fetch(`${API_URL}/${usuario.id_usuario}/activo`, {
           method: "PATCH",
           headers,
