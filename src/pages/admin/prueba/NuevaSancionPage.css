@@ -1,0 +1,200 @@
+.nueva-sancion-page {
+  font-family: 'Source Sans 3', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 720px;
+  margin: auto;
+  padding: 1rem;
+}
+
+.nueva-sancion-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nueva-sancion-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.nueva-sancion-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nueva-sancion-card__titulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.nueva-sancion-card__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
+}
+
+.nueva-sancion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.nueva-sancion-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nueva-sancion-field label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.nueva-sancion-hint {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.nueva-sancion-select,
+.nueva-sancion-input {
+  padding: 0.7rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.nueva-sancion-select option { background: #0f2035; }
+.nueva-sancion-select:focus,
+.nueva-sancion-input:focus { border-color: rgba(255,255,255,0.3); }
+
+.nueva-sancion-tipos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.nueva-sancion-tipo-btn {
+  padding: 0.875rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.nueva-sancion-tipo-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.nueva-sancion-tipo-btn.activo {
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.35);
+}
+
+.nueva-sancion-tipo-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.nueva-sancion-tipo-desc {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.4;
+}
+
+.nueva-sancion-textarea {
+  padding: 0.7rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s;
+}
+
+.nueva-sancion-textarea::placeholder { color: rgba(255,255,255,0.25); }
+.nueva-sancion-textarea:focus { border-color: rgba(255,255,255,0.3); }
+
+.nueva-sancion-error {
+  color: #f09595;
+  font-size: 0.875rem;
+  background: rgba(163,51,51,0.15);
+  border: 1px solid rgba(163,51,51,0.3);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.nueva-sancion-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .nueva-sancion-tipos { grid-template-columns: 1fr; }
+  .nueva-sancion-card__grid { grid-template-columns: 1fr; }
+}
+
+/*   Nuevos estilos agregados para los ejemplares en formtato checkbox   */
+
+.nueva-sancion-ejemplares {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 0.875rem;
+}
+
+.nueva-sancion-ejemplar-check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+}
+
+.nueva-sancion-ejemplar-check input {
+  accent-color: #378add;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

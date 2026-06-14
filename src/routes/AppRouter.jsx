@@ -30,6 +30,7 @@ import DetalleLibroAdminPage from '../pages/admin/DetalleLibroAdminPage'
 import NuevoMaterial from '../pages/admin/NuevoMaterial'
 import ModificarMaterial from '../pages/admin/ModificarMaterial'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
+import NuevaSancionPage from '../pages/admin/prueba/NuevaSancionPage'
 import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
@@ -129,6 +130,7 @@ const AppRouter = () => {
           <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
           <Route path="perfil" element={<PerfilAdminPage />} />
           <Route path="usuarios" element={<GestionUsuarios />} />
+          <Route path="sanciones/nueva" element={<NuevaSancionPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
         </Route>

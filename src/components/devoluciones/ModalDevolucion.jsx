@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getLoanForReturn, registerReturn } from '../../services/returns.services'
 import './DevolucionesComponents.css'
+import { useNavigate } from 'react-router-dom'
 
 const formatFecha = (fecha) => {
   if (!fecha) return '—'
@@ -15,6 +16,10 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
   const [loadingConfirmar, setLoadingConfirmar] = useState(false)
   const [error, setError] = useState(null)
   const [mensaje, setMensaje] = useState(null)
+  const [modal, setModal] = useState(null) // 'sugerirSancion'
+  const [sancionInfo, setSancionInfo] = useState(null)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPrestamo = async () => {
@@ -78,6 +83,22 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
       const result = await registerReturn(id_prestamo, seleccionados)
       setMensaje(result.message)
       onDevolucionRegistrada?.()
+
+       // Verificar si algún ejemplar devuelto requiere sanción
+      const ejemplaresConProblema = seleccionados.filter(
+        s => s.estado_devuelto !== 'bueno'
+      )
+      const prestamoVencido = prestamo.estado_prestamo === 'vencido'
+
+      if (ejemplaresConProblema.length > 0 || prestamoVencido) {
+        setModal('sugerirSancion') // nuevo modal
+        setSancionInfo({
+          vencido: prestamoVencido,
+          ejemplaresConProblema,
+          todosLosEjemplares: seleccionados
+        })
+        return // no cerrar todavía
+      }
 
       if (result.data.prestamo_cerrado) {
         setTimeout(() => onCerrar(), 2000)
@@ -195,6 +216,66 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
                 {loadingConfirmar ? 'Registrando...' : 'Confirmar devolución'}
               </button>
             </div>
+
+            {modal === 'sugerirSancion' && sancionInfo && (
+              <div className="modal-dev-overlay" onClick={() => setModal(null)}>
+                <div className="modal-dev-box" style={{ maxWidth: 480 }} onClick={e => e.stopPropagation()}>
+                  <div className="modal-dev__header">
+                    <div>
+                      <h2 className="modal-dev__title">¿Registrar sanción?</h2>
+                      <p className="modal-dev__subtitle">
+                        {sancionInfo.vencido && sancionInfo.ejemplaresConProblema.length > 0
+                          ? 'El préstamo está vencido y hay ejemplares con problemas'
+                          : sancionInfo.vencido
+                            ? 'El préstamo está vencido'
+                            : 'Hay ejemplares devueltos con problemas'}
+                      </p>
+                    </div>
+                    <button className="modal-dev__cerrar" onClick={() => {
+                      setModal(null)
+                      onCerrar()
+                    }}>✕</button>
+                  </div>
+
+                  <div style={{ padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {sancionInfo.vencido && (
+                      <button
+                        className="sancion-btn sancion-btn--primario"
+                        style={{ width: '100%', padding: '0.75rem' }}
+                        onClick={() => {
+                          const ids = sancionInfo.todosLosEjemplares.map(e => e.id_ejemplar).join(',')
+                          navigate(`/admin/sanciones/nueva?id_prestamo=${id_prestamo}&id_ejemplares=${ids}&tipo=devolucion_tardia`)
+                        }}
+                      >
+                        Sancionar por devolución tardía ({sancionInfo.todosLosEjemplares.length} ejemplar{sancionInfo.todosLosEjemplares.length > 1 ? 'es' : ''})
+                      </button>
+                    )}
+                    {sancionInfo.ejemplaresConProblema.length > 0 && (
+                      <button
+                        className="sancion-btn sancion-btn--primario"
+                        style={{ width: '100%', padding: '0.75rem' }}
+                        onClick={() => {
+                          const ids = sancionInfo.ejemplaresConProblema.map(e => e.id_ejemplar).join(',')
+                          const tipo = sancionInfo.ejemplaresConProblema.some(e => e.estado_devuelto === 'danado')
+                            ? 'deterioro'
+                            : 'deterioro'
+                          navigate(`/admin/sanciones/nueva?id_prestamo=${id_prestamo}&id_ejemplares=${ids}&tipo=${tipo}`)
+                        }}
+                      >
+                        Sancionar por material con problemas ({sancionInfo.ejemplaresConProblema.length} ejemplar{sancionInfo.ejemplaresConProblema.length > 1 ? 'es' : ''})
+                      </button>
+                    )}
+                    <button
+                      className="modal-dev__btn-cancelar"
+                      style={{ width: '100%' }}
+                      onClick={() => { setModal(null); onCerrar() }}
+                    >
+                      No registrar sanción
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
