@@ -2,12 +2,16 @@ import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getSanctions, resolveSanction, escalateSanction,
-  confirmSanction, rejectSanction
+  confirmSanction, rejectSanction, getSanctionsGrouped
 } from '../../../services/sanctions.services'
 import SancionCard from '../../../components/sanciones/SancionCard'
 import SancionPendienteCard from '../../../components/sanciones/SancionPendienteCard'
 import ModalDetalleSancion from '../../../components/sanciones/ModalDetalleSancion'
 import './AdminSancionesPage.css'
+
+import SancionGrupoCard from '../../../components/sanciones/SancionGrupoCard'
+import ModalSancionesLoan from '../../../components/sanciones/ModalSancionesLoan'
+
 
 const TABS = [
   { id: 'pendiente_confirmacion', label: 'Pendientes de confirmación' },
@@ -28,11 +32,16 @@ const AdminSancionesPage = () => {
   const [loadingAccion, setLoadingAccion] = useState(false)
   const [mensajeAccion, setMensajeAccion] = useState(null)
 
+  const [grupoDetalle, setGrupoDetalle] = useState(null)
+
+  // Cambiar fetchSanciones para usar getSanctionsGrouped en tabs no pendientes
   const fetchSanciones = useCallback(async (estado, pag) => {
     try {
       setLoading(true)
       setError(null)
-      const data = await getSanctions({ estado, page: pag, limit: 12 })
+      const esPendiente = estado === 'pendiente_confirmacion'
+      const fn = esPendiente ? getSanctions : getSanctionsGrouped
+      const data = await fn({ estado, page: pag, limit: 12 })
       setSanciones(data.data)
       setTotalPaginas(data.pagination.totalPages)
     } catch {
@@ -41,6 +50,7 @@ const AdminSancionesPage = () => {
       setLoading(false)
     }
   }, [])
+
 
   useEffect(() => {
     setPagina(1)
@@ -175,12 +185,10 @@ const AdminSancionesPage = () => {
                     onVerDetalle={setSancionDetalle}
                     disabled={loadingAccion}
                   />
-                : <SancionCard
-                    key={s.id_sancion}
-                    sancion={s}
-                    onVerDetalle={setSancionDetalle}
-                    onResolver={handleResolver}
-                    onEscalar={handleEscalar}
+                : <SancionGrupoCard
+                    key={s.id_prestamo || s.id_sancion}
+                    grupo={s}
+                    onVerDetalle={setGrupoDetalle}
                   />
             ))}
           </div>
@@ -201,12 +209,11 @@ const AdminSancionesPage = () => {
         </>
       )}
 
-      {sancionDetalle && (
-        <ModalDetalleSancion
-          sancion={sancionDetalle}
-          onCerrar={() => setSancionDetalle(null)}
-          onResolver={handleResolver}
-          onEscalar={handleEscalar}
+      {grupoDetalle && (
+        <ModalSancionesLoan
+          grupo={grupoDetalle}
+          onCerrar={() => setGrupoDetalle(null)}
+          onActualizar={() => fetchSanciones(tabActiva, pagina)}
         />
       )}
     </div>

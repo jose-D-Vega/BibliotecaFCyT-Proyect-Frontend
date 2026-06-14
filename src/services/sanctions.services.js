@@ -45,3 +45,17 @@ export const rejectSanction = async (id) => {
   const { data } = await api.patch(`/sanctions/${id}/rechazar`)
   return data
 }
+
+export const getSanctionsGrouped = async ({ estado, page, limit }) => {
+  const params = new URLSearchParams()
+  if (estado) params.append('estado', estado)
+  if (page) params.append('page', page)
+  if (limit) params.append('limit', limit)
+  const { data } = await api.get(`/sanctions/agrupadas?${params.toString()}`)
+  return data
+}
+
+export const getSanctionsByLoan = async (id_prestamo) => {
+  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}`)
+  return data.data
+}
