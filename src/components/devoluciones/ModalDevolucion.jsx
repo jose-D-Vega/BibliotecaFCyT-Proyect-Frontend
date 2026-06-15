@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { getLoanForReturn, registerReturn } from '../../services/returns.services'
 import './DevolucionesComponents.css'
 import { useNavigate } from 'react-router-dom'
+import ModalReservaAfectada from './ModalReservaAfectada'
 
 const formatFecha = (fecha) => {
   if (!fecha) return '—'
@@ -18,6 +19,7 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
   const [mensaje, setMensaje] = useState(null)
   const [modal, setModal] = useState(null) // 'sugerirSancion'
   const [sancionInfo, setSancionInfo] = useState(null)
+  const [reservasAfectadas, setReservasAfectadas] = useState(null)
 
   const navigate = useNavigate()
 
@@ -84,21 +86,32 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
       setMensaje(result.message)
       onDevolucionRegistrada?.()
 
-       // Verificar si algún ejemplar devuelto requiere sanción
+      // Verificar si algún ejemplar devuelto requiere sanción
       const ejemplaresConProblema = seleccionados.filter(
         s => s.estado_devuelto !== 'bueno'
       )
       const prestamoVencido = prestamo.estado_prestamo === 'vencido'
 
+      const sugerirSancionDespues = () => {
       if (ejemplaresConProblema.length > 0 || prestamoVencido) {
-        setModal('sugerirSancion') // nuevo modal
+        setModal('sugerirSancion')
         setSancionInfo({
           vencido: prestamoVencido,
           ejemplaresConProblema,
           todosLosEjemplares: seleccionados
         })
-        return // no cerrar todavía
+        return true
       }
+      return false
+      }
+
+      // Si hay reservas afectadas por ejemplares dañados/perdidos, gestionarlas primero
+      if (result.data.reservas_afectadas?.length > 0) {
+        setReservasAfectadas(result.data.reservas_afectadas)
+        return // el resto del flujo continúa cuando se cierre ModalReservaAfectada
+      }
+
+      if (sugerirSancionDespues()) return
 
       if (result.data.prestamo_cerrado) {
         setTimeout(() => onCerrar(), 2000)
@@ -108,14 +121,52 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
         setPrestamo(data)
         const nuevo = {}
         data.ejemplares.forEach(e => {
-          nuevo[e.id_ejemplar] = { seleccionado: false, estado_devuelto: 'bueno', observaciones: '' }
-        })
+        nuevo[e.id_ejemplar] = { seleccionado: false, estado_devuelto: 'bueno', observaciones: '' }
+      })
         setDevoluciones(nuevo)
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrar la devolución')
     } finally {
       setLoadingConfirmar(false)
+    }
+  }
+
+  const handleReservasResueltas = async () => {
+    setReservasAfectadas(null)
+
+    const seleccionados = Object.entries(devoluciones)
+      .filter(([, d]) => d.seleccionado)
+      .map(([id, d]) => ({
+        id_ejemplar: parseInt(id),
+        estado_devuelto: d.estado_devuelto,
+        observaciones: d.observaciones
+      }))
+
+    const ejemplaresConProblema = seleccionados.filter(s => s.estado_devuelto !== 'bueno')
+    const prestamoVencido = prestamo.estado_prestamo === 'vencido'
+
+    if (ejemplaresConProblema.length > 0 || prestamoVencido) {
+      setModal('sugerirSancion')
+      setSancionInfo({
+        vencido: prestamoVencido,
+        ejemplaresConProblema,
+        todosLosEjemplares: seleccionados
+      })
+      return
+    }
+
+    // Re-chequear si el préstamo quedó cerrado tras la devolución original
+    const data = await getLoanForReturn(id_prestamo)
+    if (data.estado_prestamo === 'devuelto' || data.ejemplares.every(e => e.estado_prestamo_ejemplar !== 'activo')) {
+      setTimeout(() => onCerrar(), 2000)
+    } else {
+      setPrestamo(data)
+      const nuevo = {}
+      data.ejemplares.forEach(e => {
+        nuevo[e.id_ejemplar] = { seleccionado: false, estado_devuelto: 'bueno', observaciones: '' }
+      })
+      setDevoluciones(nuevo)
     }
   }
 
@@ -275,6 +326,12 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
                   </div>
                 </div>
               </div>
+            )}
+            {reservasAfectadas && (
+              <ModalReservaAfectada
+                reservas={reservasAfectadas}
+                onResuelto={handleReservasResueltas}
+              />
             )}
           </>
         )}

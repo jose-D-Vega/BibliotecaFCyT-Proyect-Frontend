@@ -59,3 +59,16 @@ export const getSanctionsByLoan = async (id_prestamo) => {
   const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}`)
   return data.data
 }
+
+// Buscar préstamos a sancionar por nombre, correo o ci del usuario
+export const searchSanctionableLoans = async (search, tipo) => {
+  const params = new URLSearchParams({ search, tipo })
+  const { data } = await api.get(`/sanctions/buscar-prestamo?${params.toString()}`)
+  return data.data
+}
+
+// Obtener un préstamo con sus ejemplares — para elegir cuáles sancionar
+export const getLoanForSanction = async (id_prestamo) => {
+  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}/ejemplares`)
+  return data.data
+}
