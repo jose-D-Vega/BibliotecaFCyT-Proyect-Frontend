@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import Buscador from "../../components/Buscador"
 import Filtros from "../../components/Filtros"
 import ListaLibros from "../../components/ListaLibros"
+import CatalogoPagination from "../../components/CatalogoPagination"
 import "../styles/styles_user/Catalogo.css"
 
 function Catalogo({ onVerDetalle, onIrAlCarrito }) {
@@ -30,16 +31,19 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
       <div className="catalogo-header">
         <div className="header-top">
           <h1 className="titulo">Catálogo</h1>
+
           <button className="carrito-btn" onClick={onIrAlCarrito}>
-            🛒 Carrito
+            📚 Mis solicitudes
           </button>
         </div>
+
         <Buscador
           busqueda={busqueda}
           setBusqueda={setBusqueda}
           modoBusqueda={modoBusqueda}
           setModoBusqueda={setModoBusqueda}
         />
+
         <Filtros
           areas={areas}
           setAreas={setAreas}
@@ -52,6 +56,7 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
         />
       </div>
 
+      {/* 🔥 IMPORTANTE: mismo bloque visual */}
       <div className="catalogo-body">
         <ListaLibros
           pagina={pagina}
@@ -64,21 +69,15 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
           setTotalPaginas={setTotalPaginas}
           onVerDetalle={onVerDetalle}
         />
-      </div>
 
-      <div className="paginacion">
-        {Array.from({ length: totalPaginas }, (_, i) => (
-          <button
-            key={i}
-            className={pagina === i + 1 ? "active" : ""}
-            onClick={() => {
-              setPagina(i + 1)
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            }}
-          >
-            {i + 1}
-          </button>
-        ))}
+        <CatalogoPagination
+          currentPage={pagina}
+          totalPages={totalPaginas}
+          onPageChange={(page) => {
+            setPagina(page)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
+        />
       </div>
     </div>
   )

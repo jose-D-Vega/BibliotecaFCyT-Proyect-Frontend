@@ -75,7 +75,7 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
         <button className="btn-volver" onClick={onVolver}>← Volver</button>
         <h2 className="header-title">Detalles del libro</h2>
         <button className="carrito-btn-detalle" onClick={onIrAlCarrito}>
-          🛒 Carrito
+          📚 Mis solicitudes
         </button>
       </header>
 
@@ -138,7 +138,7 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
         <div className="modal-overlay">
           <div className="modal-box">
             <h3 className="modal-title">
-              {yaEnCarrito ? 'Editar solicitud' : 'Agregar al carrito'}
+              {yaEnCarrito ? 'Editar solicitud' : 'Agregar a mis solicitudes'}
             </h3>
 
             <div className="modal-libro">
@@ -200,7 +200,7 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
                 Cancelar
               </button>
               <button className="modal-btn primario" onClick={aceptarAgregar}>
-                {yaEnCarrito ? 'Actualizar' : 'Agregar al carrito'}
+                {yaEnCarrito ? 'Actualizar' : 'Agregar a mis solicitudes'}
               </button>
             </div>
           </div>
@@ -211,13 +211,13 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
       {modal === "agregado" && (
         <div className="modal-overlay">
           <div className="modal-box">
-            <h3 className="modal-title">
-              {yaEnCarrito ? 'Solicitud actualizada' : 'Libro agregado al carrito'}
-            </h3>
+          <h3 className="modal-title">
+            {yaEnCarrito ? 'Solicitud actualizada' : 'Libro agregado a mis solicitudes'}
+          </h3>
             <p className="modal-texto">
               {yaEnCarrito
                 ? 'Se actualizó la cantidad solicitada correctamente.'
-                : 'Se agregó correctamente al carrito de préstamos:'
+                : 'Se agregó correctamente a mis solicitudes:'
               }
             </p>
 
@@ -246,7 +246,7 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
                 Seguir viendo catálogo
               </button>
               <button className="modal-btn primario" onClick={irAlCarrito}>
-                Ir al carrito
+                Ir a mis solicitudes
               </button>
             </div>
           </div>

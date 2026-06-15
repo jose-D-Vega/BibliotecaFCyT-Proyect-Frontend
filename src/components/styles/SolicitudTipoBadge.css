@@ -1,0 +1,25 @@
+.solicitud-tipo-badge{
+  padding:8px 13px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:700;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center
+}
+
+.solicitud-tipo-badge--prestamo{
+  background:rgba(20,180,90,.18);
+  color:#62ffab
+}
+
+.solicitud-tipo-badge--reserva{
+  background:rgba(99,102,241,.22);
+  color:#c7d2ff
+}
+
+.solicitud-tipo-badge--renovacion{
+  background:rgba(255,170,70,.18);
+  color:#ffca7a
+}

@@ -1,0 +1,169 @@
+.solicitud-card-admin {
+  background: #12233f;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 18px;
+
+  transition: .25s;
+  box-sizing: border-box;
+}
+
+.solicitud-card-admin:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,.14);
+}
+
+/* ===================== LEFT SIDE ===================== */
+
+.solicitud-card-admin__main {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  flex: 1;
+  min-width: 0;
+}
+
+/* 🔥 BLOQUE USER: ancho estable (clave del fix) */
+.solicitud-card-admin__user {
+  display: flex;
+  flex-direction: column;
+
+  flex: 0 0 320px; /* ← reserva SIEMPRE este espacio */
+  min-width: 320px;
+  max-width: 320px;
+}
+
+/* NAME */
+.solicitud-card-admin__user-name {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+
+  color: #fff;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* DATE */
+.solicitud-card-admin__date {
+  font-size: .8rem;
+  color: rgba(255,255,255,.6);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* ===================== META (SIEMPRE MISMA POSICIÓN) ===================== */
+
+.solicitud-card-admin__meta {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 180px;
+  max-width: 180px;
+
+  font-size: .8rem;
+  color: rgba(255,255,255,.75);
+}
+
+.solicitud-card-admin__meta strong {
+  color: #fff;
+  line-height: 1.2;
+}
+
+.solicitud-card-admin__meta p {
+  margin: 0;
+  color: rgba(255,255,255,.6);
+  font-size: .78rem;
+  line-height: 1.2;
+}
+
+/* ===================== BADGE SLOT ===================== */
+
+.solicitud-card-admin__badge-slot {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+
+  min-width: 140px;
+  justify-content: flex-start;
+}
+
+/* ===================== RIGHT SIDE ===================== */
+
+.solicitud-card-admin__actions {
+  display: flex;
+  align-items: center;
+}
+
+/* BUTTON */
+.solicitud-card-admin__btn {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+
+  color: #fff;
+  font-weight: 700;
+
+  padding: 6px 10px;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: .2s;
+
+  font-size: .85rem;
+  height: 34px;
+}
+
+.solicitud-card-admin__btn:hover {
+  background: rgba(255,255,255,.14);
+}
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 768px) {
+
+  .solicitud-card-admin {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .solicitud-card-admin__main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .solicitud-card-admin__user {
+    flex: 1;
+    min-width: unset;
+    max-width: 100%;
+  }
+
+  .solicitud-card-admin__meta {
+    min-width: unset;
+    max-width: 100%;
+  }
+
+  .solicitud-card-admin__badge-slot {
+    margin-left: 0;
+  }
+
+  .solicitud-card-admin__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .solicitud-card-admin__btn {
+    width: 100%;
+  }
+}

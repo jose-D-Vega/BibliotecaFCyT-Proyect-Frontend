@@ -1,0 +1,145 @@
+.prestamo-filters{
+  display:flex;
+  gap:14px;
+  margin-bottom:28px;
+  flex-wrap:wrap;
+}
+
+/* CONTENEDOR */
+.prestamo-filter-dropdown{
+  position:relative;
+
+  /* 🔥 CLAVE: el ancho lo define el contenido */
+  width:max-content;
+  max-width:100%;
+}
+
+/* BOTÓN */
+.prestamo-filter-btn{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+
+  padding:12px 14px;
+  border-radius:16px;
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+
+  justify-content:flex-start;
+
+  gap:10px;
+
+  /* 🔥 IMPORTANTE: ya NO forzar width */
+  width:auto;
+
+  font-family:'Source Sans 3',sans-serif;
+  font-size:.95rem;
+  font-weight:700;
+
+  transition:.2s;
+}
+
+.prestamo-filter-btn:hover{
+  background:rgba(255,255,255,.12);
+}
+
+/* LEFT */
+.prestamo-filter-btn__left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+
+/* TEXTO SELECCIONADO */
+.prestamo-filter-selected{
+  background:rgba(255,255,255,.14);
+  padding:6px 12px;
+  border-radius:10px;
+
+  font-size:.85rem;
+  color:#fff;
+  font-weight:700;
+
+  /* 🔥 CLAVE: que NO reserve espacio fijo */
+  white-space:nowrap;
+
+  /* 🔥 IMPORTANTE: sin límite fijo */
+  max-width:none;
+}
+
+/* ARROW */
+.prestamo-filter-arrow{
+  font-size:.8rem;
+  opacity:.8;
+  margin-left:auto;
+}
+
+/* MENU */
+.prestamo-filter-menu{
+  position:absolute;
+  top:calc(100% + 10px);
+  left:0;
+
+  width:100%;
+  background:#12233f;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+
+  z-index:100;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+  max-height:320px;
+  overflow-y:auto;
+
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.18) transparent;
+}
+
+/* ITEMS */
+.prestamo-filter-menu button{
+  width:100%;
+  background:transparent;
+  border:none;
+
+  color:rgba(255,255,255,.82);
+  text-align:left;
+
+  padding:14px 18px;
+
+  cursor:pointer;
+
+  font-family:'Source Sans 3',sans-serif;
+  font-size:.95rem;
+  font-weight:600;
+
+  transition:.2s;
+}
+
+.prestamo-filter-menu button:hover{
+  background:rgba(255,255,255,.06);
+}
+
+.prestamo-filter-menu button.active{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+
+  .prestamo-filter-dropdown{
+    width:100%;
+  }
+
+  .prestamo-filter-btn{
+    width:100%;
+  }
+
+  .prestamo-filter-menu{
+    width:100%;
+  }
+}

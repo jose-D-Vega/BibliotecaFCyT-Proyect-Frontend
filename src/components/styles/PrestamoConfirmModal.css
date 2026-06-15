@@ -1,0 +1,380 @@
+.prestamo-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(2,6,18,.82);
+  backdrop-filter:blur(6px);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow-y:auto;
+  z-index:999;
+  padding:clamp(90px,10vh,120px) 18px 24px;
+}
+
+.prestamo-modal{
+  width:100%;
+  max-width:760px;
+  background:#12233f;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:30px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  max-height:85vh;
+  animation:modalAppear .18s ease;
+}
+
+.prestamo-modal__header{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+
+.prestamo-modal__header h2{
+  margin:0 0 8px;
+  font-size:clamp(1.8rem,2vw,2.2rem);
+  color:#fff;
+  font-family:'Playfair Display',serif;
+}
+
+.prestamo-modal__header p{
+  margin:0;
+  color:rgba(255,255,255,.68);
+}
+
+.prestamo-modal__close{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:15px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+  flex-shrink:0;
+}
+
+.prestamo-modal__close:hover{
+  background:rgba(255,255,255,.14);
+}
+
+.prestamo-modal__box{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:16px 18px;
+  color:#fff;
+}
+
+/* ========================= */
+/* SCROLL AREA */
+/* ========================= */
+
+.prestamo-modal__scroll{
+  overflow-y:auto;
+  padding-right:4px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  flex:1;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.18) transparent;
+}
+
+.prestamo-modal__scroll::-webkit-scrollbar{
+  width:7px;
+}
+
+.prestamo-modal__scroll::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+}
+
+/* ========================= */
+/* SECTIONS */
+/* ========================= */
+
+.prestamo-section-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+/* ========================= */
+/* DROPDOWN */
+/* ========================= */
+
+.prestamo-dropdown{
+  width:100%;
+  border:none;
+  background:none;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  cursor:pointer;
+  padding:0;
+  text-align:left;
+}
+
+.prestamo-dropdown__left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.prestamo-dropdown__left h3{
+  margin:0;
+  color:#fff;
+  font-size:1.08rem;
+}
+
+.prestamo-dropdown__left span{
+  min-width:38px;
+  height:38px;
+  padding:0 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+}
+
+.prestamo-dropdown__arrow{
+  color:rgba(255,255,255,.7);
+  transition:.25s;
+}
+
+.prestamo-dropdown__arrow--active{
+  transform:rotate(180deg);
+}
+
+/* ========================= */
+/* COPIES LIST */
+/* ========================= */
+
+.prestamo-section__list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.prestamo-copy{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px 18px;
+  border-radius:20px;
+  border:1px solid transparent;
+}
+
+.prestamo-copy--accepted{
+  background:rgba(20,180,90,.12);
+  border-color:rgba(45,255,143,.2);
+}
+
+.prestamo-copy--rejected{
+  background:rgba(255,70,70,.10);
+  border-color:rgba(255,120,120,.16);
+}
+
+.prestamo-copy__icon{
+  font-weight:900;
+  font-size:1.55rem;
+  line-height:1;
+  flex-shrink:0;
+  opacity:.95;
+}
+
+.prestamo-copy--accepted .prestamo-copy__icon{
+  color:#7dffbc;
+}
+
+.prestamo-copy--rejected .prestamo-copy__icon{
+  color:#ff9d9d;
+}
+
+.prestamo-copy__info strong{
+  color:#fff;
+}
+
+.prestamo-copy__info span{
+  color:rgba(255,255,255,.68);
+}
+
+/* ========================= */
+/* OBSERVACIONES */
+/* ========================= */
+
+.prestamo-observaciones textarea{
+  width:100%;
+  min-height:120px;
+  resize:vertical;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  padding:16px;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:.95rem;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff;
+}
+
+/* ========================= */
+/* 🔥 RENOVACIÓN VISUAL (ACTUALIZADO PRO) */
+/* ========================= */
+
+.renewal-badge{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  padding:16px;
+  border-radius:22px;
+  background:rgba(255,170,70,.10);
+  border:1px solid rgba(255,170,70,.22);
+  flex-wrap:wrap;
+}
+
+.renewal-badge__item{
+  text-align:center;
+  min-width:180px;
+}
+
+.renewal-badge__item span{
+  display:block;
+  font-size:.8rem;
+  color:rgba(255,255,255,.6);
+  margin-bottom:6px;
+}
+
+.renewal-badge__item strong{
+  color:#fff;
+  font-size:1.05rem;
+}
+
+.renewal-badge__item--new strong{
+  color:#ffb25e;
+}
+
+.renewal-badge__arrow{
+  font-size:1.4rem;
+  color:rgba(255,255,255,.5);
+}
+
+/* ========================= */
+/* ACTIONS */
+/* ========================= */
+
+.prestamo-modal__actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
+  flex-wrap:wrap;
+  padding-top:4px;
+}
+
+/* botones base */
+.accept-btn,
+.cancel-btn{
+  min-width:170px;
+  height:54px;
+  border:none;
+  border-radius:18px;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:.96rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+/* aceptar normal */
+.accept-btn{
+  background:rgba(20,180,90,.18);
+  color:#62ffab;
+}
+
+.accept-btn:hover{
+  background:rgba(20,180,90,.28);
+  transform:translateY(-2px);
+}
+
+/* cancelar */
+.cancel-btn{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+}
+
+.cancel-btn:hover{
+  background:rgba(255,255,255,.14);
+  transform:translateY(-2px);
+}
+
+/* 🔥 BOTÓN SECUNDARIO (RECHAZAR RENOVACIÓN) */
+.reject-btn{
+  min-width:170px;
+  height:54px;
+  border:none;
+  border-radius:18px;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:.96rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+
+  background:rgba(255,70,70,.15);
+  color:#ff8b8b;
+}
+
+.reject-btn:hover{
+  background:rgba(255,70,70,.25);
+  transform:translateY(-2px);
+}
+
+/* ========================= */
+/* ANIMATION */
+/* ========================= */
+
+@keyframes modalAppear{
+  from{
+    opacity:0;
+    transform:scale(.96) translateY(-6px);
+  }
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media (max-width:768px){
+  .prestamo-modal{
+    padding:22px;
+    border-radius:24px;
+    max-height:88vh;
+  }
+
+  .prestamo-modal__actions{
+    flex-direction:column;
+  }
+
+  .accept-btn,
+  .cancel-btn,
+  .reject-btn{
+    width:100%;
+  }
+}

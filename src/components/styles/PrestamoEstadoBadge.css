@@ -1,0 +1,91 @@
+.estado-badge{
+  padding:8px 13px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:700;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================
+   ESTADOS PRINCIPALES
+========================= */
+
+.estado-badge.aprobado{
+  background:rgba(20,180,90,.18);
+  color:#62ffab;
+}
+
+.estado-badge.parcialmente-aprobado{
+  background:rgba(255,170,70,.18);
+  color:#ffca7a;
+}
+
+.estado-badge.parcialmente-reserva-aprobada{
+  background:rgba(99,102,241,.22);
+  color:#c7d2ff;
+}
+
+.estado-badge.activo{
+  background:rgba(90,160,255,.18);
+  color:#8cc0ff;
+}
+
+.estado-badge.devuelto{
+  background:rgba(255,255,255,.12);
+  color:rgba(255,255,255,.88);
+}
+
+.estado-badge.vencido{
+  background:rgba(255,70,70,.16);
+  color:#ff7b7b;
+}
+
+.estado-badge.cancelado{
+  background:rgba(120,120,120,.18);
+  color:#d0d0d0;
+}
+
+.estado-badge.rechazado{
+  background:rgba(255,70,70,.14);
+  color:#ff9292;
+}
+
+/* =========================
+   RESERVAS
+========================= */
+
+.estado-badge.reserva-aprobada{
+  background:rgba(99,102,241,.22);
+  color:#c7d2ff;
+}
+
+.estado-badge.reserva-parcialmente-aprobada{
+  background:rgba(139,92,246,.22);
+  color:#ddd6fe;
+}
+
+.estado-badge.reserva-solicitada{
+  background:rgba(99,102,241,.14);
+  color:#aab4ff;
+}
+
+/* =========================
+   RENOVACIONES
+========================= */
+
+.estado-badge.renovacion-solicitada{
+  background:rgba(255,200,120,.16);
+  color:#ffd7a1;
+}
+
+/* =========================
+   SOLICITADO (GENERAL)
+========================= */
+
+.estado-badge.solicitado{
+  background:rgba(255,255,255,.10);
+  color:#e6e6e6;
+}
