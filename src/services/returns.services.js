@@ -58,3 +58,12 @@ export const getDevolucionesUsuario = async ({ search, fecha_desde, fecha_hasta,
   const { data } = await api.get(`/returns/mis-devoluciones?${params.toString()}`)
   return data
 }
+
+// sanctions.services.js o returns.services.js, donde corresponda
+export const resolveReservaAfectada = async (id_prestamo, id_ejemplar_anterior, payload) => {
+  const { data } = await api.patch(
+    `/returns/prestamo/${id_prestamo}/reserva-afectada/${id_ejemplar_anterior}`,
+    payload // { accion: 'reasignar', id_ejemplar_nuevo } o { accion: 'descartar' }
+  )
+  return data
+}

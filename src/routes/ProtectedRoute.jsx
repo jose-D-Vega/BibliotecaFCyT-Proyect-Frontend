@@ -6,20 +6,21 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   const location = useLocation()
 
   if (loading) return <div>Cargando...</div>
-
   if (!user) return <Navigate to="/login" replace />
 
-  // Bibliotecario sin rol elegido → select-rol
-  // Excepto si ya está en /select-rol para evitar loop
-  if (user.rol === 'bibliotecario' && !rolActivo && location.pathname !== '/select-rol') {
+  // Usuarios con rol de gestión sin rol elegido → select-rol
+  const esGestion = ['bibliotecario', 'admin'].includes(user.rol)
+  if (esGestion && !rolActivo && location.pathname !== '/select-rol') {
     return <Navigate to="/select-rol" replace />
   }
 
   // Si se requiere un rol específico y el activo no coincide
   if (requiredRole && rolActivo !== requiredRole) {
-    if (rolActivo === 'bibliotecario') return <Navigate to="/admin/inicio" replace />
-    return <Navigate to="/user/inicio" replace />
+  if (rolActivo === 'admin') return <Navigate to="/admin/inicio" replace />
+    if (rolActivo === 'bibliotecario') return <Navigate to="/bibliotecario/inicio" replace />
+    return <Navigate to="/app/inicio" replace />
   }
+
 
   return children
 }

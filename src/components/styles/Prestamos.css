@@ -537,12 +537,15 @@
 
 .prestamo-modal-overlay {
   position: fixed;
-  inset: 0;
+  top: 82px; /* ← debajo del navbar */
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3000;
+  z-index: 500; /* ← ya no necesita superar al navbar */
   padding: 20px;
   backdrop-filter: blur(4px);
 }
@@ -550,11 +553,13 @@
 .prestamo-modal-box {
   width: 100%;
   max-width: 420px;
+  max-height: calc(100vh - 82px - 40px); /* ← por las dudas */
   background: #122540;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
 }
 
 .prestamo-modal-box h3 {
@@ -613,6 +618,17 @@
   .prestamo-card__acciones { margin-left: 0; width: 100%; }
 }
 
+@media (max-width: 768px) {
+  .prestamo-modal-overlay {
+    top: 76px;
+    padding: 12px;
+  }
+
+  .prestamo-modal-box {
+    max-height: calc(100vh - 76px - 24px);
+    padding: 18px;
+  }
+}
 
 
 

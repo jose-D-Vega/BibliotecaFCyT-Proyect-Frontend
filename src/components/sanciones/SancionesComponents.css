@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+/* ── BADGES ── */
+.sancion-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.badge--amarillo { background: rgba(245,158,11,0.2); color: #fcd34d; }
+.badge--naranja { background: rgba(249,115,22,0.2); color: #fdba74; }
+.badge--rojo { background: rgba(239,68,68,0.2); color: #f09595; }
+.badge--purpura { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+.badge--verde { background: rgba(29,158,117,0.2); color: #7de3b8; }
+.badge--gris { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
+
+/* ── SANCION CARD ── */
+.sancion-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  transition: background 0.2s;
+}
+
+.sancion-card:hover { background: rgba(255,255,255,0.06); }
+.sancion-card--activa { border: 1px solid rgba(239,68,68,0.2); }
+.sancion-card--resuelta { border: 1px solid rgba(29,158,117,0.15); }
+.sancion-card--escalada { border: 1px solid rgba(255,255,255,0.08); }
+
+.sancion-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.sancion-card__badges { display: flex; flex-wrap: wrap; gap: 4px; }
+.sancion-card__id { font-size: 0.75rem; color: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+.sancion-card__usuario {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sancion-card__nombre { font-size: 0.95rem; font-weight: 700; color: #fff; }
+.sancion-card__detalle { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+
+.sancion-card__libro {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sancion-card__libro-titulo { font-size: 0.875rem; font-weight: 600; color: rgba(255,255,255,0.85); }
+
+.sancion-card__desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.sancion-card__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.sancion-card__item { display: flex; flex-direction: column; gap: 1px; }
+.sancion-card__label {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.sancion-card__value { font-size: 0.85rem; color: rgba(255,255,255,0.85); font-weight: 600; }
+
+.text-rojo { color: #f09595 !important; }
+.text-amarillo { color: #fcd34d !important; }
+
+.sancion-card__acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── BOTONES ── */
+.sancion-btn {
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.sancion-btn--ghost {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+}
+.sancion-btn--ghost:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.sancion-btn--resolver {
+  background: rgba(29,158,117,0.15);
+  border-color: rgba(29,158,117,0.3);
+  color: #7de3b8;
+}
+.sancion-btn--resolver:hover { background: rgba(29,158,117,0.25); }
+
+.sancion-btn--escalar {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5);
+}
+.sancion-btn--escalar:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+
+.sancion-btn--primario {
+  background: #fff;
+  color: #0c1a2e;
+  border-color: #fff;
+}
+.sancion-btn--primario:hover { background: #f0f0f0; }
+.sancion-btn--primario:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── MODAL SANCION ── */
+.modal-sancion-overlay {
+  position: fixed;
+  top: 82px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-sancion-box {
+  background: #0f2035;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(100vh - 82px - 2rem);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeUp 0.25s ease both;
+}
+
+.modal-sancion__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.modal-sancion__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.modal-sancion__subtitle {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+.modal-sancion__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 0;
+}
+
+.modal-sancion__seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.modal-sancion__seccion-titulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.modal-sancion__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .modal-sancion-overlay { top: 76px; padding: 0.5rem; }
+  .modal-sancion-box { 
+    max-height: calc(100vh - 76px - 1rem); 
+    border-radius: 14px;
+  }
+  .modal-sancion__grid { grid-template-columns: 1fr; }
+  .sancion-card__info { grid-template-columns: 1fr; }
+}
+
+/*   Sanciones pendientes   */
+
+.sancion-pendiente-card {
+  background: rgba(245,158,11,0.05);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  transition: background 0.2s;
+}
+
+.sancion-pendiente-card:hover { background: rgba(245,158,11,0.08); }
+
+.sancion-pendiente-card__alert {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fcd34d;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sancion-pendiente-card__desc {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+  line-height: 1.5;
+  font-style: italic;
+}
