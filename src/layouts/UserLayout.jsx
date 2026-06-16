@@ -8,7 +8,7 @@ import Footer from "./layouts_components/Footer";
 
 const UserLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { logout } = useAuth();
+  const { logout, switchRol } = useAuth();
   const navigate = useNavigate();
 
   const handleToggleSidebar = () => {
@@ -28,12 +28,18 @@ const UserLayout = () => {
     navigate("/app/perfil");
   };
 
+  const handleSwitchRole = () => {
+    switchRol();
+    navigate("/select-rol", { replace: true });
+  };
+
   return (
     <div className="user-layout">
       <Navbar
         onToggleSidebar={handleToggleSidebar}
         role="user"
         onLogout={handleLogout}
+        onSwitchRole={handleSwitchRole}
         onViewProfile={handleViewProfile}
       />
 

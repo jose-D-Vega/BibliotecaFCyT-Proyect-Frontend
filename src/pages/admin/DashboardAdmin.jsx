@@ -150,7 +150,7 @@ const DashboardAdmin = () => {
                     <div className="chart-bar__container">
                       <div className="chart-bar__fill" style={{ height: H[i] }}></div>
                     </div>
-                    <span className="chart-bar__label">{m}</span>
+                    <span className="chart-bar__label">{m} {H[i]}</span>
                   </div>
                 );
               })}

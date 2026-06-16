@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from '../../context/AuthContext';
 import "../styles/Navbar.css";
 import logoFcyt from "../../assets/icons/LogoFCyT.png";
 import NotificacionesBadge from '../../components/NotificacionesBadge'
@@ -12,6 +13,7 @@ const Navbar = ({
 }) => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
+  const { user } = useAuth()
 
   const handleToggleProfileMenu = () => {
     setProfileMenuOpen((prev) => !prev);
@@ -36,6 +38,8 @@ const Navbar = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const multiplesRoles = user?.rol == "admin" || user?.rol == "bibliotecario"
 
   return (
     <header className="app-navbar">
@@ -75,22 +79,6 @@ const Navbar = ({
           Ir a la web de la FCyT
         </a>
 
-        {/*<button
-          className="app-navbar__icon-btn"
-          type="button"
-          aria-label="Notificaciones"
-        >
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path
-              d="M15 17h5l-1.4-1.4a2 2 0 0 1-.6-1.4V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5m6 0H9m6 0a3 3 0 0 1-6 0"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>*/}
         <NotificacionesBadge />
 
         <div className="app-navbar__profile-wrapper" ref={profileMenuRef}>
@@ -121,7 +109,7 @@ const Navbar = ({
                 Ver mi perfil
               </button>
 
-              {role === "admin" && (
+              {multiplesRoles && (
                 <button
                   type="button"
                   className="app-navbar__profile-menu-item"

@@ -27,7 +27,7 @@ const RolSelectorPage = () => {
 
         <div className="rol-card__body">
           <h1 className="rol-card__title">Biblioteca FCyT UNCA</h1>
-          <p className="rol-card__welcome">Hola, {user?.nombre_apellido || 'Usuario'}</p>
+          <p className="rol-card__welcome">Hola, {user?.nombre || 'Usuario'}</p>
           <p className="rol-card__desc">Seleccioná tu perfil de acceso para continuar</p>
 
           <div className="rol-options">

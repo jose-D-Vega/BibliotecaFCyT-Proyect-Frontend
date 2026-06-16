@@ -119,7 +119,7 @@ const DashboardUser = () => {
 
             <div className="chart-panel__body">
               {['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'].map((m, i) => {
-                const H = ['20%', '40%', '90%', '60%', '30%', '80%'];
+                const H = ['1%', '40%', '90%', '60%', '30%', '80%'];
 
                 return (
                   <div key={m} className="chart-bar">
@@ -129,7 +129,7 @@ const DashboardUser = () => {
                         style={{ height: H[i] }}
                       ></div>
                     </div>
-                    <span className="chart-bar__label">{m}</span>
+                    <span className="chart-bar__label">{m} {H[i]}</span>
                   </div>
                 );
               })}

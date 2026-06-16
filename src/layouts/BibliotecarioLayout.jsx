@@ -37,7 +37,7 @@ const BibliotecarioLayout = () => {
     <div className="admin-layout">
       <Navbar
         onToggleSidebar={handleToggleSidebar}
-        role="admin"
+        role="bibliotecario"
         onLogout={handleLogout}
         onSwitchRole={handleSwitchRole}
         onViewProfile={handleViewProfile}
