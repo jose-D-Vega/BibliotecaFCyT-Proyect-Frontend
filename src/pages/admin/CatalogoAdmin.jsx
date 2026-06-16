@@ -3,6 +3,7 @@ import "../styles/styles_admin/CatalogoAdmin.css"
 import Buscador from "../../components/Buscador"
 import Filtros from "../../components/Filtros"
 import ListaLibros from "../../components/ListaLibros"
+import CatalogoPagination from "../../components/CatalogoPagination"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -31,16 +32,19 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
 
   return (
     <div className="catalogo">
+
       <div className="catalogo-header">
         <div className="header-top">
           <h1 className="titulo">Catálogo</h1>
         </div>
+
         <Buscador
           busqueda={busqueda}
           setBusqueda={setBusqueda}
           modoBusqueda={modoBusqueda}
           setModoBusqueda={setModoBusqueda}
         />
+
         <Filtros
           areas={areas}
           setAreas={setAreas}
@@ -60,7 +64,9 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
         </button>
       </div>
 
+      {/* 🔥 BLOQUE UNIFICADO (GRID + PAGINACIÓN) */}
       <div className="catalogo-body">
+
         <ListaLibros
           pagina={pagina}
           setPagina={setPagina}
@@ -72,22 +78,18 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
           setTotalPaginas={setTotalPaginas}
           onVerDetalle={onVerDetalle}
         />
+
+        <CatalogoPagination
+          currentPage={pagina}
+          totalPages={totalPaginas}
+          onPageChange={(page) => {
+            setPagina(page)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
+        />
+
       </div>
 
-      <div className="paginacion">
-        {Array.from({ length: totalPaginas }, (_, i) => (
-          <button
-            key={i}
-            className={pagina === i + 1 ? "active" : ""}
-            onClick={() => {
-              setPagina(i + 1)
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            }}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }

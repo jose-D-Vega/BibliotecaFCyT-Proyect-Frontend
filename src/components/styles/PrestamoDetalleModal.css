@@ -1,0 +1,510 @@
+.prestamo-detalle-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(2,6,18,.82);
+  backdrop-filter:blur(6px);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow-y:auto;
+  z-index:999;
+  padding:
+    clamp(90px,10vh,120px)
+    18px
+    24px
+}
+
+.prestamo-detalle-modal{
+  width:min(920px,95vw);
+  max-height:90vh;
+  overflow:hidden;
+  background:#12233f;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:30px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  margin:0 auto
+}
+
+/* HEADER */
+
+.prestamo-detalle-header{
+  display:flex;
+  justify-content:space-between;
+  gap:18px
+}
+
+.prestamo-detalle-header h2{
+  margin:0 0 6px;
+  color:#fff;
+  font-size:clamp(1.7rem,2vw,2.1rem)
+}
+
+.prestamo-detalle-header p{
+  margin:0;
+  color:rgba(255,255,255,.65)
+}
+
+.prestamo-detalle-close{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+  flex-shrink:0
+}
+
+.prestamo-detalle-close:hover{
+  background:rgba(255,255,255,.14)
+}
+
+/* INFO */
+
+.prestamo-detalle-info{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px
+}
+
+.prestamo-detalle-info div{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:18px
+}
+
+.prestamo-detalle-info span{
+  display:block;
+  color:rgba(255,255,255,.6);
+  margin-bottom:10px
+}
+
+.prestamo-detalle-info strong{
+  color:#fff
+}
+
+/* CONTENT */
+
+.prestamo-detalle-content{
+  flex:1;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding-right:4px;
+  scrollbar-width:thin;
+  scrollbar-color:
+    rgba(255,255,255,.18)
+    transparent
+}
+
+.prestamo-detalle-content::-webkit-scrollbar{
+  width:7px
+}
+
+.prestamo-detalle-content::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.18);
+  border-radius:999px
+}
+
+/* MATERIAL */
+
+.prestamo-material-item{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:18px
+}
+
+.prestamo-material-item__top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px
+}
+
+.prestamo-material-item__info h3{
+  margin:0 0 5px;
+  color:#fff;
+  font-size:1rem
+}
+
+.prestamo-material-item__info span{
+  color:rgba(255,255,255,.65)
+}
+
+.prestamo-material-item__quantity{
+  background:rgba(255,255,255,.08);
+  padding:10px 14px;
+  border-radius:14px;
+  color:#fff;
+  font-size:.88rem;
+  font-weight:700;
+  height:fit-content;
+  white-space:nowrap
+}
+
+.prestamo-material-item__copies{
+  display:flex;
+  flex-direction:column;
+  gap:10px
+}
+
+/* COPY */
+
+.prestamo-copy-row{
+  min-height:68px;
+  padding:14px 18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  transition:.2s
+}
+
+/* 👇 CAMBIADO ACA */
+
+.prestamo-copy-row--active{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.12)
+}
+
+.prestamo-copy-row:hover{
+  background:rgba(255,255,255,.08)
+}
+
+.prestamo-copy-row__left{
+  display:flex;
+  align-items:center;
+  gap:14px
+}
+
+.prestamo-copy-row__icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0
+}
+
+.prestamo-copy-row span{
+  color:#fff;
+  font-weight:700
+}
+
+/* ACTIONS */
+
+.prestamo-detalle-actions{
+  display:flex;
+  justify-content:flex-end
+}
+
+.prestamo-detalle-cancel-btn{
+  border:none;
+  min-width:240px;
+  height:56px;
+  border-radius:18px;
+  background:rgba(255,70,70,.14);
+  color:#ff8b8b;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s
+}
+
+.prestamo-detalle-cancel-btn:hover{
+  background:rgba(255,70,70,.24);
+  transform:translateY(-2px)
+}
+
+/* CANCEL MODAL */
+
+.prestamo-cancel-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(2,6,18,.82);
+  backdrop-filter:blur(6px);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow-y:auto;
+  z-index:1000;
+  padding:
+    clamp(90px,10vh,120px)
+    18px
+    24px
+}
+
+.prestamo-cancel-modal{
+  width:100%;
+  max-width:720px;
+  background:#12233f;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:30px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:22px
+}
+
+.prestamo-cancel-modal__header{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start
+}
+
+.prestamo-cancel-modal__header h2{
+  margin:0 0 8px;
+  font-size:clamp(1.8rem,2vw,2.2rem);
+  color:#fff;
+  font-family:'Playfair Display',serif
+}
+
+.prestamo-cancel-modal__header p{
+  margin:0;
+  color:rgba(255,255,255,.68)
+}
+
+.prestamo-cancel-close{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:15px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer
+}
+
+.prestamo-cancel-user{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:16px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  color:#fff
+}
+
+.prestamo-cancel-user span{
+  background:rgba(255,70,70,.12);
+  color:#ff8b8b;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:.9rem;
+  font-weight:700
+}
+
+.prestamo-cancel-observaciones{
+  display:flex;
+  flex-direction:column;
+  gap:10px
+}
+
+.prestamo-cancel-observaciones label{
+  color:#fff;
+  font-weight:700
+}
+
+.prestamo-cancel-observaciones textarea{
+  width:100%;
+  min-height:150px;
+  resize:vertical;
+  border:none;
+  outline:none;
+  border-radius:20px;
+  padding:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff
+}
+
+.prestamo-cancel-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
+  flex-wrap:wrap
+}
+
+.prestamo-cancel-btn-primary,
+.prestamo-cancel-btn-secondary{
+  min-width:190px;
+  height:56px;
+  border:none;
+  border-radius:18px;
+  font-weight:700;
+  cursor:pointer
+}
+
+.prestamo-cancel-btn-primary{
+  background:rgba(255,70,70,.14);
+  color:#ff8b8b
+}
+
+.prestamo-cancel-btn-secondary{
+  background:rgba(255,255,255,.08);
+  color:#fff
+}
+
+.prestamo-detalle-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px; /* 👈 ESTO ES LO CLAVE */
+  flex-wrap: wrap;
+}
+
+/* ===================== BOTONES NUEVOS (DETALLE MODAL) ===================== */
+
+.prestamo-detalle-btn {
+  min-width: 220px;
+  height: 52px;
+
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1rem;
+
+  border: none;
+  cursor: pointer;
+
+  transition: .2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prestamo-detalle-btn--cancel {
+  background: rgba(255,70,70,.14);
+  color: #ff8b8b;
+}
+
+.prestamo-detalle-btn--cancel:hover {
+  background: rgba(255,70,70,.25);
+  transform: translateY(-2px);
+}
+
+.prestamo-detalle-btn--activate {
+  background: rgba(34,197,94,.15);
+  border: 1px solid rgba(34,197,94,.4);
+  color: #4ade80;
+}
+
+.prestamo-detalle-btn--activate:hover {
+  background: rgba(34,197,94,.25);
+  transform: translateY(-2px);
+}
+
+/* ===================== ACTIVAR MODAL BUTTON GREEN ===================== */
+
+.prestamo-cancel-btn-success {
+  min-width: 190px;
+  height: 56px;
+
+  border-radius: 18px;
+  font-weight: 700;
+  cursor: pointer;
+
+  border: 1px solid rgba(34,197,94,.35);
+
+  background: rgba(34,197,94,.18);
+  color: #4ade80;
+
+  transition: .2s;
+}
+
+.prestamo-cancel-btn-success:hover {
+  background: rgba(34,197,94,.28);
+  transform: translateY(-2px);
+}
+
+/* ===================== MODAL BUTTON HOVER FIX ===================== */
+
+.prestamos-admin .prestamo-cancel-btn-secondary {
+  transition: .2s;
+}
+
+.prestamos-admin .prestamo-cancel-btn-secondary:hover {
+  background: rgba(255,255,255,.16);
+  transform: translateY(-2px);
+}
+
+/* botón confirmar cancelación */
+.prestamos-admin .prestamo-cancel-btn-primary {
+  transition: .2s;
+}
+
+.prestamos-admin .prestamo-cancel-btn-primary:hover {
+  background: rgba(255,70,70,.22);
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+  .prestamo-detalle-info,
+  .prestamo-material-item__top{
+    grid-template-columns:1fr;
+    flex-direction:column;
+    align-items:stretch
+  }
+
+  .prestamo-detalle-cancel-btn{
+    width:100%
+  }
+
+  .prestamo-detalle-modal{
+    padding:20px;
+    border-radius:24px
+  }
+
+  .prestamo-material-item__quantity{
+    width:fit-content
+  }
+
+  .prestamo-cancel-actions{
+    flex-direction:column
+  }
+
+  .prestamo-cancel-btn-primary,
+  .prestamo-cancel-btn-secondary{
+    width:100%
+  }
+}
+
+@media(max-width:480px){
+
+  .prestamo-detalle-overlay{
+    padding:10px
+  }
+
+  .prestamo-detalle-modal{
+    padding:18px
+  }
+
+  .prestamo-copy-row{
+    padding:13px 14px;
+    min-height:62px
+  }
+
+  .prestamo-copy-row__icon{
+    width:38px;
+    height:38px
+  }
+}

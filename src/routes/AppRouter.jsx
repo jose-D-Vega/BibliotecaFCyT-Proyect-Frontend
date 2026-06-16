@@ -24,6 +24,7 @@ import SancionesPage from '../pages/user/prueba/SancionesPage'
 import PerfilUserPage from '../pages/user/PerfilUserPage'
 
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
+import PrestamosAdminPage from '../pages/admin/PrestamosAdminPage'
 import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
 import AdminCatalogoPage from '../pages/admin/AdminCatalogoPage'
 import DetalleLibroAdminPage from '../pages/admin/DetalleLibroAdminPage'
@@ -122,7 +123,7 @@ const AppRouter = () => {
         >
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<AdminDashboardPage />} />
-          <Route path="prestamos" element={<GestionPrestamosPage />} />
+          <Route path="prestamos" element={<PrestamosAdminPage />} />
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
           <Route path="catalogo" element={<AdminCatalogoPage />} />
           <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
