@@ -20,7 +20,8 @@ import DetalleLibroUserPage from '../pages/user/DetalleLibroUserPage'
 import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesUserPage from '../pages/user/prueba/DevolucionesUserPage'
-import SancionesPage from '../pages/user/prueba/SancionesPage'
+
+//import SancionesPage from '../pages/user/prueba/SancionesPage'
 import PerfilUserPage from '../pages/user/PerfilUserPage'
 
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
