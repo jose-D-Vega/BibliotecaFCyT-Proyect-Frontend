@@ -37,7 +37,7 @@ import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 
 import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
 import GestionUsuarios from '../pages/admin/GestionUsuarios'
-
+import SancionesUserPage from '../pages/user/SancionesUserPage'
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -112,7 +112,7 @@ const AppRouter = () => {
           <Route path="perfil" element={<PerfilUserPage />} />
           <Route path="prestamos" element={<PrestamosPage />} />
           <Route path="devoluciones" element={<DevolucionesUserPage />} />
-          <Route path="sanciones" element={<SancionesPage />} />
+          <Route path="sanciones" element={<SancionesUserPage />} />
         </Route>
 
         {/* ADMIN */}
