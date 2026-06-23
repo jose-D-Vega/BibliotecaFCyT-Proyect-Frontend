@@ -8,7 +8,10 @@ export default function MisSanciones() {
   const [errorCarga, setErrorCarga] = useState(false)
   const [filtroEstado, setFiltroEstado] = useState("Todas")
 
-  const API_URL = "http://localhost:3210/api/sanciones"
+  const API_URL = import.meta.env.VITE_API_URL
+    ? `${import.meta.env.VITE_API_URL}/sanctions`
+    : "http://localhost:3210/api/sanctions"
+
   const token = localStorage.getItem("token")
 
   const headers = useMemo(() => ({
