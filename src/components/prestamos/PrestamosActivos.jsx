@@ -18,20 +18,15 @@ function PrestamosActivos() {
   const [prestamos, setPrestamos] = useState([])
   const [loading, setLoading] = useState(true)
 
+
   const cargarPrestamos = async () => {
     setLoading(true)
     try {
-      // Traer todos los préstamos activos sin filtro de estado
       const res = await getLoans({ limit: 100 })
-      // Filtrar los que no son historial (devuelto, cancelado, rechazado)
       const activos = res.data.filter(p =>
         !['devuelto', 'cancelado', 'rechazado'].includes(p.estado_prestamo)
       )
-      // Para cada préstamo traer sus detalles
-      const conDetalles = await Promise.all(
-        activos.map(p => getLoanById(p.id_prestamo))
-      )
-      setPrestamos(conDetalles)
+      setPrestamos(activos)
     } catch (err) {
       console.error('Error al cargar préstamos activos:', err)
     } finally {

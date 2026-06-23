@@ -1,0 +1,75 @@
+.prestamo-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+/* botones normales */
+.prestamo-pagination button {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.82);
+
+  min-width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+  font-weight: 700;
+
+  transition: 0.2s;
+}
+
+.prestamo-pagination button:hover {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* activo */
+.prestamo-pagination button.active {
+  background: rgba(255,255,255,0.18);
+  color: white;
+  border-color: rgba(255,255,255,0.24);
+}
+
+/* navegación (<< < > >>) */
+.prestamo-pagination .nav-btn {
+  background: rgba(255,255,255,0.04);
+  font-size: 1.1rem;
+}
+
+/* disabled */
+.prestamo-pagination button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* puntos "..." */
+.prestamo-pagination .dots {
+  color: rgba(255,255,255,0.5);
+  padding: 0 6px;
+  font-weight: 700;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .prestamo-pagination {
+    gap: 6px;
+  }
+
+  .prestamo-pagination button {
+    min-width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
+  }
+
+  .prestamo-pagination .nav-btn {
+    font-size: 1rem;
+  }
+}

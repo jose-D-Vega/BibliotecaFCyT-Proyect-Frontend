@@ -32,11 +32,11 @@ const CompletarPerfilPage = () => {
       await updateProfile(form)
       await refreshUser() // refrescar datos del usuario en el contexto
       // Redirigir según rol
-       if (user.rol === 'bibliotecario') {
-            navigate('/select-rol', { replace: true })
+        if (user.rol === 'bibliotecario' || user.rol === 'admin') {
+          navigate('/select-rol', { replace: true })
         } else {
-            selectRol('normal')
-            navigate('/app/inicio', { replace: true })
+          selectRol('normal')
+          navigate('/app/inicio', { replace: true })
         }
     } catch {
       setError('Ocurrió un error al guardar los datos. Intentá de nuevo.')

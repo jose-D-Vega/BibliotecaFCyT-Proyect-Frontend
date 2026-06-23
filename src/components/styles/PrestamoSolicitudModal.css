@@ -1,0 +1,422 @@
+.solicitud-modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,18,.82);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  z-index: 999;
+  padding: 90px 18px 40px;
+}
+
+/* MODAL */
+.solicitud-modal{
+  width: min(1100px, 98vw);
+  max-height: calc(100vh - 130px);
+  overflow: hidden;
+  background: #12233f;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 28px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: auto;
+}
+
+/* HEADER */
+.solicitud-modal__header{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.solicitud-modal__header h2{
+  margin:0 0 6px;
+  color:#fff;
+  font-size:clamp(1.6rem,2vw,2.2rem);
+}
+
+.solicitud-modal__header p,
+.solicitud-modal__description{
+  color:rgba(255,255,255,.65);
+}
+
+.solicitud-modal__close{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:.2s;
+}
+
+.solicitud-modal__close:hover{
+  background:rgba(255,255,255,.14);
+}
+
+/* ========================= */
+/* 🔥 BULK ACTIONS (NUEVO AISLADO) */
+/* ========================= */
+
+.solicitud-modal__bulk-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+
+  padding:10px 0 0;
+}
+
+.bulk-btn{
+  border:none;
+  height:40px;
+  padding:0 14px;
+  border-radius:12px;
+
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+
+  background:rgba(255,255,255,.08);
+  color:#fff;
+
+  font-size:.85rem;
+}
+
+.bulk-btn:hover{
+  background:rgba(255,255,255,.14);
+}
+
+.bulk-btn--select,
+.bulk-btn--clear{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+}
+
+.bulk-btn--select:hover,
+.bulk-btn--clear:hover{
+  background:rgba(255,255,255,.14);
+}
+
+/* TOOLBAR (legacy, se mantiene por compatibilidad) */
+.solicitud-modal__toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.solicitud-modal__counter{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  padding:10px 14px;
+  border-radius:14px;
+  color:#fff;
+  font-weight:700;
+}
+
+.solicitud-modal__toolbar-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.toolbar-btn{
+  border:none;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+  height:42px;
+  padding:0 16px;
+  border-radius:14px;
+  font-weight:700;
+}
+
+.toolbar-btn:hover{
+  background:rgba(255,255,255,.14);
+}
+
+.toolbar-btn--secondary{
+  background:rgba(255,255,255,.05);
+}
+
+/* CONTENT */
+.solicitud-modal__content{
+  flex:1;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding-right:6px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.18) transparent;
+}
+
+.solicitud-modal__content::-webkit-scrollbar{
+  width:7px;
+}
+
+.solicitud-modal__content::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+}
+
+/* MATERIAL */
+.material-item{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.material-item__top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.material-item__info h3{
+  margin:0 0 5px;
+  font-size:1rem;
+  color:#fff;
+}
+
+.material-item__info span{
+  color:rgba(255,255,255,.65);
+}
+
+.material-item__quantity{
+  background:rgba(255,255,255,.08);
+  padding:10px 14px;
+  border-radius:14px;
+  color:#fff;
+  font-size:.88rem;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* COPIES */
+.material-item__copies{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.copy-row{
+  min-height:68px;
+  padding:14px 18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.copy-row:hover{
+  background:rgba(255,255,255,.07);
+}
+
+.copy-row--active{
+  background:rgba(20,180,90,.12);
+  border-color:rgba(70,255,170,.35);
+}
+
+.copy-row__left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.copy-row__icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.copy-row span{
+  color:#fff;
+  font-weight:700;
+}
+
+.copy-row__right{
+  position:relative;
+  width:28px;
+  height:28px;
+  flex-shrink:0;
+}
+
+.copy-row__right input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+
+.copy-row__check{
+  width:28px;
+  height:28px;
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:transparent;
+  font-weight:900;
+  transition:.2s;
+}
+
+.copy-row--active .copy-row__check{
+  background:#2be38a;
+  border-color:#2be38a;
+  color:#08141f;
+}
+
+/* RESERVA */
+.copy-row--reserva.copy-row--active {
+  background: rgba(59,130,246,.12);
+  border-color: rgba(59,130,246,.35);
+}
+
+.copy-row--reserva.copy-row--active .copy-row__check {
+  background:#3b82f6;
+  border-color:#3b82f6;
+  color:#fff;
+}
+
+/* RENOVACION */
+.copy-row--renovacion{
+  background:rgba(255,170,70,.12);
+  border-color:rgba(255,170,70,.35);
+}
+
+.copy-row--renovacion .copy-row__check{
+  background:#ffca7a;
+  border-color:#ffca7a;
+  color:#08141f;
+}
+
+/* ACTIONS */
+.solicitud-modal__actions{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.confirm-btn{
+  border:none;
+  min-width:240px;
+  height:56px;
+  border-radius:18px;
+  background:rgba(20,180,90,.18);
+  color:#62ffab;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.confirm-btn:hover{
+  background:rgba(20,180,90,.28);
+  transform:translateY(-2px);
+}
+
+/* RENOVATION BADGE (UNCHANGED) */
+.renewal-badge{
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  gap:14px;
+
+  padding:14px 16px;
+  margin:6px auto 12px;
+
+  max-width:520px;
+
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+
+  backdrop-filter: blur(6px);
+}
+
+.renewal-badge__item{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  text-align:center;
+
+  padding:12px;
+  border-radius:12px;
+
+  background:rgba(255,255,255,.05);
+  color:#fff;
+
+  min-height:64px;
+}
+
+.renewal-badge__item span{
+  display:block;
+  font-size:.75rem;
+  color:rgba(255,255,255,.6);
+  margin-bottom:6px;
+}
+
+.renewal-badge__item strong{
+  font-size:1.05rem;
+}
+
+.renewal-badge__item--new{
+  background:rgba(255,170,70,.12);
+  border:1px solid rgba(255,170,70,.25);
+}
+
+.renewal-badge__arrow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.2rem;
+  color:rgba(255,255,255,.5);
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  .solicitud-modal{
+    width: 98vw;
+    padding:18px;
+  }
+
+  .solicitud-modal__bulk-actions{
+    justify-content:center;
+  }
+
+  .renewal-badge{
+    flex-direction:column;
+    max-width:100%;
+  }
+
+  .renewal-badge__arrow{
+    transform:rotate(90deg);
+  }
+}

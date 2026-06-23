@@ -33,13 +33,13 @@
 /* ==========================================
    TARJETAS DE REPORTE (CARDS)
    ========================================== */
-.cards {
+.user--cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
 }
 
-.card {
+.user--card {
   background: rgba(255, 255, 255, 0.04);
   padding: 20px;
   border-radius: 12px;
@@ -47,11 +47,11 @@
   transition: transform 0.2s;
 }
 
-.card:hover {
+.user--card:hover {
   transform: translateY(-2px);
 }
 
-.card h3 {
+.user--card h3 {
   font-size: 14px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.4);
@@ -60,7 +60,7 @@
   letter-spacing: 0.5px;
 }
 
-.card p {
+.user--card p {
   font-size: 28px;
   font-weight: 700;
   color: #ffffff;

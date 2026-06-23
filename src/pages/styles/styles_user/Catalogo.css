@@ -108,6 +108,16 @@
   transform: translateY(-1px);
 }
 
+.catalogo-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* CLAVE: evita “hueco” cuando ListaLibros está loading */
+.grid-libros {
+  min-height: 400px; /* o lo que uses visualmente */
+}
+
 /* medias queries */
 
 @media (max-width: 768px) {

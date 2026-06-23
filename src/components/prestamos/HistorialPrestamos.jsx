@@ -54,11 +54,7 @@ function HistorialPrestamos() {
 
       const res = await getLoans(params)
       setTotalPaginas(res.pagination.totalPages)
-
-      const conDetalles = await Promise.all(
-        res.data.map(p => getLoanById(p.id_prestamo))
-      )
-      setPrestamos(conDetalles)
+      setPrestamos(res.data)
     } catch (err) {
       console.error('Error al cargar historial:', err)
     } finally {

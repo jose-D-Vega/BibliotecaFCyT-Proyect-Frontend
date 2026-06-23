@@ -15,9 +15,9 @@ function ListaLibros({
 }) {
   const gridRef = useRef(null)
   const [libros, setLibros] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [librosPorPagina, setLibrosPorPagina] = useState(null) 
+  const [librosPorPagina, setLibrosPorPagina] = useState(null)
   const [gridListo, setGridListo] = useState(false)
 
   useEffect(() => {
@@ -28,27 +28,31 @@ function ListaLibros({
 
       const ancho = window.innerWidth
       let anchoMinCard, filas
+
       if (ancho <= 480) { anchoMinCard = 110; filas = 5 }
       else if (ancho <= 768) { anchoMinCard = 130; filas = 4 }
       else { anchoMinCard = 150; filas = 3 }
 
       const gap = ancho <= 480 ? 10 : ancho <= 768 ? 12 : 16
       const columnas = Math.max(1, Math.floor((anchoContenedor + gap) / (anchoMinCard + gap)))
+
       setLibrosPorPagina(columnas * filas)
-      setGridListo(true) // señal de que ya tenemos el valor real
+      setGridListo(true)
     }
 
     const observer = new ResizeObserver(actualizar)
     if (gridRef.current) observer.observe(gridRef.current)
-    window.addEventListener('resize', actualizar)
+    window.addEventListener("resize", actualizar)
+
     return () => {
       observer.disconnect()
-      window.removeEventListener('resize', actualizar)
+      window.removeEventListener("resize", actualizar)
     }
   }, [])
 
   useEffect(() => {
     if (!gridListo) return
+
     const fetchLibros = async () => {
       try {
         setLoading(true)
@@ -63,16 +67,12 @@ function ListaLibros({
           ...(orden && { orden }),
         }
 
-        // Búsqueda por título o autor
-        //if (busqueda) params.search = busqueda
-
         const response = await getBooks(params)
-        let librosData = response.data
 
-        setLibros(librosData)
+        setLibros(response.data)
         setTotalPaginas?.(response.pagination.totalPages)
       } catch {
-        setError('Error al cargar los libros')
+        setError("Error al cargar los libros")
       } finally {
         setLoading(false)
       }
@@ -81,21 +81,23 @@ function ListaLibros({
     fetchLibros()
   }, [pagina, areas, busqueda, modoBusqueda, tipo, orden, librosPorPagina, gridListo])
 
-  if (!gridListo) return <div className="grid-libros" ref={gridRef} />
-  if (loading) return (
-    <div className="grid-libros" ref={gridRef}>
-      <p style={{ color: 'white', textAlign: 'center', gridColumn: '1 / -1' }}>Cargando libros...</p>
-    </div>
-  )
-  if (error) return (
-    <div className="grid-libros" ref={gridRef}>
-      <p style={{ color: '#f09595', textAlign: 'center', gridColumn: '1 / -1' }}>{error}</p>
-    </div>
-  )
-
   return (
     <div className="grid-libros" ref={gridRef}>
-      {libros.length > 0 ? (
+
+      {/* 🔥 LOADER DENTRO DEL GRID (NO AFECTA PAGINACIÓN) */}
+      {loading && (
+        <div className="grid-loader">
+          <div className="spinner" />
+        </div>
+      )}
+
+      {!loading && error && (
+        <p style={{ color: '#f09595', gridColumn: '1 / -1', textAlign: 'center' }}>
+          {error}
+        </p>
+      )}
+
+      {!loading && !error && libros.length > 0 &&
         libros.map(libro => (
           <LibroCard
             key={libro.id_libro}
@@ -103,7 +105,9 @@ function ListaLibros({
             onVerDetalle={onVerDetalle}
           />
         ))
-      ) : (
+      }
+
+      {!loading && !error && libros.length === 0 && (
         <p style={{ color: 'white', gridColumn: '1 / -1', textAlign: 'center' }}>
           No se encontraron libros
         </p>

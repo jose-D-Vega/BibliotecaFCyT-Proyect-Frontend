@@ -35,10 +35,11 @@ const AuthCallbackPage = () => {
 
         // Si es bibliotecario, mostrar selector de rol
         // Si es normal, ir directo al dashboard
-        if (userData.rol === 'bibliotecario') {
+        const esGestion = ['bibliotecario', 'admin'].includes(userData.rol)
+        if (esGestion) {
           esNuevo
-          ? navigate('/completar-perfil', { replace: true })
-          : navigate('/select-rol', { replace: true })
+            ? navigate('/completar-perfil', { replace: true })
+            : navigate('/select-rol', { replace: true })
         } else {
           selectRol('normal')
           esNuevo

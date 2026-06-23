@@ -1,4 +1,4 @@
-import { useState,  useRef, useEffect  } from "react"
+import { useState, useRef, useEffect } from "react"
 import "./styles/Filtros.css"
 
 function Filtros({
@@ -53,7 +53,10 @@ function Filtros({
   }
 
   const toggleTipo = (value) => {
-    setTipo(tipo === value ? "" : value)
+    const normalizedValue = value?.toLowerCase().trim()
+    const normalizedCurrent = tipo?.toLowerCase().trim()
+
+    setTipo(normalizedCurrent === normalizedValue ? "" : normalizedValue)
   }
 
   const getOrdenLabel = () => {
@@ -115,10 +118,10 @@ function Filtros({
             {["Libro", "TFG"].map(opt => (
               <div
                 key={opt}
-                className={`option ${tipo === opt ? "active" : ""}`}
+                className={`option ${tipo === opt.toLowerCase().trim() ? "active" : ""}`}
                 onClick={() => toggleTipo(opt)}
               >
-                {tipo === opt && <span className="check">✔</span>}
+                {tipo === opt.toLowerCase().trim() && <span className="check">✔</span>}
                 {opt}
               </div>
             ))}
@@ -127,7 +130,7 @@ function Filtros({
       </div>
 
       {/* ORDEN */}
-        <div className="filtro-dropdown filtro-dropdown-orden">
+      <div className="filtro-dropdown filtro-dropdown-orden">
         <button onClick={() => toggle("orden")} className="filter-btn">
           Orden
           <span className={`arrow ${open === "orden" ? "open" : ""}`}>▼</span>

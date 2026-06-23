@@ -7,8 +7,12 @@ const api = axios.create({
 // Interceptor — agrega el token automáticamente a cada request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
+  const rolActivo = localStorage.getItem('rolActivo')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+  if (rolActivo) {
+    config.headers['X-Rol-Activo'] = rolActivo
   }
   return config
 })

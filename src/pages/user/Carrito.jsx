@@ -45,10 +45,16 @@ function CarritoPage() {
   return (
     <div className="carrito-page">
       <header className="carrito-header">
-        <button className="carrito-volver-btn" onClick={() => navigate('/app/catalogo')}>
+        <button
+          className="carrito-volver-btn"
+          onClick={() => navigate('/app/catalogo')}
+        >
           ← Volver al catálogo
         </button>
-        <h1 className="carrito-titulo">Carrito de Préstamos</h1>
+
+        <h1 className="carrito-titulo">
+          Mis solicitudes de préstamo
+        </h1>
       </header>
 
       <main className="carrito-container">
@@ -76,10 +82,12 @@ function CarritoPage() {
                       <th className="col-acciones">Acciones</th>
                     </tr>
                   </thead>
+
                   <tbody>
                     {carrito.map(item => {
                       const { prestamo, reserva } = calcularDistribucion(item)
-                      const maxSolicitables = item.ejemplares_disponibles + item.ejemplares_reservables
+                      const maxSolicitables =
+                        item.ejemplares_disponibles + item.ejemplares_reservables
 
                       return (
                         <tr key={item.id_libro} className="carrito-fila">
@@ -105,13 +113,21 @@ function CarritoPage() {
                             <div className="carrito-cantidad-control">
                               <button
                                 className="carrito-cantidad-btn"
-                                onClick={() => actualizarCantidad(item.id_libro, item.cantidad - 1)}
+                                onClick={() =>
+                                  actualizarCantidad(item.id_libro, item.cantidad - 1)
+                                }
                                 disabled={item.cantidad <= 1}
                               >−</button>
-                              <span className="carrito-cantidad-valor">{item.cantidad}</span>
+
+                              <span className="carrito-cantidad-valor">
+                                {item.cantidad}
+                              </span>
+
                               <button
                                 className="carrito-cantidad-btn"
-                                onClick={() => actualizarCantidad(item.id_libro, item.cantidad + 1)}
+                                onClick={() =>
+                                  actualizarCantidad(item.id_libro, item.cantidad + 1)
+                                }
                                 disabled={item.cantidad >= maxSolicitables}
                               >+</button>
                             </div>
@@ -136,13 +152,18 @@ function CarritoPage() {
                             <div className="carrito-acciones-fila">
                               <button
                                 className="carrito-detalle-btn"
-                                onClick={() => navigate(`/app/catalogo/${item.id_libro}`)}
+                                onClick={() =>
+                                  navigate(`/app/catalogo/${item.id_libro}`)
+                                }
                               >
                                 Ver detalle
                               </button>
+
                               <button
                                 className="carrito-remover-btn"
-                                onClick={() => removerDelCarrito(item.id_libro)}
+                                onClick={() =>
+                                  removerDelCarrito(item.id_libro)
+                                }
                               >
                                 Remover
                               </button>
@@ -156,16 +177,25 @@ function CarritoPage() {
               </div>
             </div>
 
-            {/* Footer siempre visible */}
+            {/* FOOTER */}
             <div className="carrito-footer">
               <div className="carrito-resumen">
-                <span className="carrito-resumen-label">Total de ejemplares</span>
-                <span className="carrito-resumen-valor">{totalEjemplares}</span>
+                <span className="carrito-resumen-label">
+                  Total de ejemplares
+                </span>
+                <span className="carrito-resumen-valor">
+                  {totalEjemplares}
+                </span>
               </div>
+
               <div className="carrito-acciones">
-                <button className="carrito-accion-btn secundario" onClick={vaciarCarrito}>
-                  Vaciar carrito
+                <button
+                  className="carrito-accion-btn secundario"
+                  onClick={vaciarCarrito}
+                >
+                  Vaciar solicitudes
                 </button>
+
                 <button
                   className="carrito-accion-btn primario"
                   onClick={() => setModal('confirmar')}
@@ -177,8 +207,11 @@ function CarritoPage() {
           </>
         ) : (
           <div className="carrito-vacio">
-            <h2>Tu carrito está vacío</h2>
-            <p>No hay libros agregados al carrito de préstamos por el momento.</p>
+            <h2>No tienes solicitudes</h2>
+            <p>
+              Aún no has agregado libros a tus solicitudes de préstamo.
+            </p>
+
             <button
               className="carrito-accion-btn primario"
               onClick={() => navigate('/app/catalogo')}
@@ -190,13 +223,15 @@ function CarritoPage() {
         )}
       </main>
 
-      {/* Modal confirmar */}
+      {/* MODAL CONFIRMAR */}
       {modal === 'confirmar' && (
         <div className="modal-overlay">
           <div className="modal-box">
             <h3 className="modal-title">Confirmar solicitud</h3>
+
             <p className="modal-texto">
-              Estás por solicitar <strong>{totalEjemplares} ejemplar{totalEjemplares !== 1 ? 'es' : ''}</strong> de {carrito.length} libro{carrito.length !== 1 ? 's' : ''}.
+              Estás por solicitar <strong>{totalEjemplares}</strong> ejemplares
+              de {carrito.length} libro{carrito.length !== 1 ? 's' : ''}.
             </p>
 
             <div className="modal-resumen-lista">
@@ -208,12 +243,17 @@ function CarritoPage() {
                       <span className="modal-resumen-titulo">{item.titulo}</span>
                       <span className="modal-resumen-autor">{item.autor}</span>
                     </div>
+
                     <div className="modal-resumen-dist">
                       {prestamo > 0 && (
-                        <span className="carrito-dist-badge prestamo">{prestamo} préstamo</span>
+                        <span className="carrito-dist-badge prestamo">
+                          {prestamo} préstamo
+                        </span>
                       )}
                       {reserva > 0 && (
-                        <span className="carrito-dist-badge reserva">{reserva} reserva</span>
+                        <span className="carrito-dist-badge reserva">
+                          {reserva} reserva
+                        </span>
                       )}
                     </div>
                   </div>
@@ -223,7 +263,7 @@ function CarritoPage() {
 
             {hayReservas && (
               <p className="modal-aviso-reserva">
-                Los ejemplares marcados como reserva quedarán en espera hasta que estén disponibles.
+                Los ejemplares en reserva quedarán en espera hasta disponibilidad.
               </p>
             )}
 
@@ -235,6 +275,7 @@ function CarritoPage() {
               >
                 Cancelar
               </button>
+
               <button
                 className="modal-btn primario"
                 onClick={handleConfirmar}
@@ -247,35 +288,15 @@ function CarritoPage() {
         </div>
       )}
 
-      {/* Modal éxito */}
+      {/* MODAL ÉXITO */}
       {modal === 'exito' && (
         <div className="modal-overlay">
           <div className="modal-box">
             <h3 className="modal-title">Solicitud enviada</h3>
+
             <p className="modal-texto">
-              Tu solicitud fue procesada correctamente. El bibliotecario la revisará a la brevedad.
+              Tu solicitud fue procesada correctamente.
             </p>
-
-            {resultadoExito?.prestamo && (
-              <div className="modal-resultado-item prestamo">
-                <span className="carrito-dist-badge prestamo">Préstamo</span>
-                <span>Solicitud #{resultadoExito.prestamo.id_prestamo} — pendiente de aprobación</span>
-              </div>
-            )}
-            {resultadoExito?.reserva && (
-              <div className="modal-resultado-item reserva">
-                <span className="carrito-dist-badge reserva">Reserva</span>
-                <span>Solicitud #{resultadoExito.reserva.id_prestamo} — en espera de disponibilidad</span>
-              </div>
-            )}
-
-            {advertencias.length > 0 && (
-              <div className="modal-advertencias">
-                {advertencias.map((adv, i) => (
-                  <p key={i} className="modal-advertencia-item">{adv}</p>
-                ))}
-              </div>
-            )}
 
             <div className="modal-actions">
               <button
@@ -284,6 +305,7 @@ function CarritoPage() {
               >
                 Ver mis préstamos
               </button>
+
               <button
                 className="modal-btn primario"
                 onClick={() => navigate('/app/catalogo')}
@@ -295,12 +317,13 @@ function CarritoPage() {
         </div>
       )}
 
-      {/* Modal error */}
+      {/* MODAL ERROR */}
       {modal === 'error' && (
         <div className="modal-overlay">
           <div className="modal-box">
-            <h3 className="modal-title">Error en la solicitud</h3>
+            <h3 className="modal-title">Error</h3>
             <p className="modal-texto">{errorMsg}</p>
+
             <div className="modal-actions">
               <button
                 className="modal-btn primario"

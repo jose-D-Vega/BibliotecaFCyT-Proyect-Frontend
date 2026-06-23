@@ -9,24 +9,25 @@ const RolSelectorPage = () => {
 
   const handleSelect = (rol) => {
     selectRol(rol)
-    if (rol === 'bibliotecario') {
-      navigate('/admin/inicio', { replace: true })
-    } else {
-      navigate('/app/inicio', { replace: true })
-    }
+    if (rol === 'normal') navigate('/app/inicio', { replace: true })
+    else if (rol === 'bibliotecario') navigate('/bibliotecario/inicio', { replace: true })
+    else if (rol === 'admin') navigate('/admin/inicio', { replace: true })
   }
+
+  // El rol de gestión puede ser bibliotecario o admin
+  const rolGestion = user?.rol // 'bibliotecario' o 'admin'
+  const esAdmin = rolGestion === 'admin'
 
   return (
     <div className="rol-page">
       <div className="rol-card">
-
         <div className="rol-card__logo">
           <img src={logoFCyT} alt="FCyT" />
         </div>
 
         <div className="rol-card__body">
           <h1 className="rol-card__title">Biblioteca FCyT UNCA</h1>
-          <p className="rol-card__welcome">Hola, {user?.nombre_apellido || user?.nombre || 'Usuario'}</p>
+          <p className="rol-card__welcome">Hola, {user?.nombre_apellido || 'Usuario'}</p>
           <p className="rol-card__desc">Seleccioná tu perfil de acceso para continuar</p>
 
           <div className="rol-options">
@@ -39,17 +40,19 @@ const RolSelectorPage = () => {
               <span className="rol-btn__arrow">→</span>
             </button>
 
-            <button className="rol-btn rol-btn--admin" onClick={() => handleSelect('bibliotecario')}>
-              <span className="rol-btn__icon">📚</span>
+            <button className="rol-btn rol-btn--admin" onClick={() => handleSelect(rolGestion)}>
+              <span className="rol-btn__icon">{esAdmin ? '🔑' : '📚'}</span>
               <div className="rol-btn__text">
-                <h3>Bibliotecario</h3>
-                <p>Gestioná inventario, préstamos y usuarios</p>
+                <h3>{esAdmin ? 'Administrador' : 'Bibliotecario'}</h3>
+                <p>{esAdmin
+                  ? 'Control total del sistema, usuarios y reportes'
+                  : 'Gestioná préstamos y devoluciones'
+                }</p>
               </div>
               <span className="rol-btn__arrow">→</span>
             </button>
           </div>
         </div>
-
       </div>
     </div>
   )

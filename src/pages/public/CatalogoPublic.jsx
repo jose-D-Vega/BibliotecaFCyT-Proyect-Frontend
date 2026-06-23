@@ -2,6 +2,7 @@ import "../styles/styles_user/Catalogo.css";
 import Buscador from "../../components/Buscador";
 import Filtros from "../../components/Filtros";
 import ListaLibros from "../../components/ListaLibros";
+import CatalogoPagination from "../../components/CatalogoPagination";
 import FooterLogin from "../../components/FooterLogin";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ function CatalogoPublic({ onVerDetalle }) {
   const [tipo, setTipo] = useState("");
   const [orden, setOrden] = useState("AZ");
   const [totalPaginas, setTotalPaginas] = useState(3);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,9 +33,11 @@ function CatalogoPublic({ onVerDetalle }) {
   return (
     <div className="public-page">
       <div className="catalogo">
+
         <div className="catalogo-header">
           <div className="header-top">
             <h1 className="titulo">Catálogo</h1>
+
             <button
               className="login-redirect-btn"
               onClick={() => navigate("/login")}
@@ -61,34 +65,29 @@ function CatalogoPublic({ onVerDetalle }) {
           />
         </div>
 
-        <div className="catalogo-body">
-          <ListaLibros
-            pagina={pagina}
-            setPagina={setPagina}
-            busqueda={busqueda}
-            modoBusqueda={modoBusqueda}
-            areas={areas}
-            tipo={tipo}
-            orden={orden}
-            setTotalPaginas={setTotalPaginas}
-            onVerDetalle={onVerDetalle}
-          />
-        </div>
+<div className="catalogo-body">
+  <ListaLibros
+    pagina={pagina}
+    setPagina={setPagina}
+    busqueda={busqueda}
+    modoBusqueda={modoBusqueda}
+    areas={areas}
+    tipo={tipo}
+    orden={orden}
+    setTotalPaginas={setTotalPaginas}
+    onVerDetalle={onVerDetalle}
+  />
 
-        <div className="paginacion">
-          {Array.from({ length: totalPaginas }, (_, i) => (
-            <button
-              key={i}
-              className={pagina === i + 1 ? "active" : ""}
-              onClick={() => {
-                setPagina(i + 1);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+  <CatalogoPagination
+    currentPage={pagina}
+    totalPages={totalPaginas}
+    onPageChange={(page) => {
+      setPagina(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }}
+  />
+</div>
+
       </div>
 
       <FooterLogin />
