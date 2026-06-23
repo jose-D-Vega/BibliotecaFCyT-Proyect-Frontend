@@ -68,6 +68,83 @@
 }
 
 /* ==========================================
+   TARJETAS DE ESTADÍSTICAS INTERACTIVAS (KPIs)
+   ========================================== */
+.tarjetas-estadisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.tarjeta-kpi {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.tarjeta-kpi:hover {
+  transform: translateY(-2px);
+}
+
+.tarjeta-kpi.active {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Icono dentro de un recuadro */
+.tarjeta-kpi-icono {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tarjeta-kpi-activos .tarjeta-kpi-icono {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.12);
+  border-color: rgba(74, 222, 128, 0.2);
+}
+
+.tarjeta-kpi-sancionados .tarjeta-kpi-icono {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.2);
+}
+
+.tarjeta-kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-kpi-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 4px 0;
+}
+
+.tarjeta-kpi-valor {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ==========================================
    BARRA DE HERRAMIENTAS (BUSCADOR Y CHIPS)
    ========================================== */
 .toolbar {
@@ -118,6 +195,26 @@
 .search-type:hover {
   background: rgba(255, 255, 255, 0.13);
   color: #ffffff;
+}
+
+/* Input de teléfono editable (dentro de la tabla) */
+.input-telefono-editable {
+  width: 100%;
+  max-width: 130px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.input-telefono-editable:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Filtros (Chips) */
@@ -189,6 +286,13 @@ tr:hover td {
   background: rgba(255, 255, 255, 0.01);
 }
 
+/* Mensaje cuando no hay resultados */
+.sin-resultados {
+  text-align: center;
+  padding: 30px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
 /* Selects Interactivos dentro de la Tabla */
 .select-estado {
   padding: 6px 12px;
@@ -222,6 +326,7 @@ tr:hover td {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* Botón Editar (Estilo secundario/habilitar) */
@@ -243,6 +348,28 @@ tr:hover td {
   background: rgba(245, 158, 11, 0.25);
 }
 
+/* Variante: botón "Guardar" reutiliza el patrón visual de éxito existente en la app */
+.btn-guardar {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.btn-guardar:hover {
+  background: rgba(34, 197, 94, 0.25);
+}
+
+/* Variante: botón "Cancelar" edición, estilo neutro */
+.btn-cancelar-edicion {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-cancelar-edicion:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
 /* Botón Eliminar (Estilo crítico/eliminar) */
 .admin-user-delete-btn {
   background: rgba(239, 68, 68, 0.12); /* Rojo sutil */
@@ -262,9 +389,198 @@ tr:hover td {
   background: rgba(239, 68, 68, 0.22);
 }
 
-/* Responsive */
+/* ==========================================
+   MODAL DE CONFIRMACIÓN (ELIMINAR USUARIO)
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.modal-eliminar {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.modal-titulo {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 8px 0;
+}
+
+.modal-texto {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 16px 0;
+}
+
+.modal-usuario-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.modal-usuario-nombre {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 4px 0;
+}
+
+.modal-usuario-correo {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal-btn-cancelar {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-btn-cancelar:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.modal-btn-aceptar {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-btn-aceptar:hover {
+  background: rgba(239, 68, 68, 0.22);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .tarjetas-estadisticas {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+/* Tablets pequeñas / móviles grandes */
 @media (max-width: 768px) {
-  .toolbar { padding: 14px; }
-  .search-box { flex-direction: column; }
-  .search-type { width: 100%; text-align: center; }
+  .contenedor-usuarios {
+    padding: 16px;
+  }
+
+  .toolbar {
+    padding: 14px;
+  }
+
+  .search-box {
+    flex-direction: column;
+  }
+
+  .search-type {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tarjetas-estadisticas {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .tarjeta-kpi {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .tarjeta-kpi-icono {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .tarjeta-kpi-valor {
+    font-size: 22px;
+  }
+
+  th, td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .tarjetas-estadisticas {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .admin-user-edit-btn,
+  .admin-user-delete-btn,
+  .btn-guardar,
+  .btn-cancelar-edicion {
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal-eliminar {
+    padding: 18px;
+  }
+
+  .modal-acciones {
+    flex-direction: column-reverse;
+  }
+
+  .modal-btn-cancelar,
+  .modal-btn-aceptar {
+    width: 100%;
+    text-align: center;
+  }
 }

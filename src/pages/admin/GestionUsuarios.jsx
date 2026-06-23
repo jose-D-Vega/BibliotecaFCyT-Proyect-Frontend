@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react"
+import { Users, UserCheck, ShieldAlert } from "lucide-react"
 import "../styles/styles_admin/GestionUsuarios.css" 
 
 export default function GestionUsuarios() {
@@ -11,6 +12,9 @@ export default function GestionUsuarios() {
   // Control de edición inline
   const [editandoId, setEditandoId] = useState(null)
   const [cambiosPendientes, setCambiosPendientes] = useState({})
+
+  // Control del modal de confirmación
+  const [usuarioAEliminar, setUsuarioAEliminar] = useState(null)
 
   const API_URL = "http://localhost:3210/api/users"
   const token = localStorage.getItem("token") 
@@ -30,7 +34,16 @@ export default function GestionUsuarios() {
 
         const resUsers = await fetch(API_URL, { headers })
         const jsonUsers = await resUsers.json()
-        setUsuarios(Array.isArray(jsonUsers.data) ? jsonUsers.data : [])
+        // Normalizamos "activo" para que siempre sea booleano,
+        // sin importar si el backend manda true/false o "true"/"false"
+        const usuariosNormalizados = Array.isArray(jsonUsers.data)
+          ? jsonUsers.data.map(u => ({
+              ...u,
+              activo: u.activo === true || u.activo === 'true',
+              sancionado: u.sancionado === true || u.sancionado === 'true'
+            }))
+          : []
+        setUsuarios(usuariosNormalizados)
 
         loading && setLoading(false)
       } catch (err) {
@@ -47,8 +60,8 @@ export default function GestionUsuarios() {
   const estadisticas = useMemo(() => {
     return {
       total: usuarios.length,
-      activos: usuarios.filter(u => u.activo === true || u.activo === 'true').length,
-      sancionados: usuarios.filter(u => u.sancionado === true || u.sancionado === 'true').length
+      activos: usuarios.filter(u => u.activo === true).length,
+      sancionados: usuarios.filter(u => u.sancionado === true).length
     }
   }, [usuarios])
 
@@ -65,15 +78,15 @@ export default function GestionUsuarios() {
     } else if (filtroActivo === "Usuarios") {
       lista = lista.filter((u) => u.rol?.toLowerCase() === "usuario" || u.rol?.toLowerCase() === "normal")
     } else if (filtroActivo === "Sancionados") {
-      lista = lista.filter((u) => u.sancionado === true || u.sancionado === 'true')
+      lista = lista.filter((u) => u.sancionado === true)
     }
 
     if (busqueda.trim() !== "") {
       const q = busqueda.toLowerCase()
       lista = lista.filter((u) =>
-        u.nombre_apellido.toLowerCase().includes(q) || 
-        (u.ci && u.ci.includes(q)) || 
-        u.correo.toLowerCase().includes(q)
+        (u.nombre_apellido || "").toLowerCase().includes(q) ||
+        (u.ci ? u.ci.toLowerCase().includes(q) : false) ||
+        (u.correo || "").toLowerCase().includes(q)
       )
     }
     return lista
@@ -91,29 +104,38 @@ export default function GestionUsuarios() {
   // 2. GUARDAR ACTUALIZACIONES
   const handleGuardar = async (id_usuario, usuarioOriginal) => {
     try {
+      let huboError = false
+
       if (cambiosPendientes.id_tipo_usuario !== usuarioOriginal.id_tipo_usuario) {
-        await fetch(`${API_URL}/${id_usuario}/rol`, {
+        const res = await fetch(`${API_URL}/${id_usuario}/rol`, {
           method: "PATCH",
           headers,
           body: JSON.stringify({ id_tipo_usuario: parseInt(cambiosPendientes.id_tipo_usuario) })
         })
+        if (!res.ok) huboError = true
       }
 
       if (cambiosPendientes.activo !== usuarioOriginal.activo) {
-        await fetch(`${API_URL}/${id_usuario}/activo`, {
+        const res = await fetch(`${API_URL}/${id_usuario}/activo`, {
           method: "PATCH",
           headers,
           body: JSON.stringify({ activo: cambiosPendientes.activo })
         })
+        if (!res.ok) huboError = true
       }
 
-      // 📞 ¡CORREGIDO AQUÍ! Ahora edita al usuario seleccionado mediante su ID usando PATCH
       if (cambiosPendientes.telefono !== usuarioOriginal.telefono) {
-        await fetch(`${API_URL}/${id_usuario}/telefono`, {
+        const res = await fetch(`${API_URL}/${id_usuario}/telefono`, {
           method: "PATCH",
           headers,
           body: JSON.stringify({ telefono: cambiosPendientes.telefono })
         })
+        if (!res.ok) huboError = true
+      }
+
+      if (huboError) {
+        console.error("Algunas actualizaciones no se pudieron procesar correctamente")
+        return
       }
 
       const rolSeleccionado = tiposUsuario.find(t => t.id_tipo_usuario === parseInt(cambiosPendientes.id_tipo_usuario))
@@ -132,30 +154,39 @@ export default function GestionUsuarios() {
     }
   }
 
-  // 3. CAMBIAR ESTADO (ACTIVAR / DESACTIVAR) INTERACTIVO 🔄
-  const handleToggleEstado = async (usuario) => {
-    const nuevoEstado = !usuario.activo
-    const mensaje = nuevoEstado 
-      ? `¿Está seguro que desea ACTIVAR la cuenta de ${usuario.nombre_apellido}?`
-      : `¿Está seguro que desea DESACTIVAR la cuenta de ${usuario.nombre_apellido}?`
+  // 3. ABRIR MODAL DE CONFIRMACIÓN PARA ELIMINAR
+  const handleAbrirConfirmacion = (usuario) => {
+    setUsuarioAEliminar(usuario)
+  }
 
-    if (window.confirm(mensaje)) {
-      try {
-        const response = await fetch(`${API_URL}/${usuario.id_usuario}/activo`, {
-          method: "PATCH",
-          headers,
-          body: JSON.stringify({ activo: nuevoEstado })
-        })
-        
-        if (response.ok) {
-          setUsuarios((prev) => 
-            prev.map((u) => u.id_usuario === usuario.id_usuario ? { ...u, activo: nuevoEstado } : u)
-          )
-        }
-      } catch (error) {
-        console.error("Error al cambiar el estado del usuario:", error)
+  // 4. CONFIRMAR ELIMINACIÓN (soft delete: PATCH activo = false)
+  const handleConfirmarEliminar = async () => {
+    if (!usuarioAEliminar) return
+    const usuario = usuarioAEliminar
+
+    try {
+      const response = await fetch(`${API_URL}/${usuario.id_usuario}/activo`, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ activo: false })
+      })
+
+      if (response.ok) {
+        // Quitamos al usuario de la lista visible.
+        // En la base de datos sigue existiendo, solo con activo = false.
+        setUsuarios((prev) => prev.filter((u) => u.id_usuario !== usuario.id_usuario))
+      } else {
+        console.error("No se pudo eliminar el usuario")
       }
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error)
+    } finally {
+      setUsuarioAEliminar(null)
     }
+  }
+
+  const handleCancelarEliminar = () => {
+    setUsuarioAEliminar(null)
   }
 
   if (loading) return <div className="contenedor-usuarios"><p>Cargando panel de control...</p></div>
@@ -171,32 +202,38 @@ export default function GestionUsuarios() {
         </div>
 
         {/* 📊 SECCIÓN DE TARJETAS INTERACTIVAS */}
-        <div className="tarjetas-estadisticas" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '25px' }}>
+        <div className="tarjetas-estadisticas">
           <div 
-            className="tarjeta-kpi" 
+            className={`tarjeta-kpi tarjeta-kpi-total ${filtroActivo === "Todos" ? "active" : ""}`}
             onClick={() => setFiltroActivo("Todos")}
-            style={{ background: '#1e293b', padding: '20px', borderRadius: '8px', border: filtroActivo === "Todos" ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.05)', cursor: 'pointer', transition: 'all 0.2s' }}
           >
-            <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', textTransform: 'uppercase', fontWeight: '600' }}>Total Usuarios</span>
-            <h2 style={{ fontSize: '28px', margin: '5px 0 0 0', color: '#fff' }}>{estadisticas.total}</h2>
+            <div className="tarjeta-kpi-icono"><Users size={20} /></div>
+            <div className="tarjeta-kpi-info">
+              <span className="tarjeta-kpi-label">Total Usuarios</span>
+              <h2 className="tarjeta-kpi-valor">{estadisticas.total}</h2>
+            </div>
           </div>
 
           <div 
-            className="tarjeta-kpi" 
+            className={`tarjeta-kpi tarjeta-kpi-activos ${filtroActivo === "Activos" ? "active" : ""}`}
             onClick={() => setFiltroActivo("Activos")}
-            style={{ background: '#1e293b', padding: '20px', borderRadius: '8px', border: filtroActivo === "Activos" ? '2px solid #4ade80' : '1px solid rgba(255,255,255,0.05)', cursor: 'pointer', transition: 'all 0.2s' }}
           >
-            <span style={{ color: '#4ade80', fontSize: '14px', textTransform: 'uppercase', fontWeight: '600' }}>Usuarios Activos</span>
-            <h2 style={{ fontSize: '28px', margin: '5px 0 0 0', color: '#4ade80' }}>{estadisticas.activos}</h2>
+            <div className="tarjeta-kpi-icono"><UserCheck size={20} /></div>
+            <div className="tarjeta-kpi-info">
+              <span className="tarjeta-kpi-label">Usuarios Activos</span>
+              <h2 className="tarjeta-kpi-valor">{estadisticas.activos}</h2>
+            </div>
           </div>
 
           <div 
-            className="tarjeta-kpi" 
+            className={`tarjeta-kpi tarjeta-kpi-sancionados ${filtroActivo === "Sancionados" ? "active" : ""}`}
             onClick={() => setFiltroActivo("Sancionados")}
-            style={{ background: '#1e293b', padding: '20px', borderRadius: '8px', border: filtroActivo === "Sancionados" ? '2px solid #f87171' : '1px solid rgba(255,255,255,0.05)', cursor: 'pointer', transition: 'all 0.2s' }}
           >
-            <span style={{ color: '#f87171', fontSize: '14px', textTransform: 'uppercase', fontWeight: '600' }}>Usuarios Sancionados</span>
-            <h2 style={{ fontSize: '28px', margin: '5px 0 0 0', color: '#f87171' }}>{estadisticas.sancionados}</h2>
+            <div className="tarjeta-kpi-icono"><ShieldAlert size={20} /></div>
+            <div className="tarjeta-kpi-info">
+              <span className="tarjeta-kpi-label">Usuarios Sancionados</span>
+              <h2 className="tarjeta-kpi-valor">{estadisticas.sancionados}</h2>
+            </div>
           </div>
         </div>
 
@@ -227,14 +264,13 @@ export default function GestionUsuarios() {
                 <th>Teléfono</th>
                 <th>Correo</th>
                 <th>Rol</th>
-                <th>Estado de Cuenta</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {usuariosFiltrados.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '30px', color: 'rgba(255,255,255,0.3)' }}>
+                  <td colSpan={6} className="sin-resultados">
                     No se encontraron usuarios en esta sección.
                   </td>
                 </tr>
@@ -251,8 +287,7 @@ export default function GestionUsuarios() {
                         {editando ? (
                           <input 
                             type="text" 
-                            className="search-box input" 
-                            style={{padding: '4px 8px', width: '120px', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px'}}
+                            className="input-telefono-editable" 
                             value={cambiosPendientes.telefono || ""} 
                             onChange={(e) => setCambiosPendientes({...cambiosPendientes, telefono: e.target.value})}
                           />
@@ -277,41 +312,22 @@ export default function GestionUsuarios() {
                         </select>
                       </td>
 
-                      {/* Estado */}
-                      <td>
-                        <span style={{
-                          padding: '4px 8px', 
-                          borderRadius: '4px', 
-                          fontSize: '13px',
-                          fontWeight: '500',
-                          background: usuario.activo ? 'rgba(74,222,128,0.15)' : 'rgba(248,113,113,0.15)', 
-                          color: usuario.activo ? '#4ade80' : '#f87171'
-                        }}>
-                          {usuario.activo ? "Activo" : "Inactivo"}
-                        </span>
-                      </td>
-
                       <td className="acciones">
                         {editando ? (
                           <>
-                            <button className="admin-user-edit-btn" style={{background: 'rgba(34,197,94,0.15)', color: '#4ade80', borderColor: 'rgba(34,197,94,0.3)'}} onClick={() => handleGuardar(usuario.id_usuario, usuario)}>Guardar</button>
-                            <button className="admin-user-delete-btn" style={{background: 'rgba(255,255,255,0.06)', color: '#fff', borderColor: 'rgba(255,255,255,0.1)'}} onClick={() => setEditandoId(null)}>Cancelar</button>
+                            <button className="admin-user-edit-btn btn-guardar" onClick={() => handleGuardar(usuario.id_usuario, usuario)}>Guardar</button>
+                            <button className="admin-user-delete-btn btn-cancelar-edicion" onClick={() => setEditandoId(null)}>Cancelar</button>
                           </>
                         ) : (
                           <>
                             <button className="admin-user-edit-btn" onClick={() => handleEditarClick(usuario)}>Editar</button>
                             
-                            {/* 🔄 BOTÓN DINÁMICO ACTIVAR / DESACTIVAR */}
+                            {/* 🗑️ BOTÓN ELIMINAR (soft delete: activo = false) */}
                             <button 
-                              className="admin-user-delete-btn" 
-                              style={{
-                                background: usuario.activo ? 'rgba(248,113,113,0.1)' : 'rgba(74,222,128,0.1)',
-                                color: usuario.activo ? '#f87171' : '#4ade80',
-                                borderColor: usuario.activo ? 'rgba(248,113,113,0.2)' : 'rgba(74,222,128,0.2)'
-                              }}
-                              onClick={() => handleToggleEstado(usuario)}
+                              className="admin-user-delete-btn"
+                              onClick={() => handleAbrirConfirmacion(usuario)}
                             >
-                              {usuario.activo ? "Desactivar" : "Activar"}
+                              Eliminar
                             </button>
                           </>
                         )}
@@ -324,6 +340,30 @@ export default function GestionUsuarios() {
           </table>
         </div>
       </main>
+
+      {/* 🪟 MODAL DE CONFIRMACIÓN PARA ELIMINAR USUARIO */}
+      {usuarioAEliminar && (
+        <div className="modal-overlay" onClick={handleCancelarEliminar}>
+          <div className="modal-eliminar" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-titulo">Eliminar usuario</h2>
+            <p className="modal-texto">¿Estás seguro de que deseas eliminar este usuario?</p>
+
+            <div className="modal-usuario-card">
+              <div className="modal-usuario-nombre">{usuarioAEliminar.nombre_apellido}</div>
+              <div className="modal-usuario-correo">{usuarioAEliminar.correo}</div>
+            </div>
+
+            <div className="modal-acciones">
+              <button className="modal-btn-cancelar" onClick={handleCancelarEliminar}>
+                Cancelar
+              </button>
+              <button className="modal-btn-aceptar" onClick={handleConfirmarEliminar}>
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
