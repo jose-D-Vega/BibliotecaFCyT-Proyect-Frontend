@@ -148,3 +148,36 @@
   flex-shrink: 0;
   margin-top: 4px;
 }
+
+/*   Nuevas modificaciones para el apartado de "ver todas"*/
+
+.notif-panel__mas-no-leidas {
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.notif-panel__footer {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 0.6rem 1rem;
+}
+
+.notif-panel__ver-todas {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.notif-panel__ver-todas:hover {
+  background: rgba(255,255,255,0.12);
+}

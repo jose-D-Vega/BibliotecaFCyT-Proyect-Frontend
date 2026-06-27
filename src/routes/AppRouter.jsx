@@ -21,8 +21,8 @@ import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesUserPage from '../pages/user/prueba/DevolucionesUserPage'
 
-//import SancionesPage from '../pages/user/prueba/SancionesPage'
 import PerfilUserPage from '../pages/user/PerfilUserPage'
+import NotificacionesPage from '../pages/NotificacionesPage'
 
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 import PrestamosAdminPage from '../pages/admin/PrestamosAdminPage'
@@ -105,6 +105,7 @@ const AppRouter = () => {
         >
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<DashboardUser />} />
+          <Route path="notificaciones" element={<NotificacionesPage />} /> 
           <Route path="catalogo" element={<CatalogoUserPage />} />
           <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
           <Route path="carrito" element={<CarritoPage />} />
@@ -125,6 +126,7 @@ const AppRouter = () => {
         >
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<AdminDashboardPage />} />
+          <Route path="notificaciones" element={<NotificacionesPage />} /> 
           <Route path="prestamos" element={<PrestamosAdminPage />} />
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
           <Route path="catalogo" element={<AdminCatalogoPage />} />

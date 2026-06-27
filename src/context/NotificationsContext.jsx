@@ -4,45 +4,49 @@ import { getNotificaciones, marcarLeida, marcarTodasLeidas } from '../services/n
 
 const NotificationsContext = createContext(null)
 
+export const LIMITE_BADGE = 6
+
 export const NotificationsProvider = ({ children }) => {
-  const { user } = useAuth()
+  const { user, rolActivo } = useAuth()
   const [notificaciones, setNotificaciones] = useState([])
   const [noLeidas, setNoLeidas] = useState(0)
 
   const fetchNotificaciones = async () => {
     if (!user) return
     try {
-      const data = await getNotificaciones()
+      const data = await getNotificaciones({ limit: LIMITE_BADGE })
       setNotificaciones(data.data)
       setNoLeidas(data.no_leidas)
     } catch {
-      // silencioso
+      // silencioso, no rompemos la UI por esto
     }
   }
 
   useEffect(() => {
     fetchNotificaciones()
-    // Refrescar cada 5 minutos
     const interval = setInterval(fetchNotificaciones, 5 * 60 * 1000)
     return () => clearInterval(interval)
-  }, [user])
+  }, [user, rolActivo])
 
   const leerNotificacion = async (id) => {
     await marcarLeida(id)
-    setNotificaciones(prev =>
-      prev.map(n => n.id_notificacion === id ? { ...n, leida: true } : n)
-    )
-    setNoLeidas(prev => Math.max(0, prev - 1))
+    await fetchNotificaciones()
   }
 
   const leerTodas = async () => {
     await marcarTodasLeidas()
-    setNotificaciones(prev => prev.map(n => ({ ...n, leida: true })))
-    setNoLeidas(0)
+    await fetchNotificaciones()
   }
 
   return (
-    <NotificationsContext.Provider value={{ notificaciones, noLeidas, fetchNotificaciones, leerNotificacion, leerTodas }}>
+    <NotificationsContext.Provider value={{
+      notificaciones,
+      noLeidas,
+      limiteBadge: LIMITE_BADGE,
+      fetchNotificaciones,
+      leerNotificacion,
+      leerTodas
+    }}>
       {children}
     </NotificationsContext.Provider>
   )

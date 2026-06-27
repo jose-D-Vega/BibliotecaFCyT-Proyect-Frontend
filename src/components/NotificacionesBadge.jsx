@@ -1,19 +1,20 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useNotifications } from '../context/NotificationsContext'
+import { useAuth } from '../context/AuthContext'
 import './styles/NotificacionesBadge.css'
+import { getIconoTipo } from '../utils/notificacionTipos'
 
-const tipoIcono = {
-  renovacion_aprobada: '✅',
-  renovacion_rechazada: '❌',
-  renovacion_vencida: '⏰',
-  prestamo_por_vencer: '⚠️',
-  prestamo_vencido: '🔴',
-  pendiente_devolucion: '📚',
-  reserva_disponible: '🔔'
+const PREFIJO_POR_ROL = {
+  admin: '/admin',
+  bibliotecario: '/bibliotecario',
+  normal: '/app'
 }
 
 const NotificacionesBadge = () => {
-  const { notificaciones, noLeidas, leerNotificacion, leerTodas } = useNotifications()
+  const { notificaciones, noLeidas, limiteBadge, leerNotificacion, leerTodas } = useNotifications()
+  const { rolActivo } = useAuth()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -24,6 +25,13 @@ const NotificacionesBadge = () => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  const irATodas = () => {
+    setOpen(false)
+    navigate(`${PREFIJO_POR_ROL[rolActivo] || '/app'}/notificaciones`)
+  }
+
+  const masNoLeidas = noLeidas > limiteBadge ? noLeidas - limiteBadge : 0
 
   return (
     <div className="notif-wrapper" ref={ref}>
@@ -55,7 +63,7 @@ const NotificacionesBadge = () => {
                   className={`notif-item ${!n.leida ? 'notif-item--no-leida' : ''}`}
                   onClick={() => !n.leida && leerNotificacion(n.id_notificacion)}
                 >
-                  <span className="notif-item__icono">{tipoIcono[n.tipo] || '🔔'}</span>
+                  <span className="notif-item__icono">{getIconoTipo(n.tipo)}</span>
                   <div className="notif-item__contenido">
                     <p className="notif-item__titulo">{n.titulo}</p>
                     <p className="notif-item__mensaje">{n.mensaje}</p>
@@ -70,6 +78,18 @@ const NotificacionesBadge = () => {
                 </div>
               ))
             )}
+          </div>
+
+          {masNoLeidas > 0 && (
+            <p className="notif-panel__mas-no-leidas">
+              +{masNoLeidas} sin leer más
+            </p>
+          )}
+
+          <div className="notif-panel__footer">
+            <button className="notif-panel__ver-todas" onClick={irATodas}>
+              Ver todas las notificaciones
+            </button>
           </div>
         </div>
       )}
