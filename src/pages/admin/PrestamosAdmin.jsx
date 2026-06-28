@@ -180,19 +180,30 @@ function PrestamosAdmin() {
 
           const materialesMap = {}
 
-          ;(detalle?.detalles || []).forEach((d) => {
+          /*;(detalle?.detalles || []).forEach((d) => {
             const key = `${d.titulo}-${d.autor}`
 
             if (!materialesMap[key]) {
               materialesMap[key] = {
+                id: detalle.materiales.id,
                 titulo: d.titulo,
                 autor: d.autor,
                 ejemplares: []
               }
             }
+           ;(detalle?.materiales || []).forEach((m) => {
+              const key = `${m.id}`
 
-            materialesMap[key].ejemplares.push(d.id_ejemplar)
-          })
+              if (!materialesMap[key]) {
+                materialesMap[key] = {
+                  titulo: m.titulo,
+                  autor: m.autor,
+                  ejemplares: m.ejemplares
+                }
+              }
+
+              materialesMap[key].ejemplares.push(m.id_ejemplar)
+            })*/
 
           let tipoSolicitud = "Préstamo"
           if (p.estado_prestamo === "solicitud_reserva") tipoSolicitud = "Reserva"
@@ -205,7 +216,7 @@ function PrestamosAdmin() {
             fecha: p.fecha_solicitud?.split("T")[0] || "",
             fechaLimite: p.fecha_tope_devolucion?.split("T")[0] || "",
             totalEjemplares: p.total_ejemplares ?? 0,
-            materiales: Object.values(materialesMap)
+            materiales: detalle?.materiales
           }
         })
       )

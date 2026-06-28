@@ -1,3 +1,4 @@
+/* ── Layout ── */
 .nueva-sancion-page {
   font-family: 'Source Sans 3', sans-serif;
   display: flex;
@@ -22,30 +23,70 @@
   margin: 0;
 }
 
-.nueva-sancion-card {
+/* ── Banner de progreso ── */
+.sancion-progreso {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 14px;
-  padding: 1.25rem;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
-.nueva-sancion-card__titulo {
-  font-size: 0.72rem;
-  font-weight: 700;
+.sancion-progreso__pasos {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sancion-progreso__paso {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
   color: rgba(255,255,255,0.4);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  transition: all 0.2s;
 }
 
-.nueva-sancion-card__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem 1rem;
+.sancion-progreso__paso.activo {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.3);
+  color: #fff;
+  font-weight: 700;
 }
 
+.sancion-progreso__paso.completado {
+  background: rgba(29,158,117,0.15);
+  border-color: rgba(29,158,117,0.35);
+  color: #7de3b8;
+}
+
+.sancion-progreso__num { font-weight: 700; font-size: 0.78rem; }
+
+.sancion-progreso__hint {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+  font-style: italic;
+}
+
+/* ── Tipo fijo (flujo múltiple) ── */
+.ns-tipo-fijo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── Formulario ── */
 .nueva-sancion-form {
   display: flex;
   flex-direction: column;
@@ -58,7 +99,7 @@
   gap: 0.5rem;
 }
 
-.nueva-sancion-field label {
+.nueva-sancion-field > label {
   font-size: 0.82rem;
   font-weight: 700;
   color: rgba(255,255,255,0.5);
@@ -66,7 +107,7 @@
   letter-spacing: 0.06em;
 }
 
-.nueva-sancion-hint {
+.ns-hint {
   font-size: 0.8rem;
   color: rgba(255,255,255,0.35);
   margin: 0;
@@ -74,7 +115,12 @@
   line-height: 1.5;
 }
 
-.nueva-sancion-select,
+.ns-hint--error {
+  font-style: normal;
+  color: #f09595;
+}
+
+/* ── Inputs ── */
 .nueva-sancion-input {
   padding: 0.7rem 0.95rem;
   border-radius: 10px;
@@ -86,11 +132,26 @@
   outline: none;
   transition: border-color 0.2s;
 }
-
-.nueva-sancion-select option { background: #0f2035; }
-.nueva-sancion-select:focus,
+.nueva-sancion-input::placeholder { color: rgba(255,255,255,0.25); }
 .nueva-sancion-input:focus { border-color: rgba(255,255,255,0.3); }
 
+.nueva-sancion-textarea {
+  padding: 0.7rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  min-height: 90px;
+  transition: border-color 0.2s;
+}
+.nueva-sancion-textarea::placeholder { color: rgba(255,255,255,0.25); }
+.nueva-sancion-textarea:focus { border-color: rgba(255,255,255,0.3); }
+
+/* ── Tipos de infracción ── */
 .nueva-sancion-tipos {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -109,12 +170,10 @@
   gap: 4px;
   transition: all 0.2s;
 }
-
 .nueva-sancion-tipo-btn:hover {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.2);
 }
-
 .nueva-sancion-tipo-btn.activo {
   background: rgba(239,68,68,0.1);
   border-color: rgba(239,68,68,0.35);
@@ -132,48 +191,91 @@
   line-height: 1.4;
 }
 
-.nueva-sancion-textarea {
-  padding: 0.7rem 0.95rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  color: #fff;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.9rem;
-  outline: none;
-  resize: vertical;
-  min-height: 100px;
-  transition: border-color 0.2s;
-}
-
-.nueva-sancion-textarea::placeholder { color: rgba(255,255,255,0.25); }
-.nueva-sancion-textarea:focus { border-color: rgba(255,255,255,0.3); }
-
-.nueva-sancion-error {
-  color: #f09595;
-  font-size: 0.875rem;
-  background: rgba(163,51,51,0.15);
-  border: 1px solid rgba(163,51,51,0.3);
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  margin: 0;
-}
-
-.nueva-sancion-acciones {
+/* ── Cards de préstamo/usuario ── */
+.ns-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 12px;
+  padding: 1.1rem;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: 0.75rem;
-  padding-top: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .nueva-sancion-tipos { grid-template-columns: 1fr; }
-  .nueva-sancion-card__grid { grid-template-columns: 1fr; }
+.ns-card__titulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-/*   Nuevos estilos agregados para los ejemplares en formtato checkbox   */
+.ns-card__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
 
-.nueva-sancion-ejemplares {
+/* ── Buscadores ── */
+.ns-buscador-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ns-buscador {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ns-buscador .nueva-sancion-input { flex: 1; }
+
+/* ── Resultados de búsqueda ── */
+.ns-resultados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 0.5rem;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.ns-resultado-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+.ns-resultado-item:hover { background: rgba(255,255,255,0.06); }
+
+.ns-resultado-titulo {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ns-resultado-detalle {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── Ejemplares ── */
+.ns-ejemplares-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ns-ejemplares {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -185,11 +287,12 @@
 
 .nueva-sancion-ejemplar-check {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.6rem;
   font-size: 0.875rem;
   color: rgba(255,255,255,0.75);
   cursor: pointer;
+  line-height: 1.4;
 }
 
 .nueva-sancion-ejemplar-check input {
@@ -197,4 +300,58 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.nueva-sancion-ejemplar-check.forzado {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.nueva-sancion-ejemplar-check.forzado input { cursor: default; }
+
+.ns-ejemplar-estado { color: rgba(255,255,255,0.45); }
+.ns-ejemplar-danio  { color: #f09595; font-style: italic; }
+
+.ns-descripciones-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+/* ── Suspensión ── */
+.ns-suspension {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* ── Error ── */
+.nueva-sancion-error {
+  color: #f09595;
+  font-size: 0.875rem;
+  background: rgba(163,51,51,0.15);
+  border: 1px solid rgba(163,51,51,0.3);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin: 0;
+}
+
+/* ── Acciones ── */
+.nueva-sancion-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .nueva-sancion-tipos  { grid-template-columns: 1fr; }
+  .ns-card__grid        { grid-template-columns: 1fr; }
+  .nueva-sancion-acciones { flex-direction: column-reverse; }
+  .nueva-sancion-acciones button { width: 100%; }
 }
