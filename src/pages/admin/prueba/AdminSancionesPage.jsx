@@ -1,47 +1,81 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getSanctions, resolveSanction, escalateSanction,
-  confirmSanction, rejectSanction, getSanctionsGrouped
+  confirmSanction, rejectSanction, getSanctionsGrouped,
+  getSancionesComportamientoAgrupadas
 } from '../../../services/sanctions.services'
-import SancionCard from '../../../components/sanciones/SancionCard'
 import SancionPendienteCard from '../../../components/sanciones/SancionPendienteCard'
 import ModalDetalleSancion from '../../../components/sanciones/ModalDetalleSancion'
-import './AdminSancionesPage.css'
-
 import SancionGrupoCard from '../../../components/sanciones/SancionGrupoCard'
 import ModalSancionesLoan from '../../../components/sanciones/ModalSancionesLoan'
+import SancionComportamientoCard from '../../../components/sanciones/SancionComportamientoCard'
+import ModalSancionesComportamiento from '../../../components/sanciones/ModalSancionesComportamiento'
+import ModalConfirmacionAccion from '../../../components/sanciones/ModalConfirmacionAccion'
+import './AdminSancionesPage.css'
 
 
+// Las tabs principales de la página
 const TABS = [
   { id: 'pendiente_confirmacion', label: 'Pendientes de confirmación' },
-  { id: 'activa', label: 'Activas' },
-  { id: 'escalada', label: 'Escaladas' },
-  { id: 'resuelta,rechazada', label: 'Historial' },
+  { id: 'activa',                 label: 'Activas' },
+  { id: 'escalada',               label: 'Escaladas' },
+  { id: 'resuelta,rechazada',     label: 'Historial' },
 ]
+
+// Sub-tabs dentro de "Activas" y "Escaladas"
+const SUB_TABS = [
+  { id: 'prestamos',       label: 'Por préstamo' },
+  { id: 'comportamiento',  label: 'Por comportamiento' },
+]
+
+// Tabs que tienen sub-división préstamos / comportamiento
+const TABS_CON_SUBTABS = ['activa', 'resuelta,rechazada']
 
 const AdminSancionesPage = () => {
   const navigate = useNavigate()
-  const [tabActiva, setTabActiva] = useState('pendiente_confirmacion')
-  const [sanciones, setSanciones] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [pagina, setPagina] = useState(1)
-  const [totalPaginas, setTotalPaginas] = useState(1)
-  const [sancionDetalle, setSancionDetalle] = useState(null)
+
+  const [tabActiva,    setTabActiva]    = useState('pendiente_confirmacion')
+  const [subTabActiva, setSubTabActiva] = useState('prestamos')
+
+  const [sanciones,     setSanciones]     = useState([])
+  const [loading,       setLoading]       = useState(true)
+  const [error,         setError]         = useState(null)
+  const [pagina,        setPagina]        = useState(1)
+  const [totalPaginas,  setTotalPaginas]  = useState(1)
   const [loadingAccion, setLoadingAccion] = useState(false)
   const [mensajeAccion, setMensajeAccion] = useState(null)
 
-  const [grupoDetalle, setGrupoDetalle] = useState(null)
+  // Modales
+  const [sancionDetalle,  setSancionDetalle]  = useState(null)
+  const [grupoDetalle,    setGrupoDetalle]    = useState(null)
+  const [grupoComportam,  setGrupoComportam]  = useState(null)
 
-  // Cambiar fetchSanciones para usar getSanctionsGrouped en tabs no pendientes
-  const fetchSanciones = useCallback(async (estado, pag) => {
+  const [modalConfirm, setModalConfirm] = useState(null)// Forma: { titulo, mensaje, detalle, labelConfirmar, variante, onConfirmar }
+
+  const usaSubTabs = TABS_CON_SUBTABS.includes(tabActiva)
+
+  // ── Fetch central ──────────────────────────────────────────────
+
+  const fetchSanciones = useCallback(async (tab, subTab, pag) => {
     try {
       setLoading(true)
       setError(null)
-      const esPendiente = estado === 'pendiente_confirmacion'
-      const fn = esPendiente ? getSanctions : getSanctionsGrouped
-      const data = await fn({ estado, page: pag, limit: 12 })
+
+      const esPendiente = tab === 'pendiente_confirmacion'
+      const tabTieneSubtabs = TABS_CON_SUBTABS.includes(tab)
+      const esComportam = tabTieneSubtabs && subTab === 'comportamiento'
+
+      let data
+
+      if (esPendiente) {
+        data = await getSanctions({ estado: tab, page: pag, limit: 12 })
+      } else if (esComportam) {
+        data = await getSancionesComportamientoAgrupadas({ estado: tab, page: pag, limit: 12 })
+      } else {
+        data = await getSanctionsGrouped({ estado: tab, page: pag, limit: 12 })
+      }
+
       setSanciones(data.data)
       setTotalPaginas(data.pagination.totalPages)
     } catch {
@@ -51,78 +85,125 @@ const AdminSancionesPage = () => {
     }
   }, [])
 
-
+ // UN solo useEffect que escucha todo junto
   useEffect(() => {
-    setPagina(1)
-    fetchSanciones(tabActiva, 1)
-  }, [tabActiva])
+    fetchSanciones(tabActiva, subTabActiva, pagina)
+  }, [tabActiva, subTabActiva, pagina])
 
-  useEffect(() => {
-    fetchSanciones(tabActiva, pagina)
-  }, [pagina])
-
+  // ── Helpers ────────────────────────────────────────────────────
   const mostrarMensaje = (tipo, texto) => {
     setMensajeAccion({ tipo, texto })
     setTimeout(() => setMensajeAccion(null), 3000)
   }
 
-  const handleConfirmar = async (sancion) => {
-    if (!window.confirm(`¿Confirmar la sanción por falta de entrega para ${sancion.usuario_nombre}?`)) return
-    try {
-      setLoadingAccion(true)
-      await confirmSanction(sancion.id_sancion)
-      mostrarMensaje('ok', 'Sanción confirmada correctamente')
-      fetchSanciones(tabActiva, pagina)
-    } catch (err) {
-      mostrarMensaje('error', err.response?.data?.error || 'Error al confirmar')
-    } finally {
-      setLoadingAccion(false)
-    }
-  }
+  const recargar = () => fetchSanciones(tabActiva, subTabActiva, pagina)
 
-  const handleRechazar = async (sancion) => {
-    if (!window.confirm(`¿Rechazar la sanción? El usuario ${sancion.usuario_nombre} recuperará el acceso a los servicios.`)) return
-    try {
-      setLoadingAccion(true)
-      await rejectSanction(sancion.id_sancion)
-      mostrarMensaje('ok', 'Sanción rechazada. Usuario desbloqueado.')
-      fetchSanciones(tabActiva, pagina)
-    } catch (err) {
-      mostrarMensaje('error', err.response?.data?.error || 'Error al rechazar')
-    } finally {
-      setLoadingAccion(false)
+  // ── Acciones sobre sanciones pendientes ───────────────────────
+  const handleConfirmar = (sancion) => {
+  setModalConfirm({
+    titulo: 'Confirmar sanción',
+    mensaje: `¿Confirmás la sanción por falta de entrega para ${sancion.usuario_nombre}? El usuario quedará bloqueado hasta que sea resuelta.`,
+    detalle: `Sanción #${sancion.id_sancion}`,
+    labelConfirmar: 'Confirmar',
+    variante: 'primario',
+    onConfirmar: async () => {
+      try {
+        setLoadingAccion(true)
+        await confirmSanction(sancion.id_sancion)
+        setModalConfirm(null)
+        mostrarMensaje('ok', 'Sanción confirmada correctamente')
+        recargar()
+      } catch (err) {
+        mostrarMensaje('error', err.response?.data?.error || 'Error al confirmar')
+        setModalConfirm(null)
+      } finally {
+        setLoadingAccion(false)
+      }
     }
-  }
+  })
+}
 
-  const handleResolver = async (sancion) => {
-    if (!window.confirm(`¿Resolver la sanción #${sancion.id_sancion}?`)) return
-    try {
-      setLoadingAccion(true)
-      await resolveSanction(sancion.id_sancion)
-      mostrarMensaje('ok', 'Sanción resuelta correctamente')
-      fetchSanciones(tabActiva, pagina)
-    } catch (err) {
-      mostrarMensaje('error', err.response?.data?.error || 'Error al resolver')
-    } finally {
-      setLoadingAccion(false)
+const handleRechazar = (sancion) => {
+  setModalConfirm({
+    titulo: 'Rechazar sanción',
+    mensaje: `¿Rechazás la sanción de ${sancion.usuario_nombre}? Si no tiene otras sanciones activas, recuperará el acceso al sistema.`,
+    detalle: `Sanción #${sancion.id_sancion}`,
+    labelConfirmar: 'Rechazar',
+    variante: 'escalar',   // gris neutro, sin connotación positiva ni destructiva
+    onConfirmar: async () => {
+      try {
+        setLoadingAccion(true)
+        await rejectSanction(sancion.id_sancion)
+        setModalConfirm(null)
+        mostrarMensaje('ok', 'Sanción rechazada. Usuario desbloqueado.')
+        recargar()
+      } catch (err) {
+        mostrarMensaje('error', err.response?.data?.error || 'Error al rechazar')
+        setModalConfirm(null)
+      } finally {
+        setLoadingAccion(false)
+      }
     }
-  }
+  })
+}
 
-  const handleEscalar = async (sancion) => {
-    if (!window.confirm(`¿Escalar la sanción #${sancion.id_sancion} a entidades superiores?`)) return
-    try {
-      setLoadingAccion(true)
-      await escalateSanction(sancion.id_sancion)
-      mostrarMensaje('ok', 'Sanción escalada correctamente')
-      fetchSanciones(tabActiva, pagina)
-    } catch (err) {
-      mostrarMensaje('error', err.response?.data?.error || 'Error al escalar')
-    } finally {
-      setLoadingAccion(false)
+const handleResolver = (sancion) => {
+  setModalConfirm({
+    titulo: 'Resolver sanción',
+    mensaje: `¿Marcás como resuelta la sanción #${sancion.id_sancion}? Si el usuario no tiene otras sanciones activas, recuperará el acceso.`,
+    detalle: sancion.usuario_nombre,
+    labelConfirmar: 'Resolver',
+    variante: 'resolver',
+    onConfirmar: async () => {
+      try {
+        setLoadingAccion(true)
+        await resolveSanction(sancion.id_sancion)
+        setModalConfirm(null)
+        mostrarMensaje('ok', 'Sanción resuelta correctamente')
+        recargar()
+      } catch (err) {
+        mostrarMensaje('error', err.response?.data?.error || 'Error al resolver')
+        setModalConfirm(null)
+      } finally {
+        setLoadingAccion(false)
+      }
     }
-  }
+  })
+}
 
+const handleEscalar = (sancion) => {
+  setModalConfirm({
+    titulo: 'Escalar sanción',
+    mensaje: `¿Escalás la sanción #${sancion.id_sancion} a entidades superiores? Esta acción indica que el caso requiere intervención de mayor jerarquía.`,
+    detalle: sancion.usuario_nombre,
+    labelConfirmar: 'Escalar',
+    variante: 'escalar',
+    onConfirmar: async () => {
+      try {
+        setLoadingAccion(true)
+        await escalateSanction(sancion.id_sancion)
+        setModalConfirm(null)
+        mostrarMensaje('ok', 'Sanción escalada correctamente')
+        recargar()
+      } catch (err) {
+        mostrarMensaje('error', err.response?.data?.error || 'Error al escalar')
+        setModalConfirm(null)
+      } finally {
+        setLoadingAccion(false)
+      }
+    }
+  })
+}
+
+  // ── Computed ───────────────────────────────────────────────────
   const esPendiente = tabActiva === 'pendiente_confirmacion'
+  const esComportam = TABS_CON_SUBTABS.includes(tabActiva) && subTabActiva === 'comportamiento'
+
+  const textoVacio = esPendiente
+    ? 'No hay sanciones pendientes de confirmación.'
+    : esComportam
+      ? 'No hay sanciones de comportamiento en esta sección.'
+      : 'No hay sanciones en esta sección.'
 
   return (
     <div className="sanciones-page">
@@ -136,17 +217,42 @@ const AdminSancionesPage = () => {
         </button>
       </div>
 
+      {/* Tabs principales */}
       <div className="sanciones-tabs">
         {TABS.map(tab => (
           <button
             key={tab.id}
             className={`sanciones-tab-btn ${tabActiva === tab.id ? 'activo' : ''}`}
-            onClick={() => setTabActiva(tab.id)}
+            onClick={() => {
+              setSanciones([])
+              setPagina(1)
+              setSubTabActiva('prestamos')
+              setTabActiva(tab.id)
+            }}
           >
             {tab.label}
           </button>
         ))}
       </div>
+
+      {/* Sub-tabs — solo en Activas e Historial */}
+      {usaSubTabs && (
+        <div className="sanciones-subtabs">
+          {SUB_TABS.map(sub => (
+            <button
+              key={sub.id}
+              className={`sanciones-subtab-btn ${subTabActiva === sub.id ? 'activo' : ''}`}
+              onClick={() => {
+                setSanciones([])
+                setPagina(1)
+                setSubTabActiva(sub.id)
+              }}
+            >
+              {sub.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {mensajeAccion && (
         <p className={`sanciones-mensaje sanciones-mensaje--${mensajeAccion.tipo}`}>
@@ -155,14 +261,10 @@ const AdminSancionesPage = () => {
       )}
 
       {loading && <p className="sanciones-loading">Cargando...</p>}
-      {error && <p className="sanciones-error">{error}</p>}
+      {error   && <p className="sanciones-error">{error}</p>}
 
       {!loading && !error && sanciones.length === 0 && (
-        <p className="sanciones-vacio">
-          {esPendiente
-            ? 'No hay sanciones pendientes de confirmación.'
-            : `No hay sanciones en esta sección.`}
-        </p>
+        <p className="sanciones-vacio">{textoVacio}</p>
       )}
 
       {!loading && sanciones.length > 0 && (
@@ -175,9 +277,10 @@ const AdminSancionesPage = () => {
           )}
 
           <div className="sanciones-grid">
-            {sanciones.map(s => (
-              esPendiente
-                ? <SancionPendienteCard
+            {sanciones.map(s => {
+              if (esPendiente) {
+                return (
+                  <SancionPendienteCard
                     key={s.id_sancion}
                     sancion={s}
                     onConfirmar={handleConfirmar}
@@ -185,12 +288,25 @@ const AdminSancionesPage = () => {
                     onVerDetalle={setSancionDetalle}
                     disabled={loadingAccion}
                   />
-                : <SancionGrupoCard
-                    key={s.id_prestamo || s.id_sancion}
+                )
+              }
+              if (esComportam) {
+                return (
+                  <SancionComportamientoCard
+                    key={s.id_usuario}
                     grupo={s}
-                    onVerDetalle={setGrupoDetalle}
+                    onVerDetalle={setGrupoComportam}
                   />
-            ))}
+                )
+              }
+              return (
+                <SancionGrupoCard
+                  key={s.id_prestamo ?? s.id_sancion}
+                  grupo={s}
+                  onVerDetalle={setGrupoDetalle}
+                />
+              )
+            })}
           </div>
 
           {totalPaginas > 1 && (
@@ -209,11 +325,45 @@ const AdminSancionesPage = () => {
         </>
       )}
 
+      {/* Modal detalle sanción individual (pendientes) */}
+      {sancionDetalle && (
+        <ModalDetalleSancion
+          sancion={sancionDetalle}
+          onCerrar={() => setSancionDetalle(null)}
+          onResolver={handleResolver}
+          onEscalar={handleEscalar}
+        />
+      )}
+
+      {/* Modal sanciones de un préstamo */}
       {grupoDetalle && (
         <ModalSancionesLoan
           grupo={grupoDetalle}
           onCerrar={() => setGrupoDetalle(null)}
-          onActualizar={() => fetchSanciones(tabActiva, pagina)}
+          onActualizar={recargar}
+        />
+      )}
+
+      {/* Modal sanciones de comportamiento de un usuario */}
+      {grupoComportam && (
+        <ModalSancionesComportamiento
+          grupo={grupoComportam}
+          onCerrar={() => setGrupoComportam(null)}
+          onActualizar={recargar}
+        />
+      )}
+
+      {/* Modal de confirmación de acciones */}
+      {modalConfirm && (
+        <ModalConfirmacionAccion
+          titulo={modalConfirm.titulo}
+          mensaje={modalConfirm.mensaje}
+          detalle={modalConfirm.detalle}
+          labelConfirmar={modalConfirm.labelConfirmar}
+          variante={modalConfirm.variante}
+          loading={loadingAccion}
+          onConfirmar={modalConfirm.onConfirmar}
+          onCancelar={() => setModalConfirm(null)}
         />
       )}
     </div>

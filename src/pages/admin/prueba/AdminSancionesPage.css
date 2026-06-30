@@ -143,3 +143,33 @@
   margin: 0;
   line-height: 1.5;
 }
+
+/* ── Sub-tabs (Por préstamo / Por comportamiento) ── */
+.sanciones-subtabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sanciones-subtab-btn {
+  padding: 0.45rem 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.45);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sanciones-subtab-btn:hover {
+  background: rgba(255,255,255,0.09);
+  color: rgba(255,255,255,0.75);
+}
+
+.sanciones-subtab-btn.activo {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.3);
+  color: #fff;
+}

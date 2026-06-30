@@ -72,3 +72,24 @@ export const getLoanForSanction = async (id_prestamo) => {
   const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}/ejemplares`)
   return data.data
 }
+
+// Sanciones de comportamiento agrupadas por usuario
+export const getSancionesComportamientoAgrupadas = async ({ estado, page, limit }) => {
+  const params = new URLSearchParams()
+  if (estado) params.append('estado', estado)
+  if (page)   params.append('page', page)
+  if (limit)  params.append('limit', limit)
+  const { data } = await api.get(`/sanctions/comportamiento?${params.toString()}`)
+  return data
+}
+
+// Todas las sanciones de comportamiento de un usuario — para el modal de detalle
+export const getSancionesComportamientoByUsuario = async (id_usuario) => {
+  const { data } = await api.get(`/sanctions/comportamiento/usuario/${id_usuario}`)
+  return data.data
+}
+
+export const desescalateSanction = async (id) => {
+  const { data } = await api.patch(`/sanctions/${id}/desescalar`)
+  return data
+}

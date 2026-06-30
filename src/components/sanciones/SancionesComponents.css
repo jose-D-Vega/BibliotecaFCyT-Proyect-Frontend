@@ -127,6 +127,29 @@
 }
 .sancion-btn--escalar:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 
+.sancion-btn--desescalar {
+  background: rgba(234, 179, 8, 0.15);
+  color: #fcd34d;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+.sancion-btn--desescalar:hover:not(:disabled) {
+  background: rgba(234, 179, 8, 0.25);
+}
+
+.sancion-btn--rechazar {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f09595;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+.sancion-btn--rechazar:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.sancion-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .sancion-btn--primario {
   background: #fff;
   color: #0c1a2e;
