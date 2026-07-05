@@ -58,6 +58,19 @@ const BuscadorUsuario = ({ usuario, onUsuarioSeleccionado, onQuitarUsuario }) =>
           onChange={e => setBusqueda(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); buscar() } }}
         />
+        {(busqueda || resultados.length > 0) && (
+          <button
+            type="button"
+            className="sancion-btn sancion-btn--ghost"
+            onClick={() => {
+              setBusqueda('')
+              setResultados([])
+              setError(null)
+            }}
+          >
+            Limpiar
+          </button>
+        )}
         <button
           type="button"
           className="sancion-btn sancion-btn--primario"

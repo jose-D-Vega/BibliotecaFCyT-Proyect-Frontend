@@ -6,6 +6,7 @@ import BuscadorUsuario       from '../../../components/sanciones/BuscadorUsuario
 import SelectorEjemplares    from '../../../components/sanciones/SelectorEjemplares'
 import ProgresoSanciones     from '../../../components/sanciones/ProgresoSanciones'
 import ModalConfirmacionSancion from '../../../components/sanciones/ModalConfirmacionSancion'
+import ModalConfirmacionAccion from '../../../components/sanciones/ModalConfirmacionAccion'
 import './NuevaSancionPage.css'
 
 const TIPOS = [
@@ -55,6 +56,8 @@ const NuevaSancionPage = () => {
   const [tipoInfraccion,  setTipoInfraccion]  = useState(entrada.tipoActivo)
   const [tiposPendientes, setTiposPendientes]  = useState(entrada.tiposPendientesResto)
   const [tiposPendientesInicial]               = useState(entrada.tiposPendientesInicial)
+  const [modalCambioTipo, setModalCambioTipo] = useState(null) // null | string (el tipo al que quiere cambiar)
+
 
   // ── Efecto clave: sincronizar cuando navigate(replace) cambia location ──
   // Esto resuelve el bug donde el estado no se reseteaba al navegar al siguiente tipo
@@ -88,9 +91,11 @@ const NuevaSancionPage = () => {
   }, [location.key]) // location.key cambia en cada navigate, incluso con replace
 
   // ── Estado del formulario ──
+
   const [prestamo,           setPrestamo]           = useState(null)
   const [loadingPrestamo,    setLoadingPrestamo]    = useState(!!entrada.idPrestamoInicial)
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null)
+  const [buscadorKey, setBuscadorKey] = useState(0)
 
   const [ejemplaresSeleccionados,    setEjemplaresSeleccionados]    = useState(
     entrada.idEjemplaresDanio
@@ -122,17 +127,8 @@ const NuevaSancionPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Limpiar campos cuando cambia el tipo manualmente
+  // Limpiar error al cambiar tipo
   useEffect(() => {
-    if (!REQUIERE_EJEMPLAR(tipoInfraccion)) {
-      setEjemplaresSeleccionados([])
-      setDescripcionesPorEjemplar({})
-    }
-    if (tipoInfraccion !== 'comportamiento') {
-      setDiasSuspension('')
-      setSuspensionIndefinida(false)
-    }
-    setDescripcionGeneral('')
     setError(null)
   }, [tipoInfraccion])
 
@@ -191,12 +187,58 @@ const NuevaSancionPage = () => {
     }))
   }
 
+  const limpiarFormulario = () => {
+    setPrestamo(null)
+    setUsuarioSeleccionado(null)
+    setEjemplaresSeleccionados([])
+    setDescripcionGeneral('')
+    setDescripcionesPorEjemplar({})
+    setDiasSuspension('')
+    setSuspensionIndefinida(false)
+    setError(null)
+    setBuscadorKey(k => k + 1)   // fuerza remount del buscador
+  }
+
+  const handleCambiarTipo = (nuevoTipo) => {
+    if (nuevoTipo === tipoInfraccion) return
+
+    const hayTrabajo = prestamo !== null
+      || usuarioSeleccionado !== null
+      || ejemplaresSeleccionados.length > 0
+      || descripcionGeneral.trim() !== ''
+      || Object.keys(descripcionesPorEjemplar).length > 0
+      || diasSuspension !== ''
+
+    if (hayTrabajo) {
+      setModalCambioTipo(nuevoTipo)   // abre el modal con el tipo destino
+    } else {
+      limpiarFormulario()
+      setTipoInfraccion(nuevoTipo)
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const msg = validar()
     if (msg) { setError(msg); return }
     setError(null)
     setMostrarConfirmacion(true)
+  }
+
+  const handleCancelar = () => {
+    // Limpiar todo el formulario
+    setTipoInfraccion('')
+    setPrestamo(null)
+    setUsuarioSeleccionado(null)
+    setEjemplaresSeleccionados([])
+    setDescripcionGeneral('')
+    setDescripcionesPorEjemplar({})
+    setDiasSuspension('')
+    setSuspensionIndefinida(false)
+    setError(null)
+
+    // Volver el scroll al inicio
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const confirmarRegistro = async () => {
@@ -283,7 +325,7 @@ const NuevaSancionPage = () => {
                   key={tipo.value}
                   type="button"
                   className={`nueva-sancion-tipo-btn${tipoInfraccion === tipo.value ? ' activo' : ''}`}
-                  onClick={() => setTipoInfraccion(tipo.value)}
+                  onClick={() => handleCambiarTipo(tipo.value)}
                 >
                   <span className="nueva-sancion-tipo-label">{tipo.label}</span>
                   <span className="nueva-sancion-tipo-desc">{tipo.desc}</span>
@@ -314,6 +356,7 @@ const NuevaSancionPage = () => {
               {loadingPrestamo
                 ? <p className="ns-hint">Cargando préstamo...</p>
                 : <BuscadorPrestamo
+                    key={buscadorKey}
                     tipoInfraccion={tipoInfraccion}
                     prestamo={prestamo}
                     onPrestamoSeleccionado={setPrestamo}
@@ -321,6 +364,7 @@ const NuevaSancionPage = () => {
                       setPrestamo(null)
                       setEjemplaresSeleccionados([])
                       setDescripcionesPorEjemplar({})
+                      setBuscadorKey(k => k + 1)
                     }}
                     bloqueado={esFlujoMultiple}
                   />
@@ -410,7 +454,7 @@ const NuevaSancionPage = () => {
         {error && <p className="nueva-sancion-error">{error}</p>}
 
         <div className="nueva-sancion-acciones">
-          <button type="button" className="sancion-btn sancion-btn--ghost" onClick={() => navigate(-1)}>
+          <button type="button" className="sancion-btn sancion-btn--ghost" onClick={handleCancelar}>
             Cancelar
           </button>
           <button type="submit" className="sancion-btn sancion-btn--primario" disabled={loading || !tipoInfraccion}>
@@ -423,6 +467,23 @@ const NuevaSancionPage = () => {
           </button>
         </div>
       </form>
+
+      {/* Modal advertencia cambio de tipo */}
+      {modalCambioTipo && (
+        <ModalConfirmacionAccion
+          titulo="¿Cambiar tipo de sanción?"
+          mensaje="Tenés información cargada para el tipo actual. Si cambiás de tipo, todos los datos del formulario se perderán."
+          detalle={`Tipo seleccionado: ${TIPOS.find(t => t.value === modalCambioTipo)?.label}`}
+          labelConfirmar="Sí, cambiar"
+          variante="escalar"
+          onConfirmar={() => {
+            limpiarFormulario()
+            setTipoInfraccion(modalCambioTipo)
+            setModalCambioTipo(null)
+          }}
+          onCancelar={() => setModalCambioTipo(null)}
+        />
+      )}
 
       {/* Modal de confirmación */}
       {mostrarConfirmacion && (
@@ -456,7 +517,11 @@ const NuevaSancionPage = () => {
             <button className="success-btn" style={{ marginTop: '0.5rem' }} onClick={() => irYDespues('/admin/devoluciones')}>
               Ir a devoluciones
             </button>
-            <button className="success-btn" style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.08)', color: '#fff' }} onClick={() => setMostrarExito(false)}>
+            <button className="success-btn" style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.08)', color: '#fff' }} 
+              onClick={() => { 
+                setMostrarExito(false)
+                limpiarFormulario()
+                window.scrollTo({ top: 0, behavior: 'smooth' })}}>
               Quedarme aquí
             </button>
           </div>

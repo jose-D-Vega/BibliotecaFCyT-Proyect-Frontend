@@ -68,8 +68,10 @@ export const searchSanctionableLoans = async (search, tipo) => {
 }
 
 // Obtener un préstamo con sus ejemplares — para elegir cuáles sancionar
-export const getLoanForSanction = async (id_prestamo) => {
-  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}/ejemplares`)
+export const getLoanForSanction = async (id_prestamo, tipo_infraccion) => {
+  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}/ejemplares`, {
+    params: { tipo_infraccion }
+  })
   return data.data
 }
 

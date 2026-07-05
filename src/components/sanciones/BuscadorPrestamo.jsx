@@ -33,7 +33,7 @@ const BuscadorPrestamo = ({ tipoInfraccion, prestamo, onPrestamoSeleccionado, on
       setBuscando(true)
       setResultados([])
       setBusqueda('')
-      const data = await getLoanForSanction(p.id_prestamo)
+      const data = await getLoanForSanction(p.id_prestamo, tipoInfraccion)
       onPrestamoSeleccionado(data)
     } catch {
       setError('No se pudo cargar el préstamo')
@@ -92,6 +92,19 @@ const BuscadorPrestamo = ({ tipoInfraccion, prestamo, onPrestamoSeleccionado, on
           onChange={e => setBusqueda(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); buscar() } }}
         />
+        {(busqueda || resultados.length > 0) && (
+          <button
+            type="button"
+            className="sancion-btn sancion-btn--ghost"
+            onClick={() => {
+              setBusqueda('')
+              setResultados([])
+              setError(null)
+            }}
+          >
+            Limpiar
+          </button>
+        )}
         <button
           type="button"
           className="sancion-btn sancion-btn--primario"

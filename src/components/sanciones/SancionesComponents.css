@@ -244,14 +244,78 @@
   padding: 0.875rem;
 }
 
+/* ── RESPONSIVE ── */
+
 @media (max-width: 768px) {
-  .modal-sancion-overlay { top: 76px; padding: 0.5rem; }
-  .modal-sancion-box { 
-    max-height: calc(100vh - 76px - 1rem); 
-    border-radius: 14px;
+  .modal-sancion-overlay {
+    top: 76px;
+    padding: 0.5rem;
+    align-items: flex-end;   /* el modal sube desde abajo en mobile, más natural */
   }
-  .modal-sancion__grid { grid-template-columns: 1fr; }
-  .sancion-card__info { grid-template-columns: 1fr; }
+
+  .modal-sancion-box {
+    max-height: calc(100vh - 76px - 1rem);
+    border-radius: 16px 16px 10px 10px;
+    max-width: 100% !important;  /* anula cualquier maxWidth inline */
+  }
+
+  .modal-sancion__header {
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .modal-sancion__body {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .modal-sancion__grid {
+    grid-template-columns: 1fr;   /* colapsa a una columna */
+    padding: 0.75rem;
+  }
+
+  /* el gridColumn 1/-1 inline no hace daño pero tampoco aplica en 1 col */
+
+  .modal-dev__footer {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;              /* los botones hacen wrap si no entran */
+    justify-content: stretch;
+  }
+
+  .modal-dev__footer > * {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .sancion-card__acciones {
+    flex-direction: column;
+  }
+
+  .sancion-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-sancion-overlay {
+    top: 0;           /* ocupa toda la pantalla en móviles muy chicos */
+    padding: 0;
+  }
+
+  .modal-sancion-box {
+    max-height: 100vh;
+    border-radius: 0;
+    max-width: 100% !important;
+  }
+
+  .modal-sancion__title {
+    font-size: 1rem;
+  }
+
+  .modal-sancion__subtitle {
+    font-size: 0.75rem;
+  }
 }
 
 /*   Sanciones pendientes   */
