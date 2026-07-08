@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getLoans, getLoanById } from '../../services/loans.services'
+import { getLoans } from '../../services/loans.services'
 import PrestamoCard from './PrestamoCard'
 
 const ESTADOS_ACTIVOS = {
@@ -14,17 +14,19 @@ const ESTADOS_ACTIVOS = {
   'Vencidos': ['vencido'],
 }
 
+// Estados que ya no se muestran acá (van al historial o no aplican)
+const ESTADOS_EXCLUIDOS = ['devuelto', 'cancelado', 'rechazado', 'renovado']
+
 function PrestamosActivos() {
   const [prestamos, setPrestamos] = useState([])
   const [loading, setLoading] = useState(true)
-
 
   const cargarPrestamos = async () => {
     setLoading(true)
     try {
       const res = await getLoans({ limit: 100 })
       const activos = res.data.filter(p =>
-        !['devuelto', 'cancelado', 'rechazado'].includes(p.estado_prestamo)
+        !ESTADOS_EXCLUIDOS.includes(p.estado_prestamo)
       )
       setPrestamos(activos)
     } catch (err) {
@@ -38,9 +40,7 @@ function PrestamosActivos() {
 
   if (loading) return <p className="prestamos-loading">Cargando préstamos...</p>
 
-  const hayAlguno = prestamos.length > 0
-
-  if (!hayAlguno) {
+  if (prestamos.length === 0) {
     return (
       <p className="prestamos-vacio">
         No tenés préstamos activos en este momento.

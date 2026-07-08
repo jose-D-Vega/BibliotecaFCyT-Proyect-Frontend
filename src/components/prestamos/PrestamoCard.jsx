@@ -14,6 +14,7 @@ const ESTADO_LABELS = {
   solicitud_reserva: 'Reserva solicitada',
   reserva_aprobada: 'Reserva aprobada',
   reserva_parcialmente_aprobada: 'Reserva parcial',
+  renovado: 'Renovado',
 }
 
 const ESTADOS_CANCELABLES = [
@@ -22,17 +23,10 @@ const ESTADOS_CANCELABLES = [
 ]
 
 const ESTADOS_CON_FECHA_TOPE = ['activo', 'vencido', 'devuelto']
-const ESTADOS_CON_RESPUESTA = [
-  'aprobado', 'parcialmente_aprobado', 'rechazado',
-  'reserva_aprobada', 'reserva_parcialmente_aprobada',
-  'activo', 'vencido', 'devuelto'
-]
 
 const formatFecha = (fecha) => {
   if (!fecha) return null
-  // Tomar solo la parte de fecha del string ISO, sin convertir zona horaria
   const partes = fecha.split('T')[0].split('-')
-  // partes = ['2026', '05', '16']
   return `${partes[2]}/${partes[1]}/${partes[0]}`
 }
 
@@ -42,15 +36,25 @@ function PrestamoCard({ prestamo, onAccion }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const esRenovacion = (prestamo.numero_renovacion ?? 0) > 0
   const esCancelable = ESTADOS_CANCELABLES.includes(prestamo.estado_prestamo)
   const esRenovable = prestamo.estado_prestamo === 'activo'
   const mostrarFechaTope = ESTADOS_CON_FECHA_TOPE.includes(prestamo.estado_prestamo)
-  const mostrarFechaRespuesta = ESTADOS_CON_RESPUESTA.includes(prestamo.estado_prestamo)
+  const mostrarFechaRespuesta = ['aprobado', 'parcialmente_aprobado', 'rechazado',
+    'reserva_aprobada', 'reserva_parcialmente_aprobada',
+    'activo', 'vencido', 'devuelto'].includes(prestamo.estado_prestamo)
   const mostrarFechaActivacion = ['activo', 'vencido', 'devuelto'].includes(prestamo.estado_prestamo)
   const estaVencido = prestamo.estado_prestamo === 'vencido'
 
   const totalEjemplares = prestamo.detalles?.length || 0
   const totalLibros = new Set(prestamo.detalles?.map(d => d.titulo)).size || 0
+
+  // Etiqueta de tipo: distingue préstamo, reserva y renovaciones
+  const labelTipo = () => {
+    const base = prestamo.es_reserva ? 'Reserva' : 'Préstamo'
+    if (esRenovacion) return `${base} · Renovación #${prestamo.numero_renovacion}`
+    return base
+  }
 
   const handleCancelar = async () => {
     setLoading(true)
@@ -87,23 +91,31 @@ function PrestamoCard({ prestamo, onAccion }) {
         {/* Header */}
         <div className="prestamo-card__header">
           <div className="prestamo-card__meta">
-            <span className="prestamo-card__tipo">
-              {prestamo.es_reserva ? 'Reserva' : 'Préstamo'}
-            </span>
-            <span className="prestamo-card__fecha">
-              Solicitado el {formatFecha(prestamo.fecha_solicitud)}
-            </span>
+            <span className="prestamo-card__tipo">{labelTipo()}</span>
+
+            {prestamo.fecha_solicitud && (
+              <span className="prestamo-card__fecha">
+                Solicitado el {formatFecha(prestamo.fecha_solicitud)}
+              </span>
+            )}
             {mostrarFechaRespuesta && prestamo.fecha_respuesta && (
               <span className="prestamo-card__fecha">
-                - Respondido el {formatFecha(prestamo.fecha_respuesta)}
+                · Aprobado el {formatFecha(prestamo.fecha_respuesta)}
               </span>
             )}
             {mostrarFechaActivacion && prestamo.fecha_activacion && (
               <span className="prestamo-card__fecha">
-                - Activado el {formatFecha(prestamo.fecha_activacion)}
+                · Activado el {formatFecha(prestamo.fecha_activacion)}
+              </span>
+            )}
+            {/* Fecha de la renovación — solo se muestra en renovaciones ya activas */}
+            {esRenovacion && prestamo.fecha_renovacion && (
+              <span className="prestamo-card__fecha prestamo-card__fecha--renovacion">
+                · Renovado el {formatFecha(prestamo.fecha_renovacion)}
               </span>
             )}
           </div>
+
           <span className={`prestamo-card__estado estado-${prestamo.estado_prestamo}`}>
             {ESTADO_LABELS[prestamo.estado_prestamo] || prestamo.estado_prestamo}
           </span>
@@ -119,10 +131,13 @@ function PrestamoCard({ prestamo, onAccion }) {
               <span>
                 {totalLibros} libro{totalLibros !== 1 ? 's' : ''} —{' '}
                 {totalEjemplares} ejemplar{totalEjemplares !== 1 ? 'es' : ''}
+                {esRenovacion && prestamo.estado_prestamo === 'solicitud_renovacion' && (
+                  <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 400 }}>
+                    {' '}(del préstamo original)
+                  </span>
+                )}
               </span>
-              <span className={`prestamo-card__toggle-arrow ${desplegado ? 'open' : ''}`}>
-                ▼
-              </span>
+              <span className={`prestamo-card__toggle-arrow ${desplegado ? 'open' : ''}`}>▼</span>
             </button>
 
             {desplegado && (
@@ -134,9 +149,7 @@ function PrestamoCard({ prestamo, onAccion }) {
                       <span className="prestamo-card__ejemplar-autor">{det.autor}</span>
                       <span className="prestamo-card__ejemplar-id">Ejemplar #{det.id_ejemplar}</span>
                       {det.observaciones && (
-                        <span className="prestamo-card__ejemplar-obs">
-                          {det.observaciones}
-                        </span>
+                        <span className="prestamo-card__ejemplar-obs">{det.observaciones}</span>
                       )}
                     </div>
                     <span className={`prestamo-card__libro-estado estado-${det.estado_prestamo_ejemplar}`}>
