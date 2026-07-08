@@ -123,22 +123,22 @@ function PrestamosAdmin() {
               materialesMap[key].ejemplares.push(d.id_ejemplar)
             })
 
-          return {
+            return {
             id: p.id_prestamo,
             usuario: p.nombre_apellido || "Usuario",
             estado: p.estado_prestamo || "",
 
             fechaPrestamo: p.fecha_solicitud?.split("T")[0] || "",
-
             fechaEntrega: p.fecha_tope_devolucion?.split("T")[0] || "",
 
             fechaRespuesta: p.fecha_respuesta?.split("T")[0] || "",
             fechaActivacion: p.fecha_activacion?.split("T")[0] || "",
             fechaDevolucion: p.fecha_devolucion?.split("T")[0] || "",
 
-            totalEjemplares: p.total_ejemplares ?? 0,
+            detalles: detalle?.detalles || [],
+
             materiales: Object.values(materialesMap)
-          }
+            }
           })
       )
 
