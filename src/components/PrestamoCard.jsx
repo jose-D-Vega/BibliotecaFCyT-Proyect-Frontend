@@ -168,7 +168,6 @@ switch (estado) {
   case "devuelto":
     tituloFechaIzquierda = "Fecha tope devolución"
     valorFechaIzquierda = prestamo.fechaEntrega
-    tituloFechaDerecha = "Se devolvió en"
     valorFechaDerecha = prestamo.fechaDevolucion
     break
 
@@ -249,7 +248,11 @@ switch (estado) {
       <PrestamoDetalleModal
         open={openDetails}
         onClose={() => setOpenDetails(false)}
-        prestamo={{ ...prestamo, materiales }}
+        prestamo={{
+          ...prestamo,
+          materiales,
+          detalles: prestamo.detalles || []
+        }}
         estadoActual={estado}
         puedeCancelar={puedeCancelar}
         puedeActivar={puedeActivar}
