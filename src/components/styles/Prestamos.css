@@ -630,5 +630,10 @@
   }
 }
 
+/*   Actualización de la visualización de prestamos renovados   */
 
+.prestamo-card__fecha--renovacion {
+  color: #60a5fa;
+  font-weight: 600;
+}
 

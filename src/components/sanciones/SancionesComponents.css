@@ -192,7 +192,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 1.5rem 1.5rem 1rem;
+  padding: 0.6rem 1rem;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   flex-shrink: 0;
 }
@@ -276,7 +276,7 @@
   /* el gridColumn 1/-1 inline no hace daño pero tampoco aplica en 1 col */
 
   .modal-dev__footer {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
     flex-wrap: wrap;              /* los botones hacen wrap si no entran */
     justify-content: stretch;
   }

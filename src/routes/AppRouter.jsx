@@ -20,6 +20,7 @@ import DetalleLibroUserPage from '../pages/user/DetalleLibroUserPage'
 import CarritoPage from '../pages/user/Carrito'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesUserPage from '../pages/user/prueba/DevolucionesUserPage'
+import SancionesUserPage from '../pages/user/SancionesUserPage'
 
 import PerfilUserPage from '../pages/user/PerfilUserPage'
 import NotificacionesPage from '../pages/NotificacionesPage'
@@ -37,7 +38,9 @@ import InformesPage from '../pages/admin/prueba/InformesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
 import GestionUsuarios from '../pages/admin/GestionUsuarios'
-import SancionesUserPage from '../pages/user/SancionesUserPage'
+import DetalleSancionesPrestamoPage from '../pages/admin/prueba/DetalleSancionesPrestamoPage'
+import DetalleSancionesComportamientoPage from '../pages/admin/prueba/DetalleSancionesComportamientoPage'
+
 
 const AppRouter = () => {
   const { user, loading, rolActivo } = useAuth()
@@ -136,6 +139,8 @@ const AppRouter = () => {
           <Route path="perfil" element={<PerfilAdminPage />} />
           <Route path="usuarios" element={<GestionUsuarios />} />
           <Route path="sanciones/nueva" element={<NuevaSancionPage />} />
+          <Route path="sanciones/prestamo/:id_prestamo" element={<DetalleSancionesPrestamoPage />} />
+          <Route path="sanciones/comportamiento/:id_usuario" element={<DetalleSancionesComportamientoPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
         </Route>
@@ -156,6 +161,8 @@ const AppRouter = () => {
           <Route path="catalogo" element={<AdminCatalogoPage />} />
           <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
           <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
+          <Route path="sanciones/prestamo/:id_prestamo" element={<DetalleSancionesPrestamoPage />} />
+          <Route path="sanciones/comportamiento/:id_usuario" element={<DetalleSancionesComportamientoPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="informes" element={<InformesPage />} />
           {/* Sin: usuarios, catalogo/nuevo */}

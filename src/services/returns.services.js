@@ -67,3 +67,13 @@ export const resolveReservaAfectada = async (id_prestamo, id_ejemplar_anterior, 
   )
   return data
 }
+
+export const recuperarEjemplarPerdido = async (id_prestamo, id_ejemplar, payload) => {
+  const { data } = await api.post(`/returns/prestamo/${id_prestamo}/ejemplar/${id_ejemplar}/recuperar`, payload)
+  return data
+}
+
+export const reemplazarEjemplarPerdido = async (id_prestamo, id_ejemplar) => {
+  const { data } = await api.post(`/returns/prestamo/${id_prestamo}/ejemplar/${id_ejemplar}/reemplazar`)
+  return data
+}

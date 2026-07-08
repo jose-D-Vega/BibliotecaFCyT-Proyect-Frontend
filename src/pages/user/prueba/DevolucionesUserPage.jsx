@@ -188,6 +188,7 @@ const DevolucionesUserPage = () => {
         <ModalDetalleDevolucion
           prestamo={prestamoDetalle}
           onCerrar={() => setPrestamoDetalle(null)}
+          onActualizar={fetchHistorial}
         />
       )}
     </div>

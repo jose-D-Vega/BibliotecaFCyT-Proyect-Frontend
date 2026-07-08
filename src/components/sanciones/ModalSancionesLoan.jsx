@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { getSanctionsByLoan, resolveSanction, escalateSanction, desescalateSanction } from '../../services/sanctions.services'
 import ModalConfirmacionAccion from './ModalConfirmacionAccion'
+import { editSanction } from '../../services/sanctions.services'
+import ModalEditarDescripcion from './ModalEditarDescripcion'
 import './SancionesComponents.css'
 
 const formatFecha = (fecha) => {
@@ -10,17 +12,19 @@ const formatFecha = (fecha) => {
 }
 
 const TIPO_LABELS = {
-  falta_entrega: 'Falta de entrega',
+  falta_entrega:    'Falta de entrega',
   devolucion_tardia: 'Devolución tardía',
-  deterioro: 'Deterioro de material',
-  perdida: 'Pérdida de material',
-  comportamiento: 'Comportamiento inadecuado'
+  deterioro:        'Deterioro de material',
+  perdida:          'Pérdida de material',
+  comportamiento:   'Comportamiento inadecuado'
 }
 
+const TIPO_ORDER = ['falta_entrega', 'devolucion_tardia', 'deterioro', 'perdida']
+
 const ESTADO_COLORS = {
-  activa:    { bg: 'rgba(239,68,68,0.15)',      color: '#f09595',              label: 'Activa'    },
-  escalada:  { bg: 'rgba(234,179,8,0.15)',       color: '#fcd34d',              label: 'Escalada'  },
-  resuelta:  { bg: 'rgba(29,158,117,0.15)',      color: '#7de3b8',              label: 'Resuelta'  },
+  activa:    { bg: 'rgba(239,68,68,0.15)',      color: '#f09595',               label: 'Activa'    },
+  escalada:  { bg: 'rgba(234,179,8,0.15)',       color: '#fcd34d',               label: 'Escalada'  },
+  resuelta:  { bg: 'rgba(29,158,117,0.15)',      color: '#7de3b8',               label: 'Resuelta'  },
   rechazada: { bg: 'rgba(255,255,255,0.05)',     color: 'rgba(255,255,255,0.3)', label: 'Rechazada' }
 }
 
@@ -30,12 +34,18 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
   const [error,         setError]         = useState(null)
   const [loadingAccion, setLoadingAccion] = useState(false)
   const [mensaje,       setMensaje]       = useState(null)
-  const [modalConfirm, setModalConfirm] = useState(null)
+  const [modalConfirm,  setModalConfirm]  = useState(null)
+
+  const [editandoDescripcion, setEditandoDescripcion] = useState(null) // sancion | null
+  const [loadingEdicion,      setLoadingEdicion]      = useState(false)
+
+  // Ordenamiento: 'fecha_asc' | 'fecha_desc' | 'tipo'
+  const [orden, setOrden] = useState('fecha_asc')
 
   const fetchSanciones = async () => {
     try {
       setLoading(true)
-      const data = await getSanctionsByLoan(grupo.id_prestamo)
+      const data = await getSanctionsByLoan(grupo.id_prestamo, grupo.tabActiva)
       setSanciones(data)
     } catch {
       setError('Error al cargar las sanciones')
@@ -45,6 +55,15 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
   }
 
   useEffect(() => { fetchSanciones() }, [grupo.id_prestamo])
+
+  const sancionesOrdenadas = [...sanciones].sort((a, b) => {
+    if (orden === 'tipo') {
+      return TIPO_ORDER.indexOf(a.tipo_infraccion) - TIPO_ORDER.indexOf(b.tipo_infraccion)
+    }
+    const da = new Date(a.fecha_sancion)
+    const db = new Date(b.fecha_sancion)
+    return orden === 'fecha_asc' ? da - db : db - da
+  })
 
   const mostrarMensaje = (tipo, texto) => {
     setMensaje({ tipo, texto })
@@ -123,9 +142,24 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
     })
   }
 
+  const handleGuardarDescripcion = async (descripcion) => {
+    try {
+      setLoadingEdicion(true)
+      await editSanction(editandoDescripcion.id_sancion, { descripcion_sancion: descripcion })
+      setEditandoDescripcion(null)
+      mostrarMensaje('ok', 'Descripción actualizada')
+      fetchSanciones()
+      onActualizar?.()
+    } catch (err) {
+      mostrarMensaje('error', err.response?.data?.error || 'Error al guardar')
+    } finally {
+      setLoadingEdicion(false)
+    }
+  }
+
   return (
     <div className="modal-sancion-overlay" onClick={onCerrar}>
-      <div className="modal-sancion-box" onClick={e => e.stopPropagation()} style={{ maxWidth: 640 }}>
+      <div className="modal-sancion-box" onClick={e => e.stopPropagation()} style={{ maxWidth: 780 }}>
 
         <div className="modal-sancion__header">
           <div>
@@ -139,8 +173,35 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
           <button className="modal-dev__cerrar" onClick={onCerrar}>✕</button>
         </div>
 
+        {/* Controles de ordenamiento */}
+        <div style={{
+          display: 'flex',
+          gap: '0.5rem',
+          padding: '0.75rem 1.5rem',
+          flexShrink: 0,
+          flexWrap: 'wrap'
+        }}>
+          <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.4)', alignSelf: 'center', marginRight: 4 }}>
+            Ordenar por:
+          </span>
+          {[
+            { id: 'fecha_asc',  label: 'Fecha ↑' },
+            { id: 'fecha_desc', label: 'Fecha ↓' },
+            { id: 'tipo',       label: 'Tipo' },
+          ].map(op => (
+            <button
+              key={op.id}
+              className={`sanciones-subtab-btn ${orden === op.id ? 'activo' : ''}`}
+              style={{ padding: '4px 12px', fontSize: '0.78rem' }}
+              onClick={() => setOrden(op.id)}
+            >
+              {op.label}
+            </button>
+          ))}
+        </div>
+
         {mensaje && (
-          <div style={{ padding: '0.5rem 1.5rem', flexShrink: 0 }}>
+          <div style={{ padding: '0 1.5rem 0.5rem', flexShrink: 0 }}>
             <p className={`sanciones-mensaje sanciones-mensaje--${mensaje.tipo}`}>
               {mensaje.texto}
             </p>
@@ -150,8 +211,13 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
         <div className="modal-sancion__body">
           {loading && <p style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>Cargando...</p>}
           {error   && <p className="sanciones-error">{error}</p>}
+          {!loading && !error && sancionesOrdenadas.length === 0 && (
+            <p style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>
+              No hay sanciones en esta categoría.
+            </p>
+          )}
 
-          {!loading && sanciones.map(s => {
+          {!loading && sancionesOrdenadas.map(s => {
             const est = ESTADO_COLORS[s.estado_sancion] || ESTADO_COLORS.activa
             return (
               <div key={s.id_sancion} style={{
@@ -175,21 +241,35 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
                     )}
                   </div>
                   <span style={{
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    padding: '3px 9px',
-                    borderRadius: 999,
-                    background: est.bg,
-                    color: est.color,
-                    flexShrink: 0
+                    fontSize: '0.72rem', fontWeight: 700,
+                    padding: '3px 9px', borderRadius: 999,
+                    background: est.bg, color: est.color, flexShrink: 0
                   }}>
                     {est.label}
                   </span>
                 </div>
 
-                <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', margin: 0, fontStyle: 'italic' }}>
-                  {s.descripcion_sancion}
-                </p>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                  <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', margin: 0, fontStyle: 'italic', flex: 1 }}>
+                    {s.descripcion_sancion || '—'}
+                  </p>
+                  {(s.estado_sancion === 'activa' || s.estado_sancion === 'escalada') && (
+                    <button
+                      title="Editar descripción"
+                      onClick={() => setEditandoDescripcion(s)}
+                      style={{
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        color: 'rgba(255,255,255,0.35)', padding: '2px 4px', flexShrink: 0,
+                        fontSize: '0.9rem', lineHeight: 1,
+                        transition: 'color 0.2s'
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.35)'}
+                    >
+                      ✏️
+                    </button>
+                  )}
+                </div>
 
                 <div className="modal-sancion__grid" style={{ padding: '0.6rem' }}>
                   <div className="sancion-card__item">
@@ -222,42 +302,16 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
                   )}
                 </div>
 
-                {/* Acciones según estado */}
                 {s.estado_sancion === 'activa' && (
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button
-                      className="sancion-btn sancion-btn--escalar"
-                      onClick={() => handleEscalar(s.id_sancion)}
-                      disabled={loadingAccion}
-                    >
-                      Escalar
-                    </button>
-                    <button
-                      className="sancion-btn sancion-btn--resolver"
-                      onClick={() => handleResolver(s.id_sancion)}
-                      disabled={loadingAccion}
-                    >
-                      Resolver
-                    </button>
+                    <button className="sancion-btn sancion-btn--escalar" onClick={() => handleEscalar(s.id_sancion)} disabled={loadingAccion}>Escalar</button>
+                    <button className="sancion-btn sancion-btn--resolver" onClick={() => handleResolver(s.id_sancion)} disabled={loadingAccion}>Resolver</button>
                   </div>
                 )}
-
                 {s.estado_sancion === 'escalada' && (
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button
-                      className="sancion-btn sancion-btn--desescalar"
-                      onClick={() => handleDesescalar(s.id_sancion)}
-                      disabled={loadingAccion}
-                    >
-                      Des-escalar
-                    </button>
-                    <button
-                      className="sancion-btn sancion-btn--resolver"
-                      onClick={() => handleResolver(s.id_sancion)}
-                      disabled={loadingAccion}
-                    >
-                      Resolver
-                    </button>
+                    <button className="sancion-btn sancion-btn--desescalar" onClick={() => handleDesescalar(s.id_sancion)} disabled={loadingAccion}>Des-escalar</button>
+                    <button className="sancion-btn sancion-btn--resolver" onClick={() => handleResolver(s.id_sancion)} disabled={loadingAccion}>Resolver</button>
                   </div>
                 )}
               </div>
@@ -265,12 +319,14 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
           })}
         </div>
 
-        {/* Modal de confirmación */}
+        <div className="modal-dev__footer">
+          <button className="modal-dev__btn-cancelar" onClick={onCerrar}>Cerrar</button>
+        </div>
+
         {modalConfirm && (
           <ModalConfirmacionAccion
             titulo={modalConfirm.titulo}
             mensaje={modalConfirm.mensaje}
-            detalle={modalConfirm.detalle}
             labelConfirmar={modalConfirm.labelConfirmar}
             variante={modalConfirm.variante}
             loading={loadingAccion}
@@ -279,9 +335,14 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
           />
         )}
 
-        <div className="modal-dev__footer">
-          <button className="modal-dev__btn-cancelar" onClick={onCerrar}>Cerrar</button>
-        </div>
+        {editandoDescripcion && (
+          <ModalEditarDescripcion
+            sancion={editandoDescripcion}
+            onGuardar={handleGuardarDescripcion}
+            onCancelar={() => setEditandoDescripcion(null)}
+            loading={loadingEdicion}
+          />
+        )}
       </div>
     </div>
   )

@@ -126,6 +126,7 @@ const TabHistorialDevoluciones = () => {
         <ModalDetalleDevolucion
           prestamo={prestamoDetalle}
           onCerrar={() => setPrestamoDetalle(null)}
+          onActualizar={fetchHistorial}
         />
       )}
     </div>

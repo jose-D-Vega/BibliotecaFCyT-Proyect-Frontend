@@ -55,8 +55,10 @@ export const getSanctionsGrouped = async ({ estado, page, limit }) => {
   return data
 }
 
-export const getSanctionsByLoan = async (id_prestamo) => {
-  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}`)
+export const getSanctionsByLoan = async (id_prestamo, estado) => {
+  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}`, {
+    params: { estado }
+  })
   return data.data
 }
 
@@ -68,9 +70,9 @@ export const searchSanctionableLoans = async (search, tipo) => {
 }
 
 // Obtener un préstamo con sus ejemplares — para elegir cuáles sancionar
-export const getLoanForSanction = async (id_prestamo, tipo_infraccion) => {
+export const getLoanForSanction = async (id_prestamo, tipo_infraccion = null) => {
   const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}/ejemplares`, {
-    params: { tipo_infraccion }
+    params: tipo_infraccion ? { tipo_infraccion } : {}
   })
   return data.data
 }
@@ -86,12 +88,29 @@ export const getSancionesComportamientoAgrupadas = async ({ estado, page, limit 
 }
 
 // Todas las sanciones de comportamiento de un usuario — para el modal de detalle
-export const getSancionesComportamientoByUsuario = async (id_usuario) => {
-  const { data } = await api.get(`/sanctions/comportamiento/usuario/${id_usuario}`)
+export const getSancionesComportamientoByUsuario = async (id_usuario, estado) => {
+  const { data } = await api.get(`/sanctions/comportamiento/usuario/${id_usuario}`, {
+    params: { estado }
+  })
   return data.data
 }
 
 export const desescalateSanction = async (id) => {
   const { data } = await api.patch(`/sanctions/${id}/desescalar`)
   return data
+}
+
+export const getAllSanctionsByLoan = async (id_prestamo) => {
+  const { data } = await api.get(`/sanctions/prestamo/${id_prestamo}/todas`)
+  return data.data
+}
+
+export const getAllSancionesComportamientoByUsuario = async (id_usuario) => {
+  const { data } = await api.get(`/sanctions/comportamiento/usuario/${id_usuario}/todas`)
+  return data.data
+}
+
+export const editSanction = async (id, payload) => {
+  const { data } = await api.patch(`/sanctions/${id}/editar`, payload)
+  return data.data
 }

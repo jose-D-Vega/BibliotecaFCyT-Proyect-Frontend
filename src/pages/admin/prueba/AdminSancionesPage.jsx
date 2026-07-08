@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   getSanctions, resolveSanction, escalateSanction,
   confirmSanction, rejectSanction, getSanctionsGrouped,
@@ -34,8 +34,11 @@ const TABS_CON_SUBTABS = ['activa', 'resuelta,rechazada']
 
 const AdminSancionesPage = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const [tabActiva,    setTabActiva]    = useState('pendiente_confirmacion')
+  const [tabActiva, setTabActiva] = useState(
+    location.state?.tabActiva || 'pendiente_confirmacion'
+  )
   const [subTabActiva, setSubTabActiva] = useState('prestamos')
 
   const [sanciones,     setSanciones]     = useState([])
@@ -295,7 +298,13 @@ const handleEscalar = (sancion) => {
                   <SancionComportamientoCard
                     key={s.id_usuario}
                     grupo={s}
-                    onVerDetalle={setGrupoComportam}
+                    onVerDetalle={s => {
+                      if (tabActiva === 'resuelta,rechazada') {
+                        navigate(`/admin/sanciones/comportamiento/${s.id_usuario}`, { state: { tabActiva } })
+                      } else {
+                        setGrupoComportam({ ...s, tabActiva })
+                      }
+                    }}
                   />
                 )
               }
@@ -303,7 +312,13 @@ const handleEscalar = (sancion) => {
                 <SancionGrupoCard
                   key={s.id_prestamo ?? s.id_sancion}
                   grupo={s}
-                  onVerDetalle={setGrupoDetalle}
+                  onVerDetalle={s => {
+                    if (tabActiva === 'resuelta,rechazada') {
+                      navigate(`/admin/sanciones/prestamo/${s.id_prestamo}`, { state: { tabActiva } })
+                    } else {
+                      setGrupoDetalle({ ...s, tabActiva })
+                    }
+                  }}
                 />
               )
             })}
@@ -330,8 +345,8 @@ const handleEscalar = (sancion) => {
         <ModalDetalleSancion
           sancion={sancionDetalle}
           onCerrar={() => setSancionDetalle(null)}
-          onResolver={handleResolver}
-          onEscalar={handleEscalar}
+          onConfirmar={handleConfirmar}
+          onRechazar={handleRechazar}
         />
       )}
 
