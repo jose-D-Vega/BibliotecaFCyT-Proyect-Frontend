@@ -1,36 +1,50 @@
 .solicitud-modal-overlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(2,6,18,.82);
-  backdrop-filter: blur(6px);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow-y: auto;
-  z-index: 999;
-  padding: 90px 18px 40px;
+  position:fixed;
+  inset:0;
+  background:rgba(2,6,18,.82);
+  backdrop-filter:blur(6px);
+
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+
+  padding:90px 18px 24px;
+
+  overflow:hidden;
+  z-index:999;
 }
+
 
 /* MODAL */
+
 .solicitud-modal{
-  width: min(1100px, 98vw);
-  max-height: calc(100vh - 130px);
-  overflow: hidden;
-  background: #12233f;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 28px;
-  padding: 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin: auto;
+  width:min(1100px,98vw);
+  max-width:1100px;
+
+  height:calc(100vh - 114px);
+  max-height:calc(100vh - 114px);
+
+  background:#12233f;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:28px;
+
+  padding:26px;
+
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+
+  overflow:hidden;
 }
 
+
 /* HEADER */
+
 .solicitud-modal__header{
   display:flex;
   justify-content:space-between;
   gap:18px;
+  flex-shrink:0;
 }
 
 .solicitud-modal__header h2{
@@ -60,9 +74,8 @@
   background:rgba(255,255,255,.14);
 }
 
-/* ========================= */
-/* 🔥 BULK ACTIONS (NUEVO AISLADO) */
-/* ========================= */
+
+/* BULK ACTIONS */
 
 .solicitud-modal__bulk-actions{
   display:flex;
@@ -71,6 +84,8 @@
   flex-wrap:wrap;
 
   padding:10px 0 0;
+
+  flex-shrink:0;
 }
 
 .bulk-btn{
@@ -105,7 +120,9 @@
   background:rgba(255,255,255,.14);
 }
 
-/* TOOLBAR (legacy, se mantiene por compatibilidad) */
+
+/* TOOLBAR */
+
 .solicitud-modal__toolbar{
   display:flex;
   justify-content:space-between;
@@ -149,14 +166,21 @@
   background:rgba(255,255,255,.05);
 }
 
+
 /* CONTENT */
+
 .solicitud-modal__content{
   flex:1;
+  min-height:0;
+
   overflow-y:auto;
+
   display:flex;
   flex-direction:column;
   gap:16px;
+
   padding-right:6px;
+
   scrollbar-width:thin;
   scrollbar-color:rgba(255,255,255,.18) transparent;
 }
@@ -170,12 +194,15 @@
   border-radius:999px;
 }
 
+
 /* MATERIAL */
+
 .material-item{
   background:rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.08);
   border-radius:22px;
   padding:18px;
+
   display:flex;
   flex-direction:column;
   gap:18px;
@@ -207,7 +234,9 @@
   white-space:nowrap;
 }
 
+
 /* COPIES */
+
 .material-item__copies{
   display:flex;
   flex-direction:column;
@@ -220,10 +249,12 @@
   border-radius:18px;
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.08);
+
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:16px;
+
   cursor:pointer;
   transition:.2s;
 }
@@ -248,6 +279,7 @@
   height:42px;
   border-radius:14px;
   background:rgba(255,255,255,.08);
+
   display:flex;
   align-items:center;
   justify-content:center;
@@ -276,11 +308,14 @@
   width:28px;
   height:28px;
   border-radius:10px;
+
   background:rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.12);
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   color:transparent;
   font-weight:900;
   transition:.2s;
@@ -292,19 +327,17 @@
   color:#08141f;
 }
 
-/* RESERVA */
-.copy-row--reserva.copy-row--active {
-  background: rgba(59,130,246,.12);
-  border-color: rgba(59,130,246,.35);
+.copy-row--reserva.copy-row--active{
+  background:rgba(59,130,246,.12);
+  border-color:rgba(59,130,246,.35);
 }
 
-.copy-row--reserva.copy-row--active .copy-row__check {
+.copy-row--reserva.copy-row--active .copy-row__check{
   background:#3b82f6;
   border-color:#3b82f6;
   color:#fff;
 }
 
-/* RENOVACION */
 .copy-row--renovacion{
   background:rgba(255,170,70,.12);
   border-color:rgba(255,170,70,.35);
@@ -316,10 +349,13 @@
   color:#08141f;
 }
 
+
 /* ACTIONS */
+
 .solicitud-modal__actions{
   display:flex;
   justify-content:flex-end;
+  flex-shrink:0;
 }
 
 .confirm-btn{
@@ -327,10 +363,13 @@
   min-width:240px;
   height:56px;
   border-radius:18px;
+
   background:rgba(20,180,90,.18);
   color:#62ffab;
+
   font-size:1rem;
   font-weight:800;
+
   cursor:pointer;
   transition:.2s;
 }
@@ -340,7 +379,9 @@
   transform:translateY(-2px);
 }
 
-/* RENOVATION BADGE (UNCHANGED) */
+
+/* RENEWAL */
+
 .renewal-badge{
   display:flex;
   align-items:stretch;
@@ -356,11 +397,12 @@
   border:1px solid rgba(255,255,255,.12);
   border-radius:16px;
 
-  backdrop-filter: blur(6px);
+  backdrop-filter:blur(6px);
 }
 
 .renewal-badge__item{
   flex:1;
+
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -400,15 +442,50 @@
   color:rgba(255,255,255,.5);
 }
 
-/* MOBILE */
-@media(max-width:600px){
+
+/* TABLET */
+
+@media(max-width:1024px){
+
   .solicitud-modal{
-    width: 98vw;
+    width:95vw;
+    max-height:calc(100vh - 100px);
+  }
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .solicitud-modal-overlay{
+    padding:70px 10px 10px;
+  }
+
+  .solicitud-modal{
+    width:100%;
+    height:calc(100vh - 80px);
+    max-height:calc(100vh - 80px);
+
     padding:18px;
+    border-radius:20px;
+  }
+
+  .solicitud-modal__header{
+    gap:10px;
   }
 
   .solicitud-modal__bulk-actions{
     justify-content:center;
+  }
+
+  .material-item__top{
+    flex-direction:column;
+  }
+
+  .copy-row{
+    padding:13px 14px;
   }
 
   .renewal-badge{
@@ -419,4 +496,5 @@
   .renewal-badge__arrow{
     transform:rotate(90deg);
   }
+
 }

@@ -1,298 +1,361 @@
-.prestamos-admin .prestamo-card {
-  background: #12233f;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.08);
-
-  padding: 18px 20px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
-
-  transition: .25s;
-
-  box-sizing: border-box;
+.prestamos-admin .prestamo-card{
+  background:#12233f;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  transition:.25s;
+  box-sizing:border-box;
 }
 
-.prestamos-admin .prestamo-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255,255,255,.14);
+.prestamos-admin .prestamo-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.14);
 }
 
-/* ===================== LEFT SIDE ===================== */
 
-.prestamos-admin .prestamo-card__main {
-  display: flex;
-  align-items: center;
-  gap: 26px;
+/* ================= MAIN ================= */
 
-  flex: 1;
-  min-width: 0;
+.prestamos-admin .prestamo-card__main{
+  display:flex;
+  align-items:center;
+  gap:26px;
+  flex:1;
+  width:100%;
+  min-width:0;
 }
 
-.prestamos-admin .prestamo-card__user {
-  width: 220px;
-  flex-shrink: 0;
+.prestamos-admin .prestamo-card__user{
+  width:220px;
+  flex:1 1 0;
+  min-width:0;
+  overflow:hidden;
 }
 
-.prestamos-admin .prestamo-card__user h2 {
-  margin: 0;
-  color: #fff;
-  font-size: 1.4rem;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.prestamos-admin .prestamo-card__user h2{
+  display:block;
+  margin:0;
+  color:#fff;
+  font-size:1.4rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  width:100%;
 }
 
-.prestamos-admin .prestamo-card__meta {
-  margin-top: 4px;
-  font-size: .85rem;
-  color: rgba(255,255,255,.6);
+.prestamos-admin .prestamo-card__meta{
+  margin-top:4px;
+  font-size:.85rem;
+  color:rgba(255,255,255,.6);
 }
 
-/* ===================== DATES ===================== */
 
-.prestamos-admin .prestamo-card__dates {
-  width: 260px;
-  flex-shrink: 0;
+/* ================= FECHAS ================= */
 
-  display: flex;
-  gap: 18px;
-  align-items: center;
+.prestamos-admin .prestamo-card__dates{
+  width:260px;
+  flex-shrink:0;
+  display:flex;
+  gap:18px;
+  align-items:center;
 }
 
-.prestamos-admin .prestamo-card__dates p {
-  margin: 0;
-  color: rgba(255,255,255,.5);
-  font-size: .8rem;
+.prestamos-admin .prestamo-card__dates p{
+  margin:0;
+  color:rgba(255,255,255,.5);
+  font-size:.8rem;
 }
 
-.prestamos-admin .prestamo-card__dates strong {
-  color: #fff;
-  font-size: .9rem;
+.prestamos-admin .prestamo-card__dates strong{
+  color:#fff;
+  font-size:.9rem;
 }
 
-/* ===================== BADGE ===================== */
 
-.prestamos-admin .prestamo-card__badge-slot {
-  width: 180px;
-  display: flex;
-  justify-content: flex-start;
-  flex-shrink: 0;
+/* ================= BADGE ================= */
+
+.prestamos-admin .prestamo-card__badge-slot{
+  width:180px;
+  flex-shrink:0;
+  display:flex;
+  justify-content:flex-start;
 }
 
-/* ===================== ACTIONS (FIX PRINCIPAL) ===================== */
 
-.prestamos-admin .prestamo-card__actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* ================= ACTIONS ================= */
 
-  justify-content: flex-end;
-  min-width: 380px; /* 👈 clave para evitar saltos */
+.prestamos-admin .prestamo-card__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  min-width:380px;
+  flex-shrink:0;
 }
 
-/* BOTÓN BASE */
-.prestamos-admin .prestamo-card__btn {
-  width: 120px;
-  height: 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-
-  transition: .2s;
-  font-size: .9rem;
-
-  border: none;
-
-  flex-shrink: 0;
+.prestamos-admin .prestamo-card__btn{
+  width:120px;
+  height:38px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:.9rem;
+  font-weight:700;
+  transition:.2s;
+  flex-shrink:0;
 }
 
-/* ===================== ORDER FIX (CLAVE) ===================== */
 
-/* Activar SIEMPRE izquierda */
-.prestamos-admin .prestamo-card__btn--activate {
-  order: 1;
+/* ================= BOTONES ================= */
 
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #4ade80;
+.prestamos-admin .prestamo-card__btn--activate{
+  order:1;
+  background:rgba(34,197,94,.15);
+  border:1px solid rgba(34,197,94,.4);
+  color:#4ade80;
 }
 
-.prestamos-admin .prestamo-card__btn--activate:hover {
-  background: rgba(34, 197, 94, 0.25);
+.prestamos-admin .prestamo-card__btn--activate:hover{
+  background:rgba(34,197,94,.25);
 }
 
-/* Cancelar SIEMPRE centro */
-.prestamos-admin .prestamo-card__btn--cancel {
-  order: 2;
-
-  background: rgba(185, 28, 28, 0.15);
-  border: 1px solid rgba(185, 28, 28, 0.4);
-  color: #ff6b6b;
+.prestamos-admin .prestamo-card__btn--cancel{
+  order:2;
+  background:rgba(185,28,28,.15);
+  border:1px solid rgba(185,28,28,.4);
+  color:#ff6b6b;
 }
 
-.prestamos-admin .prestamo-card__btn--cancel:hover {
-  background: rgba(185, 28, 28, 0.3);
+.prestamos-admin .prestamo-card__btn--cancel:hover{
+  background:rgba(185,28,28,.3);
 }
 
-/* Detalles SIEMPRE derecha */
-.prestamos-admin .prestamo-card__btn--details {
-  order: 3;
-
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.1);
-  color: #fff;
+.prestamos-admin .prestamo-card__btn--details{
+  order:3;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
 }
 
-.prestamos-admin .prestamo-card__btn--details:hover {
-  background: rgba(255,255,255,.14);
+.prestamos-admin .prestamo-card__btn--details:hover{
+  background:rgba(255,255,255,.14);
 }
 
-/* ===================== MODAL ===================== */
 
-.prestamos-admin .prestamo-card__modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.65);
+/* ================= MODAL ================= */
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 999;
+.prestamos-admin .prestamo-card__modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
 }
 
-.prestamos-admin .prestamo-card__modal {
-  width: 360px;
-  background: #0f1b2d;
-  border: 1px solid rgba(255,255,255,.1);
-
-  padding: 22px;
-  border-radius: 18px;
-
-  color: #fff;
-
-  animation: prestamoCardFadeIn .18s ease-out;
+.prestamos-admin .prestamo-card__modal{
+  width:360px;
+  background:#0f1b2d;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  padding:22px;
+  color:#fff;
+  animation:prestamoCardFadeIn .18s ease-out;
 }
 
-@keyframes prestamoCardFadeIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+@keyframes prestamoCardFadeIn{
+  from{
+    transform:scale(.95);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
 }
 
-.prestamos-admin .prestamo-card__modal h3 {
-  margin-top: 0;
+.prestamos-admin .prestamo-card__modal h3{
+  margin-top:0;
 }
 
-.prestamos-admin .prestamo-card__modal p {
-  color: rgba(255,255,255,.7);
-  font-size: .95rem;
+.prestamos-admin .prestamo-card__modal p{
+  color:rgba(255,255,255,.7);
+  font-size:.95rem;
 }
+
 
 /* INFO */
-.prestamos-admin .prestamo-card__activate-info {
-  margin-top: 12px;
-  padding: 12px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px;
 
-  font-size: .9rem;
-  color: rgba(255,255,255,.85);
+.prestamos-admin .prestamo-card__activate-info{
+  margin-top:12px;
+  padding:12px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  color:rgba(255,255,255,.85);
+  font-size:.9rem;
 }
 
-.prestamos-admin .prestamo-card__activate-info p {
-  margin: 6px 0;
+.prestamos-admin .prestamo-card__activate-info p{
+  margin:6px 0;
 }
+
 
 /* MODAL ACTIONS */
-.prestamos-admin .prestamo-card__modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
+
+.prestamos-admin .prestamo-card__modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:16px;
 }
 
-/* MODAL BUTTONS */
-.prestamos-admin .prestamo-card__modal-btn {
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
+.prestamos-admin .prestamo-card__modal-btn{
+  padding:8px 12px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
 }
 
-.prestamos-admin .prestamo-card__modal-btn--secondary {
-  background: rgba(255,255,255,.1);
-  color: white;
+.prestamos-admin .prestamo-card__modal-btn--secondary{
+  background:rgba(255,255,255,.1);
+  color:#fff;
 }
 
-.prestamos-admin .prestamo-card__modal-btn--danger {
-  background: #b91c1c;
-  color: white;
+.prestamos-admin .prestamo-card__modal-btn--danger{
+  background:#b91c1c;
+  color:#fff;
 }
 
-.prestamos-admin .prestamo-card__modal-btn--success {
-  background: #16a34a;
-  color: white;
+.prestamos-admin .prestamo-card__modal-btn--success{
+  background:#16a34a;
+  color:#fff;
 }
 
-/* ===================== RESPONSIVE ===================== */
 
-@media (max-width: 768px) {
+/* ========================================================= */
+/* TABLET */
+/* ========================================================= */
 
-  .prestamos-admin .prestamo-card {
-    flex-direction: column;
-    align-items: flex-start;
+@media (min-width:769px) and (max-width:1024px){
+
+  .prestamos-admin .prestamo-card{
+    flex-direction:column;
+    align-items:stretch;
   }
 
-  .prestamos-admin .prestamo-card__main {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+
+  .prestamos-admin .prestamo-card__main{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr auto auto;
+    align-items:center;
+    gap:18px;
   }
 
-  .prestamos-admin .prestamo-card__dates {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
+
+  .prestamos-admin .prestamo-card__user{
+    width:auto;
+    flex:unset;
+    min-width:0;
   }
 
-  .prestamos-admin .prestamo-card__badge-slot {
-    width: 100%;
+
+  .prestamos-admin .prestamo-card__dates{
+    width:auto;
+    display:flex;
+    justify-content:flex-end;
   }
 
-  .prestamos-admin .prestamo-card__actions {
-    width: 100%;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    min-width: unset;
+
+  .prestamos-admin .prestamo-card__badge-slot{
+    width:auto;
+    justify-content:flex-end;
   }
 
-  .prestamos-admin .prestamo-card__btn {
-    width: 100%;
+
+  .prestamos-admin .prestamo-card__actions{
+    width:100%;
+    min-width:0;
+    justify-content:flex-end;
+    flex-wrap:wrap;
   }
 
-  .prestamos-admin .prestamo-card__modal {
-    width: 90%;
+}
+
+
+/* ========================================================= */
+/* MOVIL */
+/* ========================================================= */
+
+@media (max-width:768px){
+
+  .prestamos-admin .prestamo-card{
+    flex-direction:column;
+    align-items:flex-start;
   }
 
-  .prestamos-admin .prestamo-card__modal-actions {
-    flex-direction: column;
-    align-items: stretch;
+  .prestamos-admin .prestamo-card__main{
+    width:100%;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
   }
 
-  .prestamos-admin .prestamo-card__modal-btn {
-    width: 100%;
+  .prestamos-admin .prestamo-card__user{
+    width:100%;
+    flex:none;
+    max-width:100%;
   }
+
+  .prestamos-admin .prestamo-card__user h2{
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+  }
+
+  .prestamos-admin .prestamo-card__dates{
+    width:100%;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .prestamos-admin .prestamo-card__badge-slot{
+    width:100%;
+  }
+
+  .prestamos-admin .prestamo-card__actions{
+    width:100%;
+    min-width:0;
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+  }
+
+  .prestamos-admin .prestamo-card__btn{
+    width:100%;
+  }
+
+  .prestamos-admin .prestamo-card__modal{
+    width:90%;
+  }
+
+  .prestamos-admin .prestamo-card__modal-actions{
+    flex-direction:column;
+  }
+
+  .prestamos-admin .prestamo-card__modal-btn{
+    width:100%;
+  }
+
 }

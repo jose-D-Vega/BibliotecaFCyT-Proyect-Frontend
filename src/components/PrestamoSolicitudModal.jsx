@@ -8,27 +8,26 @@ function PrestamoSolicitudModal({
   onAceptar
 }) {
 
-  const isReserva =
-    solicitud?.tipoSolicitud === "Reserva"
+  const isReserva = solicitud?.tipoSolicitud === "Reserva"
 
-  const isRenovacion =
-    solicitud?.tipoSolicitud === "Renovación"
+  const isRenovacion = solicitud?.tipoSolicitud === "Renovación"
 
   const allCopies = useMemo(() => {
-    return solicitud.materiales.flatMap(
-      (material) =>
-        material.ejemplares.map(
-          (ejemplar) => ejemplar
-        )
-    )
+    return solicitud?.materiales?.flatMap(
+      material => material.ejemplares.map(ejemplar => ejemplar)
+    ) || []
   }, [solicitud])
 
-  const [selectedCopies, setSelectedCopies] =
-    useState(allCopies)
+  const [selectedCopies, setSelectedCopies] = useState(allCopies)
 
   useEffect(() => {
-    if (open) {
+    if(open){
+      document.body.style.overflow = "hidden"
       setSelectedCopies(allCopies)
+    }
+
+    return () => {
+      document.body.style.overflow = ""
     }
   }, [open, allCopies])
 
@@ -36,11 +35,13 @@ function PrestamoSolicitudModal({
     if (!str) return null
 
     const iso = new Date(str)
+
     if (!isNaN(iso)) return iso
 
     const parts = str.split("/")
-    if (parts.length === 3) {
-      const [d, m, y] = parts
+
+    if(parts.length === 3){
+      const [d,m,y] = parts
       return new Date(`${y}-${m}-${d}`)
     }
 
@@ -48,19 +49,23 @@ function PrestamoSolicitudModal({
   }
 
   const formatDate = (date) => {
-    if (!date) return "—"
+    if(!date) return "—"
+
     const d = parseDate(date)
-    if (!d) return "—"
+
+    if(!d) return "—"
+
     return d.toLocaleDateString("es-ES")
   }
 
   const renewalDays = 5
 
   const renewalInfo = useMemo(() => {
-    if (!isRenovacion) return null
+    if(!isRenovacion) return null
 
     const base = new Date()
     const newDateObj = new Date(base)
+
     newDateObj.setDate(base.getDate() + renewalDays)
 
     return {
@@ -72,41 +77,46 @@ function PrestamoSolicitudModal({
       ),
       newDate: newDateObj.toLocaleDateString("es-ES")
     }
+
   }, [isRenovacion, solicitud])
 
-  function toggleCopy(ejemplar) {
-    if (isRenovacion) return
+  function toggleCopy(ejemplar){
+    if(isRenovacion) return
 
-    setSelectedCopies((prev) =>
+    setSelectedCopies(prev =>
       prev.includes(ejemplar)
-        ? prev.filter((item) => item !== ejemplar)
+        ? prev.filter(item => item !== ejemplar)
         : [...prev, ejemplar]
     )
   }
-  function capitalizeWords(text) {
-  return (text || "")
-    .toLowerCase()
-    .split(" ")
-    .filter(Boolean)
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ")
-}
 
-  function selectAll() {
-    if (isRenovacion) return
+  function capitalizeWords(text){
+    return (text || "")
+      .toLowerCase()
+      .split(" ")
+      .filter(Boolean)
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ")
+  }
+
+  function selectAll(){
+    if(isRenovacion) return
+
     setSelectedCopies(allCopies)
   }
 
-  function clearAll() {
-    if (isRenovacion) return
+  function clearAll(){
+    if(isRenovacion) return
+
     setSelectedCopies([])
   }
 
-  function handleConfirm() {
+  function handleConfirm(){
     onAceptar({
       ...solicitud,
       selectedCopies,
-      modo: isReserva
+      modo:
+        isReserva
         ? "RESERVA"
         : isRenovacion
         ? "RENOVACION"
@@ -114,7 +124,7 @@ function PrestamoSolicitudModal({
     })
   }
 
-  if (!open) return null
+  if(!open) return null
 
   return (
     <div className="solicitud-modal-overlay">
@@ -125,14 +135,17 @@ function PrestamoSolicitudModal({
 
           <div>
             <h2>{capitalizeWords(solicitud.usuario)}</h2>
+
             <p>
               Solicitud de{" "}
-              {isReserva
+              {
+                isReserva
                 ? "reserva"
                 : isRenovacion
                 ? "renovación"
-                : "préstamo"}{" "}
-              realizada el {solicitud.fecha}
+                : "préstamo"
+              }
+              {" "}realizada el {solicitud.fecha}
             </p>
           </div>
 
@@ -145,119 +158,173 @@ function PrestamoSolicitudModal({
 
         </div>
 
-        {/* 🔥 BANNER RENOVACIÓN */}
-        {isRenovacion && renewalInfo && (
-          <div className="renewal-badge">
-            <div className="renewal-badge__item">
-              <span>Devolución máxima actual</span>
-              <strong>{renewalInfo.oldDate}</strong>
+        {
+          isRenovacion &&
+          renewalInfo && (
+            <div className="renewal-badge">
+
+              <div className="renewal-badge__item">
+                <span>Devolución máxima actual</span>
+                <strong>{renewalInfo.oldDate}</strong>
+              </div>
+
+              <div className="renewal-badge__arrow">
+                →
+              </div>
+
+              <div className="renewal-badge__item renewal-badge__item--new">
+                <span>Nueva devolución máxima</span>
+                <strong>{renewalInfo.newDate}</strong>
+              </div>
+
             </div>
+          )
+        }
 
-            <div className="renewal-badge__arrow">→</div>
+        {
+          !isRenovacion && (
+            <div className="solicitud-modal__bulk-actions">
 
-            <div className="renewal-badge__item renewal-badge__item--new">
-              <span>Nueva devolución máxima</span>
-              <strong>{renewalInfo.newDate}</strong>
+              <button
+                type="button"
+                className="bulk-btn bulk-btn--select"
+                onClick={selectAll}
+              >
+                Seleccionar todo
+              </button>
+
+              <button
+                type="button"
+                className="bulk-btn bulk-btn--clear"
+                onClick={clearAll}
+              >
+                Deseleccionar todo
+              </button>
+
             </div>
-          </div>
-        )}
-
-        {/* 🔥 CONTROLES SELECT ALL / CLEAR ALL */}
-        {!isRenovacion && (
-          <div className="solicitud-modal__bulk-actions">
-            <button
-              type="button"
-              className="bulk-btn bulk-btn--select"
-              onClick={selectAll}
-            >
-              Seleccionar todo
-            </button>
-
-            <button
-              type="button"
-              className="bulk-btn bulk-btn--clear"
-              onClick={clearAll}
-            >
-              Deseleccionar todo
-            </button>
-          </div>
-        )}
+          )
+        }
 
         <div className="solicitud-modal__content">
 
-          {solicitud.materiales.map((material) => (
-            <div key={material.id} className="material-item">
+          {
+            solicitud.materiales.map(material => (
 
-              <div className="material-item__top">
+              <div
+                key={material.id}
+                className="material-item"
+              >
 
-                <div className="material-item__info">
-                  <h3>{material.titulo}</h3>
-                  <span>{material.autor}</span>
+                <div className="material-item__top">
+
+                  <div className="material-item__info">
+
+                    <h3>{material.titulo}</h3>
+
+                    <span>{material.autor}</span>
+
+                  </div>
+
+                  <div className="material-item__quantity">
+                    {material.ejemplares.length} ejemplares
+                  </div>
+
                 </div>
 
-                <div className="material-item__quantity">
-                  {material.ejemplares.length} ejemplares
-                </div>
-              </div>
+                <div className="material-item__copies">
 
-              <div className="material-item__copies">
+                  {
+                    material.ejemplares.map((ejemplar,index)=>{
 
-                {material.ejemplares.map((ejemplar, index) => {
+                      const checked = selectedCopies.includes(ejemplar)
 
-                  const checked =
-                    selectedCopies.includes(ejemplar)
+                      let rowClass = "copy-row"
 
-                  let rowClass = "copy-row"
+                      if(isRenovacion){
+                        rowClass = "copy-row copy-row--renovacion"
+                      }
+                      else if(checked){
+                        rowClass =
+                          `copy-row copy-row--active ${
+                            isReserva
+                            ? "copy-row--reserva"
+                            : ""
+                          }`
+                      }
 
-                  if (isRenovacion) {
-                    rowClass = "copy-row copy-row--renovacion"
-                  } else if (checked) {
-                    rowClass = `copy-row copy-row--active ${
-                      isReserva ? "copy-row--reserva" : ""
-                    }`
+                      return (
+
+                        <label
+                          key={index}
+                          className={rowClass}
+                        >
+
+                          <div className="copy-row__left">
+
+                            <div className="copy-row__icon">
+                              📕
+                            </div>
+
+                            <span>
+                              Ejemplar #{ejemplar}
+                            </span>
+
+                          </div>
+
+                          {
+                            !isRenovacion && (
+                              <div className="copy-row__right">
+
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => toggleCopy(ejemplar)}
+                                />
+
+                                <div className="copy-row__check">
+                                  ✓
+                                </div>
+
+                              </div>
+                            )
+                          }
+
+                        </label>
+
+                      )
+
+                    })
                   }
 
-                  return (
-                    <label key={index} className={rowClass}>
+                </div>
 
-                      <div className="copy-row__left">
-                        <div className="copy-row__icon">📕</div>
-                        <span>Ejemplar #{ejemplar}</span>
-                      </div>
-
-                      {!isRenovacion && (
-                        <div className="copy-row__right">
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() => toggleCopy(ejemplar)}
-                          />
-                          <div className="copy-row__check">✓</div>
-                        </div>
-                      )}
-
-                    </label>
-                  )
-                })}
               </div>
 
-            </div>
-          ))}
+            ))
+          }
 
         </div>
 
         <div className="solicitud-modal__actions">
-          <button className="confirm-btn" onClick={handleConfirm}>
+
+          <button
+            className="confirm-btn"
+            onClick={handleConfirm}
+          >
             Confirmar{" "}
-            {isReserva
+            {
+              isReserva
               ? "reserva"
               : isRenovacion
               ? "renovación"
-              : "solicitud"}
+              : "solicitud"
+            }
           </button>
+
         </div>
 
       </div>
+
     </div>
   )
 }
