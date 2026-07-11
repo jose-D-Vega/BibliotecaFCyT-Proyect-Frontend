@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getLoanForReturn, registerReturn } from '../../services/returns.services'
 import './DevolucionesComponents.css'
 import { useNavigate } from 'react-router-dom'
@@ -190,12 +190,15 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
             <h2 className="modal-dev__title">Gestionar devolución</h2>
             {prestamo && (
               <p className="modal-dev__subtitle">
-                {prestamo.nombre_apellido} · #{prestamo.id_prestamo} ·
+                {prestamo.nombre_apellido} · 
+                Prestamo #{
+                  prestamo.id_prestamo_original != null ? 
+                  prestamo.id_prestamo_original : prestamo.id_prestamo} ·
                 Vence {formatFecha(prestamo.fecha_tope_devolucion)}
               </p>
             )}
           </div>
-          <button className="modal-dev__cerrar" onClick={onCerrar}>✕</button>
+          
         </div>
 
         {loading && <p className="modal-dev__loading">Cargando...</p>}
@@ -239,15 +242,22 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
 
                     {dev.seleccionado && (
                       <div className="modal-dev__ej-estado">
-                        <select
-                          value={dev.estado_devuelto}
-                          onChange={e => updateCampo(ejemplar.id_ejemplar, 'estado_devuelto', e.target.value)}
-                          className="modal-dev__select"
-                        >
-                          <option value="bueno">Buen estado</option>
-                          <option value="deteriorado">Deteriorado</option>
-                          <option value="danado">Dañado</option>
-                        </select>
+                        <div className="dev-estado-group">
+                          {[
+                            { value: 'bueno', label: 'Buen estado' },
+                            { value: 'deteriorado', label: 'Deteriorado' },
+                            { value: 'danado', label: 'Dañado' },
+                          ].map(op => (
+                            <button
+                              key={op.value}
+                              type="button"
+                              className={`dev-estado-btn ${dev.estado_devuelto === op.value ? `active--${op.value}` : ''}`}
+                              onClick={() => updateCampo(ejemplar.id_ejemplar, 'estado_devuelto', op.value)}
+                            >
+                              {op.label}
+                            </button>
+                          ))}
+                        </div>
                         {dev.estado_devuelto !== 'bueno' && (
                           <input
                             type="text"
