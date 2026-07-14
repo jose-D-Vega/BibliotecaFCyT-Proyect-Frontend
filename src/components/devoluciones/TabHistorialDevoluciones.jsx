@@ -55,7 +55,7 @@ const TabHistorialDevoluciones = () => {
 
   return (
     <div className="tab-content">
-      <form className=".historial-dev-filtros" onSubmit={handleFiltrar}>
+      <form className="historial-dev-filtros" onSubmit={handleFiltrar}>
         <input
           type="text"
           placeholder="Nombre, cédula o correo..."

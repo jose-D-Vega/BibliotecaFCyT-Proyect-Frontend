@@ -108,10 +108,11 @@ const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
           <div>
             <h2 className="modal-dev__title">Detalle de devolución</h2>
             <p className="modal-dev__subtitle">
-              Préstamo #{prestamo.id_prestamo} · {prestamo.nombre_apellido}
+              Préstamo #{prestamo.id_prestamo_original ?? prestamo.id_prestamo}
+              {prestamo.numero_renovacion > 0 && ` · Renovación #${prestamo.numero_renovacion}`}
+              {' · '}{prestamo.nombre_apellido}
             </p>
           </div>
-          <button className="modal-dev__cerrar" onClick={onCerrar}>✕</button>
         </div>
 
         {mensaje && (
@@ -162,10 +163,23 @@ const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
                             {est.label}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)' }}>
-                          <span>📅 {formatFecha(dev.fecha_devolucion)}</span>
-                          <span>👤 {dev.bibliotecario}</span>
-                        </div>
+                        
+                        <p style={{
+                          fontSize: '0.78rem',
+                          color: 'rgba(255,255,255,0.45)',
+                          margin: 0,
+                          lineHeight: 1.5,
+                          wordBreak: 'break-word'
+                        }}>
+                          Registrado el{' '}
+                          <span style={{ color: 'rgba(255,255,255,0.65)' }}>
+                            {formatFecha(dev.fecha_devolucion)} 📅
+                          </span>
+                          <br /> por{' '}
+                          <span style={{ color: 'rgba(255,255,255,0.65)' }}>
+                            {dev.bibliotecario} 👤
+                          </span>
+                        </p>
                         {dev.observaciones && (
                           <span style={{
                             fontSize: '0.78rem', color: '#fcd34d',
@@ -308,7 +322,7 @@ const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
                     Estado en que fue devuelto
                   </label>
                   <select
-                    className="nueva-sancion-input"
+                    className="modal-dev__select"
                     value={estadoDevuelto}
                     onChange={e => setEstadoDevuelto(e.target.value)}
                   >

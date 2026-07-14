@@ -38,12 +38,14 @@ const HistorialPrestamoCard = ({ prestamo, onVerDetalle }) => {
       <div className="hcard__info">
         <div className="pcard__info-item">
           <span className="pcard__info-label">Préstamo</span>
-          <span className="pcard__info-value">#{prestamo.id_prestamo}</span>
+          <span className="pcard__info-value">
+            #{prestamo.id_prestamo_original ?? prestamo.id_prestamo}
+          </span>
         </div>
         {esRenovacion && (
           <div className="pcard__info-item">
-            <span className="pcard__info-label">Préstamo original</span>
-            <span className="pcard__info-value">#{prestamo.id_prestamo_original}</span>
+            <span className="pcard__info-label">Renovación</span>
+            <span className="pcard__info-value">#{prestamo.numero_renovacion} (ID #{prestamo.id_prestamo})</span>
           </div>
         )}
         <div className="pcard__info-item">
