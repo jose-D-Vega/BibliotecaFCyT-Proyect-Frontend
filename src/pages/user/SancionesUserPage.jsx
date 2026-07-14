@@ -1,12 +1,15 @@
 import React, { useState, useMemo, useEffect } from "react"
-import { AlertTriangle, Clock, CheckCircle2, FileWarning } from "lucide-react"
+import { AlertTriangle, Clock, CheckCircle2, FileWarning, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 import "../styles/styles_user/SancionesUserPage.css"
+
+const ITEMS_POR_PAGINA = 5
 
 export default function MisSanciones() {
   const [sanciones, setSanciones] = useState([])
   const [loading, setLoading] = useState(true)
   const [errorCarga, setErrorCarga] = useState(false)
   const [filtroEstado, setFiltroEstado] = useState("Todas")
+  const [paginaActual, setPaginaActual] = useState(1)
 
   const API_URL = import.meta.env.VITE_API_URL
     ? `${import.meta.env.VITE_API_URL}/sanctions`
@@ -42,15 +45,14 @@ export default function MisSanciones() {
     cargarSanciones()
   }, [headers])
 
-  const chips = ["Todas", "Activas", "Resueltas", "Pendientes"]
-
   // ESTADÍSTICAS
   const estadisticas = useMemo(() => {
     const normalizar = (estado) => (estado || "").toLowerCase()
     return {
       total: sanciones.length,
       activas: sanciones.filter(s => normalizar(s.estado_sancion) === "activa").length,
-      resueltas: sanciones.filter(s => normalizar(s.estado_sancion) === "resuelta").length
+      resueltas: sanciones.filter(s => normalizar(s.estado_sancion) === "resuelta").length,
+      pendientes: sanciones.filter(s => normalizar(s.estado_sancion).includes("pendiente")).length
     }
   }, [sanciones])
 
@@ -70,11 +72,48 @@ export default function MisSanciones() {
     return lista
   }, [sanciones, filtroEstado])
 
+  // Resetear a página 1 cada vez que cambia el filtro
+  useEffect(() => {
+    setPaginaActual(1)
+  }, [filtroEstado])
+
+  // PAGINACIÓN
+  const totalPaginas = Math.max(1, Math.ceil(sancionesFiltradas.length / ITEMS_POR_PAGINA))
+
+  const sancionesPaginadas = useMemo(() => {
+    const inicio = (paginaActual - 1) * ITEMS_POR_PAGINA
+    return sancionesFiltradas.slice(inicio, inicio + ITEMS_POR_PAGINA)
+  }, [sancionesFiltradas, paginaActual])
+
+  const irAPagina = (n) => {
+    if (n < 1 || n > totalPaginas) return
+    setPaginaActual(n)
+  }
+
   const formatearFecha = (fecha) => {
     if (!fecha) return "—"
     const date = new Date(fecha)
     if (Number.isNaN(date.getTime())) return fecha
     return date.toLocaleDateString("es-PY", { year: "numeric", month: "short", day: "numeric" })
+  }
+
+  // TIEMPO RELATIVO — "Hace X minutos/horas/días"
+  const formatearTiempoRelativo = (fecha) => {
+    if (!fecha) return null
+    const date = new Date(fecha)
+    if (Number.isNaN(date.getTime())) return null
+
+    const ahora = new Date()
+    const diffMs = ahora - date
+    const diffMin = Math.floor(diffMs / (1000 * 60))
+    const diffHoras = Math.floor(diffMs / (1000 * 60 * 60))
+    const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+    if (diffMin < 1) return "Justo ahora"
+    if (diffMin < 60) return `Hace ${diffMin} minuto${diffMin === 1 ? "" : "s"}`
+    if (diffHoras < 24) return `Hace ${diffHoras} hora${diffHoras === 1 ? "" : "s"}`
+    if (diffDias < 30) return `Hace ${diffDias} día${diffDias === 1 ? "" : "s"}`
+    return formatearFecha(fecha)
   }
 
   const formatearTipoInfraccion = (tipo) => {
@@ -117,7 +156,7 @@ export default function MisSanciones() {
           </div>
         </div>
 
-        {/* TARJETAS DE RESUMEN */}
+        {/* TARJETAS DE RESUMEN (funcionan como filtro) */}
         <div className="san-tarjetas-resumen">
           <div
             className={`san-tarjeta-kpi san-tarjeta-kpi-total ${filtroEstado === "Todas" ? "active" : ""}`}
@@ -142,6 +181,17 @@ export default function MisSanciones() {
           </div>
 
           <div
+            className={`san-tarjeta-kpi san-tarjeta-kpi-pendientes ${filtroEstado === "Pendientes" ? "active" : ""}`}
+            onClick={() => setFiltroEstado("Pendientes")}
+          >
+            <div className="san-tarjeta-kpi-icono"><Clock size={20} /></div>
+            <div className="san-tarjeta-kpi-info">
+              <span className="san-tarjeta-kpi-label">Pendientes</span>
+              <h2 className="san-tarjeta-kpi-valor">{estadisticas.pendientes}</h2>
+            </div>
+          </div>
+
+          <div
             className={`san-tarjeta-kpi san-tarjeta-kpi-resueltas ${filtroEstado === "Resueltas" ? "active" : ""}`}
             onClick={() => setFiltroEstado("Resueltas")}
           >
@@ -150,21 +200,6 @@ export default function MisSanciones() {
               <span className="san-tarjeta-kpi-label">Resueltas</span>
               <h2 className="san-tarjeta-kpi-valor">{estadisticas.resueltas}</h2>
             </div>
-          </div>
-        </div>
-
-        {/* CHIPS DE FILTRO */}
-        <div className="san-toolbar">
-          <div className="san-chips">
-            {chips.map((chip) => (
-              <span
-                key={chip}
-                className={`san-chip ${filtroEstado === chip ? "active" : ""}`}
-                onClick={() => setFiltroEstado(chip)}
-              >
-                {chip}
-              </span>
-            ))}
           </div>
         </div>
 
@@ -181,7 +216,7 @@ export default function MisSanciones() {
                 : "No tenés sanciones en esta categoría."}
             </div>
           ) : (
-            sancionesFiltradas.map((sancion) => {
+            sancionesPaginadas.map((sancion) => {
               const estadoInfo = getEstadoInfo(sancion.estado_sancion)
               return (
                 <div key={sancion.id_sancion} className="san-card">
@@ -189,13 +224,19 @@ export default function MisSanciones() {
                     <div className="san-card-titulo">
                       <span className="san-card-tipo">{formatearTipoInfraccion(sancion.tipo_infraccion)}</span>
                       {sancion.titulo_material && (
-                        <span className="san-card-material">{sancion.titulo_material}</span>
+                        <span className="san-card-material">
+                          {sancion.titulo_material}
+                          {sancion.autor_material && ` — ${sancion.autor_material}`}
+                        </span>
                       )}
                     </div>
-                    <span className={`san-badge ${estadoInfo.clase}`}>
-                      {estadoInfo.icono}
-                      {estadoInfo.texto}
-                    </span>
+                    <div className="san-card-header-derecha">
+                      <span className="san-tiempo-relativo">{formatearTiempoRelativo(sancion.fecha_sancion)}</span>
+                      <span className={`san-badge ${estadoInfo.clase}`}>
+                        {estadoInfo.icono}
+                        {estadoInfo.texto}
+                      </span>
+                    </div>
                   </div>
 
                   {sancion.descripcion_sancion && (
@@ -203,10 +244,45 @@ export default function MisSanciones() {
                   )}
 
                   <div className="san-card-detalles">
+                    {sancion.editorial_material && (
+                      <div className="san-detalle">
+                        <span className="san-detalle-label">Editorial</span>
+                        <span className="san-detalle-valor">{sancion.editorial_material}</span>
+                      </div>
+                    )}
+
+                    {sancion.id_ejemplar && (
+                      <div className="san-detalle">
+                        <span className="san-detalle-label">Ejemplar N°</span>
+                        <span className="san-detalle-valor">{sancion.id_ejemplar}</span>
+                      </div>
+                    )}
+
+                    {sancion.estado_ejemplar && (
+                      <div className="san-detalle">
+                        <span className="san-detalle-label">Estado del ejemplar</span>
+                        <span className="san-detalle-valor">{formatearTipoInfraccion(sancion.estado_ejemplar)}</span>
+                      </div>
+                    )}
+
+                    {sancion.estado_prestamo && (
+                      <div className="san-detalle">
+                        <span className="san-detalle-label">Estado del préstamo</span>
+                        <span className="san-detalle-valor">{formatearTipoInfraccion(sancion.estado_prestamo)}</span>
+                      </div>
+                    )}
+
                     <div className="san-detalle">
                       <span className="san-detalle-label">Fecha de sanción</span>
                       <span className="san-detalle-valor">{formatearFecha(sancion.fecha_sancion)}</span>
                     </div>
+
+                    {sancion.fecha_tope_devolucion && (
+                      <div className="san-detalle">
+                        <span className="san-detalle-label">Fecha tope de devolución</span>
+                        <span className="san-detalle-valor">{formatearFecha(sancion.fecha_tope_devolucion)}</span>
+                      </div>
+                    )}
 
                     {sancion.fecha_limite && (
                       <div className="san-detalle">
@@ -228,12 +304,64 @@ export default function MisSanciones() {
                         <span className="san-detalle-valor">{formatearFecha(sancion.fecha_fin_suspension)}</span>
                       </div>
                     )}
+
+                    {sancion.admin_nombre && (
+                      <div className="san-detalle">
+                        <span className="san-detalle-label">Gestionado por</span>
+                        <span className="san-detalle-valor">{sancion.admin_nombre}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )
             })
           )}
         </div>
+
+        {/* PAGINACIÓN */}
+        {sancionesFiltradas.length > ITEMS_POR_PAGINA && (
+          <div className="san-paginacion">
+            <button
+              className="san-pagina-btn"
+              onClick={() => irAPagina(1)}
+              disabled={paginaActual === 1}
+            >
+              <ChevronsLeft size={16} />
+            </button>
+            <button
+              className="san-pagina-btn"
+              onClick={() => irAPagina(paginaActual - 1)}
+              disabled={paginaActual === 1}
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                className={`san-pagina-btn ${paginaActual === num ? "active" : ""}`}
+                onClick={() => irAPagina(num)}
+              >
+                {num}
+              </button>
+            ))}
+
+            <button
+              className="san-pagina-btn"
+              onClick={() => irAPagina(paginaActual + 1)}
+              disabled={paginaActual === totalPaginas}
+            >
+              <ChevronRight size={16} />
+            </button>
+            <button
+              className="san-pagina-btn"
+              onClick={() => irAPagina(totalPaginas)}
+              disabled={paginaActual === totalPaginas}
+            >
+              <ChevronsRight size={16} />
+            </button>
+          </div>
+        )}
       </main>
     </div>
   )
