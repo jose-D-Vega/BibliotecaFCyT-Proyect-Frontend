@@ -311,3 +311,181 @@
     border: none;
   }
 }
+
+/*--- Nuevo bloque de código luego de la ampliación del módulo de reportes ----*/
+
+/* Checkboxes de columnas / extensiones */
+.reportes-checkbox-grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+
+.reportes-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  user-select: none;
+}
+
+.reportes-checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #4ade80;
+  cursor: pointer;
+}
+
+.reportes-seccion-titulo-con-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.reportes-seleccion-rapida {
+  display: flex;
+  gap: 8px;
+}
+
+.reportes-seleccion-rapida button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reportes-seleccion-rapida button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.reportes-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 12px;
+}
+
+/* Orden */
+.reportes-orden-grupo {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.reportes-orden-grupo select {
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  min-width: 200px;
+}
+
+.reportes-orden-grupo select:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Buscador de usuario (autocompletar) */
+.usuario-search-wrapper {
+  position: relative;
+}
+
+.usuario-search-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.usuario-search-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+}
+
+.usuario-search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.usuario-search-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.usuario-search-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.usuario-search-nombre {
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.usuario-search-detalle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.usuario-search-vacio {
+  color: rgba(255, 255, 255, 0.4);
+  cursor: default;
+  font-size: 12px;
+}
+
+.usuario-search-seleccionado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  border-radius: 8px;
+  color: #4ade80;
+  font-size: 12px;
+}
+
+.usuario-search-seleccionado button {
+  background: transparent;
+  border: none;
+  color: #4ade80;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

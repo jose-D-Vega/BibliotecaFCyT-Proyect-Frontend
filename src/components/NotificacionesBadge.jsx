@@ -82,7 +82,7 @@ const NotificacionesBadge = () => {
 
           {masNoLeidas > 0 && (
             <p className="notif-panel__mas-no-leidas">
-              +{masNoLeidas} sin leer más
+              +{masNoLeidas} sin leer
             </p>
           )}
 
