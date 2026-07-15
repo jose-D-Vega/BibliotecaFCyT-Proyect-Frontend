@@ -7,7 +7,7 @@ const ADMIN_NAV = [
   { path: "/admin/devoluciones", label: "Devoluciones" },
   { path: "/admin/catalogo", label: "Catálogo" },
   { path: "/admin/sanciones", label: "Sanciones" },
-  { path: "/admin/informes", label: "Informes" },
+  { path: "/admin/reportes", label: "Reportes" },
   { path: "/admin/usuarios", label: "Usuarios" },
 ];
 

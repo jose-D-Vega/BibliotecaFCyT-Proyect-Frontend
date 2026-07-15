@@ -1,0 +1,313 @@
+.contenedor-reportes {
+  padding: 24px;
+  background-color: #0f172a;
+  min-height: 100vh;
+  font-family: 'Source Sans 3', sans-serif;
+  color: #ffffff;
+}
+
+.contenedor-reportes .contenido {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contenedor-reportes .header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 4px;
+}
+
+.contenedor-reportes .header p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+.reportes-cargando {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.reportes-error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+/* PASO 1: tarjetas de entidad */
+.reportes-entidades {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.reportes-entidad-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reportes-entidad-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* PASO 2: configuración */
+.reportes-config {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reportes-btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reportes-btn-volver:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.reportes-subtitulo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.reportes-seccion h3 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 10px;
+}
+
+.reportes-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reportes-filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.reportes-filtro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reportes-filtro-item label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.reportes-filtro-item input,
+.reportes-filtro-item select {
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+}
+
+.reportes-filtro-item input:focus,
+.reportes-filtro-item select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.reportes-btn-generar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  align-self: flex-start;
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reportes-btn-generar:hover:not(:disabled) {
+  background: rgba(74, 222, 128, 0.25);
+}
+
+.reportes-btn-generar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* PASO 3: resultado */
+.reportes-resultado-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.reportes-acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.reportes-btn-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reportes-btn-accion:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.reportes-btn-pdf {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.reportes-btn-pdf:hover {
+  background: rgba(245, 158, 11, 0.25);
+}
+
+.reportes-imprimible h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.reportes-meta-info {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* Reutiliza el estilo de tabla ya establecido en el resto del panel admin */
+.reportes-imprimible .tabla-contenedor {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+}
+
+.reportes-imprimible table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reportes-imprimible th,
+.reportes-imprimible td {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.reportes-imprimible th {
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.reportes-imprimible .sin-resultados {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 24px;
+}
+
+.spin {
+  animation: reportes-spin 0.8s linear infinite;
+}
+
+@keyframes reportes-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   MODO IMPRESIÓN
+   Solo se muestra la tabla de resultados, sin sidebar ni botones,
+   y se fuerza fondo blanco / texto negro para no gastar tinta de color
+   ========================================== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .contenedor-reportes {
+    background: #ffffff;
+    color: #000000;
+    padding: 0;
+  }
+
+  .reportes-imprimible th,
+  .reportes-imprimible td {
+    color: #000000;
+    border-bottom: 1px solid #cccccc;
+  }
+
+  .reportes-imprimible .tabla-contenedor {
+    background: #ffffff;
+    border: none;
+  }
+}
