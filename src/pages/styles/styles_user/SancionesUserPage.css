@@ -398,3 +398,22 @@
     font-size: 13px;
   }
 }
+
+.san-volver-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.san-volver-btn:hover {
+  color: #ffffff;
+}

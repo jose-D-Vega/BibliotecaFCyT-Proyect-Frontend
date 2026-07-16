@@ -52,6 +52,16 @@
   gap: 3rem;
 }
 
+/* Loading / error state general */
+.dashboard-loading {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+}
+
 /* Stats */
 .stats-grid {
   display: grid;
@@ -66,7 +76,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .stat-card:hover {
@@ -108,6 +118,49 @@
 
 .stat-card__meta-icon {
   color: rgba(255, 255, 255, 0.5);
+}
+
+/* Tarjeta de alerta cuando el usuario está sancionado */
+.stat-card--alerta {
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+.stat-card--alerta .stat-card__value {
+  color: #f87171;
+}
+
+.stat-card--alerta:hover {
+  background: rgba(248, 113, 113, 0.07);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+/* Elementos clickeables */
+.stat-card--clickable,
+.chart-bar--clickable,
+.book-card--clickable {
+  cursor: pointer;
+}
+
+.stat-card--clickable:hover,
+.book-card--clickable:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.chart-bar--clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.chart-bar--clickable:hover {
+  transform: translateY(-3px);
+}
+
+.chart-bar--clickable:hover .chart-bar__fill {
+  filter: brightness(1.4);
+}
+
+.chart-bar--clickable:hover .chart-bar__label {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 /* Alertas */
@@ -206,6 +259,13 @@
   margin: 0.45rem 0 1.4rem;
 }
 
+.activity-panel__vacio {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
 .chart-panel__header {
   display: flex;
   align-items: flex-start;
@@ -292,13 +352,15 @@
   width: 100%;
   background: rgba(255, 255, 255, 0.3);
   border-radius: 14px;
-  transition: height 0.8s ease;
+  transition: height 0.8s ease, filter 0.2s ease;
 }
 
 .chart-bar__label {
   font-size: 0.76rem;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 700;
+  transition: color 0.2s ease;
+  text-align: center;
 }
 
 /* Books section */
@@ -320,6 +382,7 @@
 
 .books-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1.25rem;
   align-items: start;
 }
@@ -355,6 +418,19 @@
 }
 
 .book-card:hover .book-card__image { opacity: 1; }
+
+.book-card__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
 
 .book-card__content {
   padding: 1rem;
@@ -395,7 +471,91 @@
   border-radius: 999px;
 }
 
-/* Responsive compartido */
+/* ==========================================
+   SKELETON DE CARGA
+   ========================================== */
+@keyframes skeleton-pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+.skeleton-card {
+  cursor: default;
+  pointer-events: none;
+}
+
+.skeleton-line {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-line--short {
+  width: 60%;
+  height: 12px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line--value {
+  width: 40%;
+  height: 28px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line--title {
+  width: 50%;
+  height: 20px;
+  margin-bottom: 8px;
+}
+
+.skeleton-line--sub {
+  width: 70%;
+  height: 12px;
+  margin-bottom: 20px;
+}
+
+.skeleton-bar-line {
+  width: 100%;
+  height: 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-bottom: 16px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  height: 180px;
+  margin-top: 10px;
+}
+
+.skeleton-bar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* Tablets pequeñas / móviles grandes */
 @media (max-width: 768px) {
   .dashboard-header { padding: 1.4rem 0 1rem; }
   .dashboard-main { padding: 1.5rem 1rem 2.5rem; gap: 2.2rem; }
@@ -403,9 +563,131 @@
   .dashboard-header__title { font-size: 1.65rem; }
   .alerts-section__title { font-size: 1.5rem; }
   .chart-bar__container { width: 22px; }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.15rem;
+  }
+
+  .stat-card__value {
+    font-size: 2rem;
+  }
+
+  .activity-panel,
+  .chart-panel {
+    padding: 1.3rem;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.9rem;
+  }
+
+  .book-card__image-wrapper {
+    height: 120px;
+  }
+
+  .chart-panel__body {
+    height: 150px;
+  }
+
+  .chart-bar__container {
+    height: 110px;
+  }
+
+  .skeleton-chart-bars {
+    height: 150px;
+  }
 }
 
+/* Móviles */
 @media (max-width: 480px) {
   .dashboard-header__title { font-size: 1.4rem; }
-  .stat-card__value { font-size: 2rem; }
+  .dashboard-header__label { font-size: 0.75rem; }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .stat-card__label {
+    font-size: 0.78rem;
+  }
+
+  .stat-card__value {
+    font-size: 1.6rem;
+    margin: 0.3rem 0 0.4rem;
+  }
+
+  .stat-card__meta {
+    font-size: 0.78rem;
+  }
+
+  .activity-panel__title,
+  .chart-panel__title {
+    font-size: 1.25rem;
+  }
+
+  .books-section__title {
+    font-size: 1.4rem;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 0.7rem;
+  }
+
+  .book-card__image-wrapper {
+    height: 100px;
+  }
+
+  .book-card__title {
+    font-size: 0.8rem;
+  }
+
+  .book-card__stats {
+    font-size: 0.72rem;
+  }
+
+  .chart-panel__body {
+    height: 130px;
+    gap: 0.35rem;
+  }
+
+  .chart-bar__container {
+    width: 16px;
+    height: 90px;
+  }
+
+  .chart-bar__label {
+    font-size: 0.65rem;
+  }
+
+  .alerts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alert-card {
+    padding: 1rem;
+  }
+}
+
+/* Móviles muy chicos */
+@media (max-width: 360px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

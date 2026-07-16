@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react"
-import { AlertTriangle, Clock, CheckCircle2, FileWarning, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { AlertTriangle, Clock, CheckCircle2, FileWarning, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ArrowLeft } from "lucide-react"
 import "../styles/styles_user/SancionesUserPage.css"
 
 const ITEMS_POR_PAGINA = 5
@@ -10,6 +11,10 @@ export default function MisSanciones() {
   const [errorCarga, setErrorCarga] = useState(false)
   const [filtroEstado, setFiltroEstado] = useState("Todas")
   const [paginaActual, setPaginaActual] = useState(1)
+
+  const location = useLocation()
+  const navigate = useNavigate()
+  const vieneDelDashboard = !!location.state?.fromDashboard
 
   const API_URL = import.meta.env.VITE_API_URL
     ? `${import.meta.env.VITE_API_URL}/sanctions`
@@ -151,6 +156,14 @@ export default function MisSanciones() {
       <main className="san-contenido">
         <div className="san-header">
           <div>
+            {vieneDelDashboard && (
+              <button
+                className="san-volver-btn"
+                onClick={() => navigate('/app/inicio')}
+              >
+                <ArrowLeft size={16} /> Volver al inicio
+              </button>
+            )}
             <h1>Mis Sanciones</h1>
             <p>Aquí podés ver el historial y el estado de tus sanciones.</p>
           </div>
