@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { updateProfile } from '../../services/users.services'
+import UserActiveSessions from '../../components/sesiones/UserActiveSessions'
 import '../styles/PerfilPage.css'
 const PerfilUserPage = () => {
   const { user, refreshUser } = useAuth()
@@ -102,6 +103,7 @@ const PerfilUserPage = () => {
           </p>
         )}
       </div>
+            <UserActiveSessions />
     </div>
   )
 }

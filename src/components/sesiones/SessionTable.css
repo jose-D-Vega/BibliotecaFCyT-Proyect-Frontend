@@ -1,0 +1,228 @@
+.session-table{
+
+  width:100%;
+
+}
+
+
+
+/* =========================
+   HEADER + ROWS
+========================= */
+
+.session-table__header,
+.session-table__row{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(220px,2fr)
+    130px
+    minmax(260px,2fr)
+    120px
+    90px;
+
+  align-items:center;
+
+  gap:15px;
+
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+.session-table__header{
+
+  padding:16px 18px;
+
+  color:rgba(255,255,255,.55);
+
+  border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+.session-table__header span{
+
+  font-size:1rem;
+
+  font-weight:800;
+
+  letter-spacing:.05em;
+
+  text-transform:uppercase;
+
+  color:rgba(255,255,255,.92);
+
+}
+
+
+
+/* =========================
+   ROWS
+========================= */
+
+.session-table__row{
+
+  padding:18px;
+
+  margin-top:10px;
+
+  background:rgba(255,255,255,.05);
+
+  border-radius:16px;
+
+  color:white;
+
+}
+
+
+
+.session-table__row:hover{
+
+  background:rgba(255,255,255,.08);
+
+}
+
+
+
+.session-user{
+
+  font-weight:700;
+
+}
+
+
+
+.session-email{
+
+  overflow:hidden;
+
+  white-space:nowrap;
+
+  text-overflow:ellipsis;
+
+}
+
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.session-empty{
+
+  text-align:center;
+
+  padding:40px;
+
+  color:rgba(255,255,255,.6);
+
+}
+
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:1024px){
+
+  .session-table__header,
+  .session-table__row{
+
+    grid-template-columns:
+      1.8fr
+      110px
+      1.5fr
+      100px
+      80px;
+
+    gap:12px;
+
+  }
+
+}
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+  .session-table__header{
+    display:none;
+  }
+
+
+  .session-table__row{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:8px;
+
+    padding:14px 16px;
+
+  }
+
+
+  .session-table__row > span{
+
+    display:flex;
+    flex-direction:column;
+
+    width:100%;
+
+    gap:3px;
+
+    padding-bottom:8px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    font-size:.9rem;
+
+  }
+
+
+  .session-table__row > span:last-child{
+
+    border-bottom:none;
+
+    padding-bottom:0;
+
+  }
+
+
+  .session-table__row > span::before{
+
+    content:attr(data-label);
+
+    font-size:.7rem;
+
+    font-weight:700;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+    color:rgba(255,255,255,.45);
+
+  }
+
+
+  .session-email{
+
+    white-space:normal;
+
+    word-break:break-word;
+
+  }
+
+}

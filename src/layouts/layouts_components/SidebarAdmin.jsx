@@ -9,6 +9,7 @@ const ADMIN_NAV = [
   { path: "/admin/sanciones", label: "Sanciones" },
   { path: "/admin/informes", label: "Informes" },
   { path: "/admin/usuarios", label: "Usuarios" },
+  { path: "/admin/sesiones", label: "Sesiones" }
 ];
 
 const SidebarAdmin = ({ isOpen, onClose }) => {

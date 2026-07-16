@@ -40,6 +40,7 @@ import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
 import GestionUsuarios from '../pages/admin/GestionUsuarios'
 import DetalleSancionesPrestamoPage from '../pages/admin/prueba/DetalleSancionesPrestamoPage'
 import DetalleSancionesComportamientoPage from '../pages/admin/prueba/DetalleSancionesComportamientoPage'
+import SesionesAdmin from '../pages/admin/SesionesAdmin'
 
 
 const AppRouter = () => {
@@ -138,6 +139,7 @@ const AppRouter = () => {
           <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
           <Route path="perfil" element={<PerfilAdminPage />} />
           <Route path="usuarios" element={<GestionUsuarios />} />
+          <Route path="sesiones" element={<SesionesAdmin />} />
           <Route path="sanciones/nueva" element={<NuevaSancionPage />} />
           <Route path="sanciones/prestamo/:id_prestamo" element={<DetalleSancionesPrestamoPage />} />
           <Route path="sanciones/comportamiento/:id_usuario" element={<DetalleSancionesComportamientoPage />} />

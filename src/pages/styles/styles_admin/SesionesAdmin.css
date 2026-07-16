@@ -1,0 +1,158 @@
+.sesiones-admin{
+
+  width:100%;
+
+  min-height:100%;
+
+  padding:30px;
+
+  color:white;
+
+}
+
+
+
+.sesiones-admin__header{
+
+  margin-bottom:25px;
+
+}
+
+
+.sesiones-admin__header h1{
+
+  margin:0;
+
+  font-size:2rem;
+
+}
+
+.sesiones-admin__title{
+  font-family: "Times New Roman", serif;
+}
+
+.sesiones-admin__header p{
+
+  margin-top:6px;
+
+  color:rgba(255,255,255,.6);
+
+}
+
+
+
+
+.sesiones-admin__container{
+
+  background:#12233f;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:24px;
+
+  padding:20px;
+
+  min-height:500px;
+
+}
+
+
+
+.sesiones-loading{
+
+  height:300px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:rgba(255,255,255,.65);
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.sesiones-admin__container{
+  position:relative;
+  min-height:300px;
+}
+
+
+.sesiones-loading{
+  min-height:300px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+
+  gap:14px;
+}
+
+
+.sesiones-spinner{
+
+  width:52px;
+  height:52px;
+
+  border-radius:50%;
+
+  border:3px solid rgba(255,255,255,.15);
+  border-top:3px solid #fff;
+
+  animation:sesionesSpin .8s linear infinite;
+
+}
+
+
+@keyframes sesionesSpin{
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+
+.sesiones-loading p{
+
+  margin:0;
+
+  color:rgba(255,255,255,.75);
+
+  font-size:.95rem;
+
+}
+
+@media(max-width:768px){
+
+
+  .sesiones-admin{
+
+    padding:18px;
+
+  }
+
+
+  .sesiones-admin__header h1{
+
+    font-size:1.6rem;
+
+  }
+
+
+  .sesiones-admin__container{
+
+    padding:14px;
+
+    border-radius:18px;
+
+  }
+
+
+}
