@@ -17,3 +17,7 @@ body {
   flex-direction: column;
   color: #fff;
 }
+
+option{
+  background-color: #0c1a2e;
+}

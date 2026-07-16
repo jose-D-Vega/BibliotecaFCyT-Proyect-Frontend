@@ -84,7 +84,7 @@
 .notif-panel__marcar-todas:hover { color: rgba(255,255,255,0.8); }
 
 .notif-panel__lista {
-  max-height: 380px;
+  max-height: 350px;
   overflow-y: auto;
 }
 
@@ -147,6 +147,13 @@
   background: #3b82f6;
   flex-shrink: 0;
   margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .notif-panel {
+    right: -50px;
+    width: 340px;
+  }
 }
 
 /*   Nuevas modificaciones para el apartado de "ver todas"*/
