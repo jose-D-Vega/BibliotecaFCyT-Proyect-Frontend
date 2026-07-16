@@ -4,7 +4,7 @@ import "../styles/styles_user/LibroDetalle.css"
 import LibroInfoItem from "../../components/LibroInfoItem"
 import EjemplarItem from "../../components/EjemplarItem"
 
-function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarrito }) {
+function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarrito, vieneDelDashboard, onVolverInicio }) {
   const { agregarAlCarrito, estaEnCarrito, actualizarCantidad } = useCart()
 
   const [modal, setModal] = useState(null)
@@ -72,7 +72,14 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
   return (
     <div className="detalle-page">
       <header className="detalle-header">
-        <button className="btn-volver" onClick={onVolver}>← Volver</button>
+        <div className="detalle-header__izquierda">
+          <button className="btn-volver" onClick={onVolver}>← Volver</button>
+          {vieneDelDashboard && (
+            <button className="btn-volver-inicio" onClick={onVolverInicio}>
+              Volver al inicio
+            </button>
+          )}
+        </div>
         <h2 className="header-title">Detalles del libro</h2>
         <button className="carrito-btn-detalle" onClick={onIrAlCarrito}>
           📚 Mis solicitudes

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/styles_user/DashboardUser.css';
 
-// Importación de iconos
 import {
   MdSchool,
   MdAutoStories,
@@ -10,19 +9,144 @@ import {
   MdLocationOn,
   MdSchedule,
   MdBookmarkBorder,
-  MdInfo
+  MdInfo,
+  MdCheckCircle,
+  MdWarning
 } from 'react-icons/md';
 
+const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/dashboard`
+  : "http://localhost:3210/api/dashboard";
+
 const DashboardUser = () => {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const cargarStats = async () => {
+      try {
+        const res = await fetch(`${API_URL}/mis-estadisticas`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
+        const json = await res.json();
+
+        if (!res.ok) {
+          setError(true);
+        } else {
+          setStats(json.data);
+        }
+      } catch (err) {
+        console.error("Error al cargar estadísticas:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargarStats();
+  }, [token]);
+
+  const formatearFecha = (fecha) => {
+    if (!fecha) return "—";
+    const date = new Date(fecha);
+    if (Number.isNaN(date.getTime())) return fecha;
+    return date.toLocaleDateString("es-PY", { year: "numeric", month: "short", day: "numeric" });
+  };
+
+  const construirFrecuenciaChart = () => {
+    if (!stats) return [];
+    const mesActual = new Date().getMonth() + 1;
+    const ultimosSeisMeses = [];
+    for (let i = 5; i >= 0; i--) {
+      let mes = mesActual - i;
+      if (mes <= 0) mes += 12;
+      const registro = stats.frecuenciaMensual.find(f => f.mes === mes);
+      ultimosSeisMeses.push({
+        label: MESES[mes - 1],
+        cantidad: registro ? parseInt(registro.cantidad) : 0
+      });
+    }
+    const maxCantidad = Math.max(...ultimosSeisMeses.map(m => m.cantidad), 1);
+    return ultimosSeisMeses.map(m => ({
+      ...m,
+      alturaPct: Math.max(Math.round((m.cantidad / maxCantidad) * 100), m.cantidad > 0 ? 8 : 2)
+    }));
+  };
+
+  // SKELETON DE CARGA
+  if (loading) {
+    return (
+      <>
+        <header className="dashboard-header">
+          <div className="dashboard-header__container">
+            <div className="dashboard-header__brand">
+              <span className="dashboard-header__label">Bienvenidos al portal</span>
+              <div className="dashboard-header__title-wrapper">
+                <MdSchool className="dashboard-header__icon" size={32} />
+                <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main className="dashboard-main">
+          <section className="stats-grid">
+            {[1, 2, 3, 4].map(i => (
+              <article key={i} className="stat-card skeleton-card">
+                <div className="skeleton-line skeleton-line--short"></div>
+                <div className="skeleton-line skeleton-line--value"></div>
+                <div className="skeleton-line skeleton-line--short"></div>
+              </article>
+            ))}
+          </section>
+
+          <section className="activity-chart-grid">
+            <article className="activity-panel skeleton-card">
+              <div className="skeleton-line skeleton-line--title"></div>
+              <div className="skeleton-line skeleton-line--sub"></div>
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="skeleton-bar-line"></div>
+              ))}
+            </article>
+
+            <article className="chart-panel skeleton-card">
+              <div className="skeleton-line skeleton-line--title"></div>
+              <div className="skeleton-line skeleton-line--sub"></div>
+              <div className="skeleton-chart-bars">
+                {[1, 2, 3, 4, 5, 6].map(i => (
+                  <div key={i} className="skeleton-bar" style={{ height: `${30 + (i % 3) * 20}%` }}></div>
+                ))}
+              </div>
+            </article>
+          </section>
+        </main>
+      </>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="dashboard-loading">
+        <p>No se pudieron cargar tus estadísticas. Intentá nuevamente más tarde.</p>
+      </div>
+    );
+  }
+
+  const chartData = construirFrecuenciaChart();
+
   return (
     <>
       <header className="dashboard-header">
         <div className="dashboard-header__container">
           <div className="dashboard-header__brand">
-            <span className="dashboard-header__label">
-              Bienvenidos al portal
-            </span>
-
+            <span className="dashboard-header__label">Bienvenidos al portal</span>
             <div className="dashboard-header__title-wrapper">
               <MdSchool className="dashboard-header__icon" size={32} />
               <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
@@ -35,7 +159,7 @@ const DashboardUser = () => {
         <section className="stats-grid">
           <article className="stat-card stat-card--hover-primary">
             <span className="stat-card__label">Libros Leídos</span>
-            <span className="stat-card__value">24</span>
+            <span className="stat-card__value">{stats.librosLeidos}</span>
             <div className="stat-card__meta">
               <MdAutoStories className="stat-card__meta-icon" />
               <span>Total acumulado</span>
@@ -44,7 +168,7 @@ const DashboardUser = () => {
 
           <article className="stat-card stat-card--hover-primary">
             <span className="stat-card__label">Préstamos Activos</span>
-            <span className="stat-card__value">02</span>
+            <span className="stat-card__value">{String(stats.prestamosActivos).padStart(2, '0')}</span>
             <div className="stat-card__meta">
               <MdHistory className="stat-card__meta-icon" />
               <span>En posesión</span>
@@ -53,19 +177,24 @@ const DashboardUser = () => {
 
           <article className="stat-card stat-card--hover-primary">
             <span className="stat-card__label">Reservas</span>
-            <span className="stat-card__value">01</span>
+            <span className="stat-card__value">{String(stats.reservas).padStart(2, '0')}</span>
             <div className="stat-card__meta">
               <MdBookmarkBorder className="stat-card__meta-icon" />
               <span>En espera</span>
             </div>
           </article>
 
-          <article className="stat-card stat-card--hover-primary">
-            <span className="stat-card__label">Estado Socio</span>
-            <span className="stat-card__value">Regular</span>
+          <article className={`stat-card stat-card--hover-primary ${stats.sancionado ? 'stat-card--alerta' : ''}`}>
+            <span className="stat-card__label">Estado de Cuenta</span>
+            <span className="stat-card__value">
+              {stats.sancionado ? 'Sancionado' : 'Habilitado'}
+            </span>
             <div className="stat-card__meta">
-              <MdEventAvailable className="stat-card__meta-icon" />
-              <span>Vence Dic 2026</span>
+              {stats.sancionado
+                ? <MdWarning className="stat-card__meta-icon" />
+                : <MdCheckCircle className="stat-card__meta-icon" />
+              }
+              <span>{stats.sancionado ? 'Con sanciones activas' : 'Sin sanciones activas'}</span>
             </div>
           </article>
         </section>
@@ -73,66 +202,47 @@ const DashboardUser = () => {
         <section className="activity-chart-grid">
           <article className="activity-panel">
             <h2 className="activity-panel__title">Interés Académico</h2>
-            <p className="activity-panel__subtitle">
-              Distribución de tus consultas (%)
-            </p>
+            <p className="activity-panel__subtitle">Distribución de tus lecturas por libro</p>
 
             <div className="progress-list">
-              {[
-                { L: 'Calculo diferencial', V: '45%' },
-                { L: 'Geometria analitica', V: '35%' },
-                { L: 'Programación', V: '12%' },
-                { L: 'Base de Datos', V: '8%', S: true }
-              ].map((item, i) => (
-                <div key={i} className="progress-item">
-                  <div className="progress-item__header">
-                    <span>{item.L}</span>
-                    <span>{item.V}</span>
+              {stats.interesAcademico.length === 0 ? (
+                <p className="activity-panel__vacio">Todavía no tenés libros devueltos registrados.</p>
+              ) : (
+                stats.interesAcademico.map((item, i) => (
+                  <div key={i} className="progress-item">
+                    <div className="progress-item__header">
+                      <span>{item.titulo}</span>
+                      <span>{item.porcentaje}%</span>
+                    </div>
+                    <div className="progress-item__bar">
+                      <div
+                        className={`progress-item__fill ${i === stats.interesAcademico.length - 1 ? 'progress-item__fill--secondary' : ''}`}
+                        style={{ width: `${item.porcentaje}%` }}
+                      ></div>
+                    </div>
                   </div>
-
-                  <div className="progress-item__bar">
-                    <div
-                      className={`progress-item__fill ${
-                        item.S ? 'progress-item__fill--secondary' : ''
-                      }`}
-                      style={{ width: item.V }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </article>
 
           <article className="chart-panel">
             <div className="chart-panel__header">
               <div>
-                <h2 className="chart-panel__title">
-                  Frecuencia de mis Prestamos
-                </h2>
-                <p className="chart-panel__subtitle">
-                  Prestamos registrados año 2026
-                </p>
+                <h2 className="chart-panel__title">Frecuencia de mis Préstamos</h2>
+                <p className="chart-panel__subtitle">Préstamos registrados año {new Date().getFullYear()}</p>
               </div>
-
-              <span className="chart-panel__badge">Reporte</span>
             </div>
 
             <div className="chart-panel__body">
-              {['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'].map((m, i) => {
-                const H = ['1%', '40%', '90%', '60%', '30%', '80%'];
-
-                return (
-                  <div key={m} className="chart-bar">
-                    <div className="chart-bar__container">
-                      <div
-                        className="chart-bar__fill"
-                        style={{ height: H[i] }}
-                      ></div>
-                    </div>
-                    <span className="chart-bar__label">{m} {H[i]}</span>
+              {chartData.map((m, i) => (
+                <div key={i} className="chart-bar">
+                  <div className="chart-bar__container">
+                    <div className="chart-bar__fill" style={{ height: `${m.alturaPct}%` }}></div>
                   </div>
-                );
-              })}
+                  <span className="chart-bar__label">{m.label} ({m.cantidad})</span>
+                </div>
+              ))}
             </div>
           </article>
         </section>
@@ -143,28 +253,28 @@ const DashboardUser = () => {
             <p className="books-section__subtitle">Historial de devoluciones</p>
           </div>
 
-           <div className="books-grid">
-            {[
-              { T: 'Cálculo de Granville', P: 24, R: '90%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAsm2sbkf5zlAwm2cvGw3EwttE4d9b8Fi5f3MzavP9UEqFGqT_mF-6PXPekcUQNCHdwNrhI_M7CxbT4ykSYwUrxfD3hVFWvEAf7pH_XkZ5qucM0683aZ43rgEvXBJS6iJvTYqrFzwBUAkgZ3GDXe0v0Z70KRfMd6H_zKp43qCVjlF_Y6z4ms7-TD5fb_vpmDG0_DvDNvGJf2VnY6_Glzi_1mRo3Vz0v5nOp1X1tFxHvBNb2k1J02r3Mxd75ymXeWxOpkYPOo1Eabko' },
-              { T: 'Clean Code', P: 19, R: '75%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGbY_xx1a-jyihnxMMUSb1aldZAHPGj3KGllR2Fi7dQAIX_rHDG8BOkPziksGFcd9hjK6FBOuG_2gJLqbXHUfY3ieoONSvP7WQgaxtr4IVFZd-XabfbrMvQ07RMSOntBef_uMvMefGn_3UvMNSisDPupQM3AMP5nYfy_BeIG6X5pt6wTVQvRR-xz1zJA-IxazZNUlY0nJt2bGX9KlUB5vIbpHBadcwTyWhzuQSnfNAirtfCShU-pcbmlTtQO5pe10qsUwJyUWt5ms' },
-              { T: 'Mecánica de Suelos', P: 15, R: '60%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDSAkaZJFAg3dYfw_S-mLWD6gGYA3nfIKEWHH2ynTP0q7L5zxs-PIc5Q9PRmpvDcB5Amiv-WrhatsHNMcR6V-QofZl9qlf31j-Bf-jfSM3CJ7EZI8BoHQpmpYCBZAdJYm_GOQ-SI1l8Yxtj2RyNSjPR6UmD_y3gohtGAVzXJNMW1GJzwaZwFlCEyhrYI27PUHZJF5VDjXtOXcBiTvdQ3ziQX4QhL_2kodFlsfxaxEiLb2e3I7Fr_bJTD7E3WkDG1dj3B1zGSUVDrDM' },
-              { T: 'Máquinas Eléctricas', P: 12, R: '45%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuADUhGtKkt-X3ZkXdWwfSPPa3eBYxYvep5uOR8d-e6rSdqf_C4ruR4LLr1SXZbMURQOhcpMH19tnZQDJbViVaVdFY1LSVzK4RSeT_-fUALLtWuKtMWx-n-zjGLo03pwKdIAu8zQZdPD6xMhyzxtHxje542e9HQCrhfsDeqISizyqImZSM5TK6_vapm_fvedAR2JvdbxTeEnHoF_q1Q7UjIpod7jiPrAmapQHuyCxg_Q1vihw0yjDTFhzms_XODFnYsxrhBtIyYQWWg' },
-              { T: 'Sistemas Digitales', P: 10, R: '35%', I: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDMRrReMOvwIEmk4KBKtNCjZx1b0VsdOgEJ7OyIL4gA6J_y55SOUyGPzFXAFOSfQYe5ILDYr1Jc2mHJUYa8yTdBzJnz6uHXS9jPaalIaiJgM4UcXIvalXIUFqjrVGMHgscE5PG5Bn_qgj6Sx5eXfDvmmIvOAH7n5ukndWfv9yAJtgpW24xuU9gjJkAGbv78FG88_yqOqueRLl_VtAHAcuNe82mAexWz87FI1A4LkGjmJwHUL8gbd5TtLKcCD_MpFdnNADcOmzk5ULQ' }
-            ].map((lib, i) => (
-              <article key={i} className="book-card">
-                <div className="book-card__content">
-                  <div className="book-card__image-wrapper">
-                    <img className="book-card__image" src={lib.I} alt={lib.T} />
+          {stats.ultimosRecursos.length === 0 ? (
+            <p className="activity-panel__vacio">Todavía no devolviste ningún material.</p>
+          ) : (
+            <div className="books-grid">
+              {stats.ultimosRecursos.map((lib, i) => (
+                <article key={i} className="book-card">
+                  <div className="book-card__content">
+                    <div className="book-card__image-wrapper">
+                      {lib.imagen_url
+                        ? <img className="book-card__image" src={lib.imagen_url} alt={lib.titulo} />
+                        : <span className="book-card__image-placeholder">{lib.titulo?.charAt(0)}</span>
+                      }
+                    </div>
+                    <h3 className="book-card__title">{lib.titulo}</h3>
+                    <p className="book-card__stats">
+                      {formatearTipoEstado(lib.estado_devuelto)} · {formatearFecha(lib.fecha_devolucion)}
+                    </p>
                   </div>
-                  <h3 className="book-card__title">{lib.T}</h3>
-                  <p className="book-card__stats">Finalizado</p>
-                  <div className="book-card__progress">
-                    <div className="book-card__progress-fill" ></div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="alerts-section">
@@ -193,6 +303,16 @@ const DashboardUser = () => {
       </main>
     </>
   );
+};
+
+const formatearTipoEstado = (estado) => {
+  const map = {
+    bueno: 'Finalizado',
+    deteriorado: 'Devuelto con deterioro',
+    danado: 'Devuelto con daño',
+    reemplazado: 'Material reemplazado'
+  };
+  return map[estado] || estado;
 };
 
 export default DashboardUser;
