@@ -25,7 +25,7 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
 
   const yaEnCarrito = estaEnCarrito(data.id_libro)
 
-  const ejemplares = ejemplaresProp || []
+  const ejemplares = ejemplaresProp.filter(e => !["perdido","eliminado"].includes(e.estado_ejemplar)) || []
   const ejemplaresTotal = ejemplares.length
   const disponibles = ejemplares.filter(e => e.estado_ejemplar === "disponible").length
   const enPrestamo = ejemplares.filter(e => e.estado_ejemplar === "prestado").length

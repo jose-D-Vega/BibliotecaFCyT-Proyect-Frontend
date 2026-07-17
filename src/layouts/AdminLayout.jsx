@@ -19,9 +19,9 @@ const AdminLayout = () => {
     setSidebarOpen(false);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
+  const handleLogout = async () => {
+    await logout()
+    navigate("/login", { replace: true })
   };
 
   const handleSwitchRole = () => {
@@ -35,15 +35,17 @@ const AdminLayout = () => {
 
   return (
     <div className="admin-layout">
-      <Navbar
-        onToggleSidebar={handleToggleSidebar}
-        role="admin"
-        onLogout={handleLogout}
-        onSwitchRole={handleSwitchRole}
-        onViewProfile={handleViewProfile}
-      />
+      <div className="no-print">
+        <Navbar
+          onToggleSidebar={handleToggleSidebar}
+          role="admin"
+          onLogout={handleLogout}
+          onSwitchRole={handleSwitchRole}
+          onViewProfile={handleViewProfile}
+        />
 
-      <SidebarAdmin isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <SidebarAdmin isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+      </div>
 
       <main className="admin-layout__main">
         <div className="admin-layout__content">
@@ -51,7 +53,9 @@ const AdminLayout = () => {
         </div>
       </main>
 
-      <Footer />
+      <div className="no-print">
+        <Footer />
+      </div>
     </div>
   );
 };

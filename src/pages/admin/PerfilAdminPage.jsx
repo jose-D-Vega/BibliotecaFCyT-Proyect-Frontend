@@ -2,6 +2,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { updateProfile } from '../../services/users.services'
+import UserActiveSessions from '../../components/sesiones/UserActiveSessions'
 import '../styles/PerfilPage.css'
 
 const PerfilAdminPage = () => {
@@ -117,6 +118,7 @@ const PerfilAdminPage = () => {
           </p>
         )}
       </div>
+      <UserActiveSessions />
     </div>
   )
 }
