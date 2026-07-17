@@ -102,8 +102,8 @@ const PerfilAdminPage = () => {
           <div className="perfil__field">
             <span className="perfil__label">Rol activo</span>
             <div className="perfil__value-row">
-              <span className={`perfil__badge ${rolActivo === 'bibliotecario' ? 'perfil__badge--admin' : ''}`}>
-                {rolActivo === 'bibliotecario' ? 'Bibliotecario' : 'Usuario'}
+              <span className={`perfil__badge ${rolActivo === 'admin' ? 'perfil__badge--admin' : ''}`}>
+                {rolActivo === 'admin' ? 'Administrador' : 'Usuario'}
               </span>
               <button className="perfil__btn perfil__btn--ghost" onClick={handleSwitchRol}>
                 Cambiar rol

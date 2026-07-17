@@ -19,6 +19,7 @@ export default function AdminReportesPage() {
   // en un filtro tipo usuario_search, para poder mostrarlo aunque el buscador
   // se desmonte/remonte. `filtros[key]` sigue guardando solo el id_usuario (lo que espera el backend).
   const [usuariosInfo, setUsuariosInfo] = useState({})
+  const [librosInfo, setLibrosInfo] = useState({})
   const [orden, setOrden] = useState({ columna: "", direccion: "ASC" })
 
   const [reporte, setReporte] = useState(null)
@@ -71,6 +72,7 @@ export default function AdminReportesPage() {
     setColumnasSeleccionadas(entidad.columnas.map(c => c.key))
     setFiltros({})
     setUsuariosInfo({})
+    setLibrosInfo({})
     setOrden({ columna: "", direccion: "ASC" })
     setReporte(null)
     setError(null)
@@ -82,6 +84,7 @@ export default function AdminReportesPage() {
     setColumnasSeleccionadas([])
     setFiltros({})
     setUsuariosInfo({})
+    setLibrosInfo({})
     setOrden({ columna: "", direccion: "ASC" })
     setReporte(null)
     setError(null)
@@ -95,6 +98,7 @@ export default function AdminReportesPage() {
     setColumnasSeleccionadas(entidadActual.columnas.map(c => c.key))
     setFiltros({})
     setUsuariosInfo({})
+    setLibrosInfo({})
     setOrden({ columna: "", direccion: "ASC" })
     setReporte(null)
     setError(null)
@@ -117,6 +121,11 @@ export default function AdminReportesPage() {
         return nuevo
       })
       setUsuariosInfo(prev => {
+        const nuevo = { ...prev }
+        ext.filtros.forEach(f => delete nuevo[f])
+        return nuevo
+      })
+      setLibrosInfo(prev => {
         const nuevo = { ...prev }
         ext.filtros.forEach(f => delete nuevo[f])
         return nuevo
@@ -147,9 +156,23 @@ export default function AdminReportesPage() {
     setUsuariosInfo(prev => ({ ...prev, [filtroKey]: usuario }))
   }
 
+  const handleSeleccionarLibro = (filtroKey, libro) => {
+    setFiltros(prev => ({ ...prev, [filtroKey]: String(libro.id_libro) }))
+    setLibrosInfo(prev => ({ ...prev, [filtroKey]: libro }))
+  }
+
   const handleQuitarUsuario = (filtroKey) => {
     setFiltros(prev => ({ ...prev, [filtroKey]: "" }))
     setUsuariosInfo(prev => {
+      const nuevo = { ...prev }
+      delete nuevo[filtroKey]
+      return nuevo
+    })
+  }
+
+  const handleQuitarLibro = (filtroKey) => {
+    setFiltros(prev => ({ ...prev, [filtroKey]: "" }))
+    setLibrosInfo(prev => {
       const nuevo = { ...prev }
       delete nuevo[filtroKey]
       return nuevo
@@ -237,6 +260,9 @@ export default function AdminReportesPage() {
             onGenerar={handleGenerar}
             onCambiarTipo={handleCambiarTipo}
             onLimpiarTodo={handleLimpiarTodo}
+            librosInfo={librosInfo}
+            onSeleccionarLibro={handleSeleccionarLibro}
+            onQuitarLibro={handleQuitarLibro}
           />
         )}
 

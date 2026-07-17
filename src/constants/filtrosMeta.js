@@ -5,10 +5,19 @@ export const FILTROS_META = {
     label: "Estado del ejemplar", type: "select",
     options: ["disponible", "prestado", "reservado", "eliminado", "inhabilitado", "deteriorado", "perdido", "solicitado"]
   },
-  tipo_material: { label: "Tipo de material", type: "text" },
-  carrera: { label: "Carrera", type: "text" },
+  tipo_material: {
+    label: "Tipo de material", type: "select",
+    options: [
+      { value: "libro", label: "Libro" },
+      { value: "tfg", label: "TFG" }
+    ]
+  },
+  carrera: {
+    label: "Carrera", type: "multi-select",
+    options: ["General", "Informática", "Electrónica", "Electricidad", "Civil"]
+  },
   facultad: { label: "Facultad", type: "text" },
-  id_libro: { label: "ID de libro", type: "number" },
+  id_libro: { label: "Libro", type: "libro_search" },
   anio_desde: { label: "Año desde", type: "number" },
   anio_hasta: { label: "Año hasta", type: "number" },
   id_usuario: { label: "Usuario", type: "usuario_search" },

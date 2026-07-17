@@ -15,7 +15,11 @@ export const generarReporte = async (entidad, columnas, filtros, extensiones = [
     params.append('orden_dir', orden.direccion || 'ASC')
   }
   Object.entries(filtros || {}).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
+    if (Array.isArray(value)) {
+      value.forEach(v => {
+        if (v !== undefined && v !== null && v !== '') params.append(key, v)
+      })
+    } else if (value !== undefined && value !== null && value !== '') {
       params.append(key, value)
     }
   })
@@ -26,5 +30,10 @@ export const generarReporte = async (entidad, columnas, filtros, extensiones = [
 
 export const buscarUsuarios = async (q) => {
   const { data } = await api.get(`/reports/buscar-usuario?q=${encodeURIComponent(q)}`)
+  return data.data
+}
+
+export const buscarLibros = async (q) => {
+  const { data } = await api.get(`/reports/buscar-libro?q=${encodeURIComponent(q)}`)
   return data.data
 }
