@@ -1,10 +1,7 @@
 .session-table{
-
   width:100%;
-
+  overflow-x:auto;
 }
-
-
 
 /* =========================
    HEADER + ROWS
@@ -12,143 +9,124 @@
 
 .session-table__header,
 .session-table__row{
-
   display:grid;
-
   grid-template-columns:
-    minmax(220px,2fr)
-    130px
-    minmax(260px,2fr)
+    minmax(180px,1.5fr)
+    100px
+    minmax(220px,1.8fr)
+    170px
     120px
-    90px;
-
+    150px
+    150px
+    120px;
   align-items:center;
-
   gap:15px;
-
+  min-width:1350px;
 }
-
-
 
 /* =========================
    HEADER
 ========================= */
 
 .session-table__header{
-
   padding:16px 18px;
-
-  color:rgba(255,255,255,.55);
-
   border-bottom:1px solid rgba(255,255,255,.08);
-
 }
-
-
 
 .session-table__header span{
-
-  font-size:1rem;
-
+  font-size:.85rem;
   font-weight:800;
-
   letter-spacing:.05em;
-
   text-transform:uppercase;
-
   color:rgba(255,255,255,.92);
-
 }
-
-
 
 /* =========================
    ROWS
 ========================= */
 
 .session-table__row{
-
   padding:18px;
-
   margin-top:10px;
-
   background:rgba(255,255,255,.05);
-
   border-radius:16px;
-
   color:white;
-
+  transition:.2s ease;
 }
-
-
 
 .session-table__row:hover{
-
   background:rgba(255,255,255,.08);
-
 }
-
-
 
 .session-user{
-
   font-weight:700;
-
 }
-
-
 
 .session-email{
-
   overflow:hidden;
-
   white-space:nowrap;
-
   text-overflow:ellipsis;
-
 }
 
+/* =========================
+   STATUS
+========================= */
 
+.session-status{
+  display:inline-flex;
+  width:max-content;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:700;
+}
+
+.status-active{
+  background:rgba(46,204,113,.15);
+  color:#2ecc71;
+  border:1px solid rgba(46,204,113,.3);
+}
+
+.status-expired{
+  background:rgba(241,196,15,.15);
+  color:#f1c40f;
+  border:1px solid rgba(241,196,15,.3);
+}
+
+.status-closed{
+  background:rgba(231,76,60,.15);
+  color:#e74c3c;
+  border:1px solid rgba(231,76,60,.3);
+}
+
+.status-revoked{
+  background:rgba(155,89,182,.15);
+  color:#9b59b6;
+  border:1px solid rgba(155,89,182,.3);
+}
 
 /* =========================
    EMPTY
 ========================= */
 
 .session-empty{
-
   text-align:center;
-
   padding:40px;
-
   color:rgba(255,255,255,.6);
-
 }
-
-
 
 /* =========================
    TABLET
 ========================= */
 
-@media(max-width:1024px){
+@media(max-width:1200px){
 
   .session-table__header,
   .session-table__row{
-
-    grid-template-columns:
-      1.8fr
-      110px
-      1.5fr
-      100px
-      80px;
-
-    gap:12px;
-
+    min-width:1350px;
   }
 
 }
-
-
 
 /* =========================
    MOBILE
@@ -156,73 +134,54 @@
 
 @media(max-width:768px){
 
+  .session-table{
+    overflow:visible;
+  }
+
   .session-table__header{
     display:none;
   }
 
-
   .session-table__row{
-
+    min-width:0;
     display:flex;
     flex-direction:column;
-
     gap:8px;
-
     padding:14px 16px;
-
   }
 
-
-  .session-table__row > span{
-
+  .session-table__row>span{
     display:flex;
     flex-direction:column;
-
     width:100%;
-
-    gap:3px;
-
+    gap:4px;
     padding-bottom:8px;
-
     border-bottom:1px solid rgba(255,255,255,.08);
-
     font-size:.9rem;
-
   }
 
-
-  .session-table__row > span:last-child{
-
+  .session-table__row>span:last-child{
     border-bottom:none;
-
     padding-bottom:0;
-
   }
 
-
-  .session-table__row > span::before{
-
+  .session-table__row>span::before{
     content:attr(data-label);
-
     font-size:.7rem;
-
     font-weight:700;
-
     letter-spacing:.08em;
-
     text-transform:uppercase;
-
     color:rgba(255,255,255,.45);
-
   }
-
 
   .session-email{
-
     white-space:normal;
-
     word-break:break-word;
+  }
 
+  .session-status{
+    font-size:.75rem;
+    padding:5px 12px;
   }
 
 }

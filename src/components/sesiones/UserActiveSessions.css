@@ -1,10 +1,6 @@
-/* =========================
-   CONTAINER
-========================= */
-
 .active-sessions {
   width:100%;
-  max-width:760px;
+  max-width:1150px;
   margin:30px auto 0;
   padding:2.2rem;
   background:rgba(255,255,255,.04);
@@ -15,20 +11,21 @@
   animation:fadeUp .5s ease both;
 }
 
+
 @keyframes fadeUp {
+
   from {
     opacity:0;
     transform:translateY(20px);
   }
+
   to {
     opacity:1;
     transform:translateY(0);
   }
+
 }
 
-/* =========================
-   TITLE
-========================= */
 
 .active-sessions__title {
   margin:0 0 1.75rem;
@@ -38,175 +35,420 @@
   color:white;
 }
 
-/* =========================
-   TABLE
-========================= */
+
 
 .active-session-table {
+
   width:100%;
+  overflow-x:auto;
+
+  scrollbar-width:thin;
+  scrollbar-color:transparent transparent;
+
 }
+
+
+.active-session-table::-webkit-scrollbar {
+  height:6px;
+}
+
+
+.active-session-table::-webkit-scrollbar-track {
+  background:transparent;
+}
+
+
+.active-session-table::-webkit-scrollbar-thumb {
+
+  background:transparent;
+  border-radius:20px;
+
+}
+
+
+.active-session-table:hover {
+
+  scrollbar-color:rgba(255,255,255,.18) transparent;
+
+}
+
+
+.active-session-table:hover::-webkit-scrollbar-thumb {
+
+  background:rgba(255,255,255,.18);
+
+}
+
+
+.active-session-table:hover::-webkit-scrollbar-thumb:hover {
+
+  background:rgba(255,255,255,.28);
+
+}
+
+
 
 .active-session-table__header,
 .active-session-table__row {
+
   display:grid;
-  grid-template-columns:2fr 1fr 1fr;
+
+  grid-template-columns:
+
+    1.25fr
+    1.35fr
+    .75fr
+    1fr
+    .75fr
+    .65fr;
+
   align-items:center;
-  gap:15px;
+
+  gap:18px;
+
+  min-width:1050px;
+
 }
 
-/* HEADER */
+
 
 .active-session-table__header {
+
   padding:15px 18px;
+
   border-bottom:1px solid rgba(255,255,255,.08);
+
 }
 
+
+
 .active-session-table__header span {
+
   font-size:.78rem;
   font-weight:700;
   letter-spacing:.08em;
   text-transform:uppercase;
   color:rgba(255,255,255,.45);
+
 }
 
-/* ROWS */
+
 
 .active-session-table__row {
+
   padding:18px;
+
   margin-top:12px;
+
   background:rgba(255,255,255,.05);
+
   border-radius:15px;
+
   color:white;
+
   transition:.2s ease;
+
 }
+
+
 
 .active-session-table__row:hover {
+
   background:rgba(255,255,255,.08);
+
 }
+
+
 
 .active-session-table__row > span {
-  font-size:1rem;
+
+  font-size:.95rem;
+
   color:rgba(255,255,255,.9);
+
   font-weight:600;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
 }
 
-/* BADGE */
+
 
 .active-session__badge {
+
   display:inline-flex;
+
   align-items:center;
+
   justify-content:center;
+
   width:max-content;
+
   padding:6px 14px;
+
   border-radius:999px;
+
   font-size:.85rem;
+
   font-weight:700;
-  background:rgba(46,204,113,.15);
-  color:#2ecc71;
-  border:1px solid rgba(46,204,113,.3);
+
 }
 
-/* STATES */
+
+
+.active-session__badge.active {
+
+  background:rgba(46,204,113,.15);
+
+  color:#2ecc71;
+
+  border:1px solid rgba(46,204,113,.3);
+
+}
+
+
+
+.active-session__badge.inactive {
+
+  background:rgba(241,196,15,.15);
+
+  color:#f1c40f;
+
+  border:1px solid rgba(241,196,15,.3);
+
+}
+
+
+
+.active-session__badge.expired {
+
+  background:rgba(231,76,60,.15);
+
+  color:#e74c3c;
+
+  border:1px solid rgba(231,76,60,.3);
+
+}
+
+
 
 .active-sessions__loading {
+
   text-align:center;
+
   padding:30px;
+
   color:rgba(255,255,255,.7);
+
 }
+
+
 
 .active-sessions__empty {
+
   text-align:center;
+
   padding:35px;
+
   color:rgba(255,255,255,.6);
+
 }
 
 
-/* =========================
-   TABLET
-========================= */
+
+/* SESION ACTUAL */
+
+.current-session {
+
+  position:relative;
+
+  border:1px solid rgba(52,152,219,.5);
+
+  background:rgba(52,152,219,.12);
+
+  box-shadow:0 0 25px rgba(52,152,219,.15);
+
+  padding-top:28px;
+
+}
+
+
+
+.current-session::before {
+
+  content:"Sesión actual";
+
+  position:absolute;
+
+  top:0;
+
+  left:0;
+
+  padding:4px 14px;
+
+  border-radius:15px 0 12px 0;
+
+  background:#3498db;
+
+  color:white;
+
+  font-size:.7rem;
+
+  font-weight:700;
+
+  letter-spacing:.03em;
+
+}
+
+
+
+@media(max-width:900px){
+
+  .active-sessions {
+    padding:1.5rem;
+  }
+
+
+  .active-session-table__header,
+  .active-session-table__row {
+
+    grid-template-columns:
+
+      1.1fr
+      1.2fr
+      .7fr
+      .9fr
+      .7fr
+      .6fr;
+
+    gap:12px;
+
+  }
+
+}
+
+
 
 @media(max-width:768px){
 
   .active-sessions {
-    padding:1.5rem;
-    border-radius:18px;
-  }
 
-  .active-sessions__title {
-    font-size:1.6rem;
-  }
-
-  .active-session-table__header,
-  .active-session-table__row {
-    grid-template-columns:1.7fr 1fr 1fr;
-    gap:10px;
-  }
-
-  .active-session-table__header span {
-    font-size:.7rem;
-  }
-
-  .active-session-table__row > span {
-    font-size:.9rem;
-  }
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:600px){
-
-  .active-sessions {
     padding:1.2rem;
+
     border-radius:18px;
+
   }
+
+
 
   .active-session-table__header {
+
     display:none;
+
   }
+
+
 
   .active-session-table__row {
+
+    min-width:0;
+
     display:flex;
+
     flex-direction:column;
+
     gap:12px;
+
     padding:18px;
-    margin-top:12px;
-    border-radius:15px;
+
   }
 
-.active-session-table__row > span {
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  width:100%;
-  gap:4px;
-  font-size:.95rem;
-  font-weight:600;
-  padding-bottom:10px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
+
+
+  .active-session-table__row.current-session {
+
+    padding-top:42px;
+
+  }
+
+
+
+  .current-session::before {
+
+    top:0;
+
+    left:0;
+
+    width:max-content;
+
+    border-radius:14px 0 12px 0;
+
+  }
+
+
+
+  .active-session-table__row > span {
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    width:100%;
+
+    gap:4px;
+
+    font-size:.95rem;
+
+    padding-bottom:10px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    white-space:normal;
+
+  }
+
+
 
   .active-session-table__row > span:last-child {
+
     border-bottom:none;
+
     padding-bottom:0;
+
   }
+
+
 
   .active-session-table__row > span::before {
+
     content:attr(data-label);
+
     font-size:.7rem;
+
     font-weight:700;
+
     letter-spacing:.08em;
+
     text-transform:uppercase;
+
     color:rgba(255,255,255,.45);
+
   }
 
-.active-session__badge {
-  margin-top:2px;
-  font-size:.82rem;
-  padding:6px 14px;
-}
+
+
+  .active-session__badge {
+
+    font-size:.82rem;
+
+    padding:6px 14px;
+
+  }
 
 }
