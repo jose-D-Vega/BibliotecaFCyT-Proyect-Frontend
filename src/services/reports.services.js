@@ -28,8 +28,9 @@ export const generarReporte = async (entidad, columnas, filtros, extensiones = [
   return data
 }
 
-export const buscarUsuarios = async (q) => {
-  const { data } = await api.get(`/reports/buscar-usuario?q=${encodeURIComponent(q)}`)
+export const buscarUsuarios = async (q, soloStaff = false) => {
+  const staffParam = soloStaff ? '&staff=1' : ''
+  const { data } = await api.get(`/reports/buscar-usuario?q=${encodeURIComponent(q)}${staffParam}`)
   return data.data
 }
 

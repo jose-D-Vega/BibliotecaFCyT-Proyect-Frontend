@@ -278,8 +278,22 @@
   overflow-x: auto;
 }
 
+.tabla-contenedor{
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.reportes-imprimible thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #0f172a;   /* mismo color que .contenedor-reportes, para que no se transparente al scrollear */
+}
+
+
 .reportes-imprimible table {
   width: 100%;
+  min-width: max-content;   /* la tabla no se achica, crece según haga falta */
   border-collapse: collapse;
 }
 
@@ -289,6 +303,10 @@
   text-align: left;
   font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  min-width: 120px;
+  max-width: 400px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .reportes-imprimible th {
@@ -313,12 +331,17 @@
   to { transform: rotate(360deg); }
 }
 
-/* ==========================================
+/*
    MODO IMPRESIÓN
    Solo se muestra la tabla de resultados, sin sidebar ni botones,
    y se fuerza fondo blanco / texto negro para no gastar tinta de color
-   ========================================== */
+*/
 @media print {
+  @page {
+    size: landscape;
+    margin: 10mm;
+  }
+
   .no-print {
     display: none !important;
   }
@@ -329,15 +352,36 @@
     padding: 0;
   }
 
+  .reportes-imprimible .tabla-contenedor {
+    background: #ffffff;
+    border: none;
+    overflow: visible;   /* antes: heredaba overflow-x: auto, que recortaba columnas */
+  }
+
   .reportes-imprimible th,
   .reportes-imprimible td {
     color: #000000;
     border-bottom: 1px solid #cccccc;
+    padding: 4px 6px;
+    font-size: 9px;
+    max-width: 100px;       /* 400px en pantalla ≈ 100px en la resolución de impresión */
+    white-space: normal;    
+    word-wrap: break-word;
   }
 
-  .reportes-imprimible .tabla-contenedor {
-    background: #ffffff;
-    border: none;
+  .reportes-imprimible th {
+    font-size: 8px;
+  }
+
+  .reportes-imprimible table {
+    min-width: max-content;
+  }
+  
+  .contenedor-reportes .contenido,
+  .reportes-imprimible {
+    max-width: none;
+    width: 100%;
+    margin: 0;
   }
 }
 
@@ -506,7 +550,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px;
+  padding: 5px 10px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
@@ -521,6 +565,7 @@
   color: #ffffff;
   font-family: 'Source Sans 3', sans-serif;
   font-size: 13px;
+  padding: 3px 10px;
 }
 
 .usuario-search-dropdown {
@@ -587,4 +632,31 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+}
+
+.reportes-multiselect-modo {
+  display: flex;
+  gap: 4px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reportes-multiselect-modo button {
+  flex: 1;
+  padding: 5px 0;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.reportes-multiselect-modo button.activo {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
 }

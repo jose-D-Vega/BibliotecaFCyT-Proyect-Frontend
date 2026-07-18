@@ -1,14 +1,15 @@
 import React from "react"
-import { FILTROS_META } from "../../constants/filtrosMeta"
+import { FILTROS_META, FECHA_LABEL_POR_ENTIDAD } from "../../constants/filtrosMeta"
 import BuscadorUsuarioFiltro from "./BuscadorUsuarioFiltro"
 import BuscadorLibroFiltro from "./BuscadorLibroFiltro"
 import MultiSelectDropdown from "./MultiSelectDropdown"
 import { bloquearCaracteresNumero, sanitizarPegadoNumero } from "../../utils/bloquearCaracteresNumero"
+import { validarCambioFecha } from "../../utils/validarRangoFecha"
 
 export default function FiltrosForm({
   filtrosDisponibles, filtros, onFiltroChange,
   usuariosInfo, onSeleccionarUsuario, onQuitarUsuario,
-  librosInfo, onSeleccionarLibro, onQuitarLibro
+  librosInfo, onSeleccionarLibro, onQuitarLibro, entidadKey
 }) {
   return (
     <div className="reportes-seccion">
@@ -16,14 +17,16 @@ export default function FiltrosForm({
       <div className="reportes-filtros-grid">
         {filtrosDisponibles.map(filtroKey => {
           const meta = FILTROS_META[filtroKey] || { label: filtroKey, type: "text" }
+          const label = FECHA_LABEL_POR_ENTIDAD[entidadKey]?.[filtroKey] || meta.label
           return (
             <div className="reportes-filtro-item" key={filtroKey}>
-              <label>{meta.label}</label>
+              <label>{label}</label>
               {meta.type === "usuario_search" ? (
                 <BuscadorUsuarioFiltro
                   usuarioSeleccionado={usuariosInfo[filtroKey] || null}
                   onSeleccionar={(usuario) => onSeleccionarUsuario(filtroKey, usuario)}
                   onQuitar={() => onQuitarUsuario(filtroKey)}
+                  soloStaff={meta.soloStaff}
                 />
               ) : meta.type === "libro_search" ? (
                 <BuscadorLibroFiltro
@@ -50,7 +53,13 @@ export default function FiltrosForm({
                 <input
                   type={meta.type}
                   value={filtros[filtroKey] || ""}
-                  onChange={(e) => onFiltroChange(filtroKey, e.target.value)}
+                  max={filtroKey === "fecha_desde" ? (filtros.fecha_hasta || new Date().toISOString().split("T")[0]) : undefined}
+                  min={filtroKey === "fecha_hasta" ? (filtros.fecha_desde || undefined) : undefined}
+                  onChange={(e) => {
+                    const esFechaValidable = filtroKey === "fecha_desde" || filtroKey === "fecha_hasta"
+                    const valor = esFechaValidable ? validarCambioFecha(filtroKey, e.target.value, filtros) : e.target.value
+                    onFiltroChange(filtroKey, valor)
+                  }}
                   onKeyDown={meta.type === "number" ? bloquearCaracteresNumero : undefined}
                   onPaste={meta.type === "number" ? (e) => sanitizarPegadoNumero(e, onFiltroChange, filtroKey) : undefined}
                 />

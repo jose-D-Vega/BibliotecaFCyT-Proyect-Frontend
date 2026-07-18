@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import { ChevronDown } from "lucide-react"
 
-// Simula un <select> pero permite elegir varias opciones. Cerrado se ve como
-// un input normal de filtro; al hacer click despliega un panel flotante con
-// checkboxes que se cierra solo al clickear en cualquier otro lado de la página.
 export default function MultiSelectDropdown({ options, seleccionados = [], onChange, placeholder = "Todos" }) {
   const [abierto, setAbierto] = useState(false)
   const wrapperRef = useRef(null)
@@ -25,19 +22,20 @@ export default function MultiSelectDropdown({ options, seleccionados = [], onCha
     onChange(nuevos)
   }
 
+  const obtenerLabel = (value) => {
+    const opcion = options.find(op => (typeof op === "object" ? op.value : op) === value)
+    return opcion && typeof opcion === "object" ? opcion.label : value
+  }
+
   const textoTrigger = seleccionados.length === 0
     ? placeholder
     : seleccionados.length <= 2
-      ? seleccionados.join(", ")
-      : `${seleccionados.length} seleccionadas`
+      ? seleccionados.map(obtenerLabel).join(", ")
+      : `${seleccionados.length} seleccionados`
 
   return (
     <div className="reportes-multiselect-wrapper" ref={wrapperRef}>
-      <button
-        type="button"
-        className="reportes-multiselect-trigger"
-        onClick={() => setAbierto(prev => !prev)}
-      >
+      <button type="button" className="reportes-multiselect-trigger" onClick={() => setAbierto(prev => !prev)}>
         <span className={seleccionados.length === 0 ? "reportes-multiselect-placeholder" : ""}>
           {textoTrigger}
         </span>

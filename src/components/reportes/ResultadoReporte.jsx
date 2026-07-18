@@ -44,7 +44,7 @@ export default function ResultadoReporte({ reporte, entidadLabel, onEditarFiltro
               ) : (
                 reporte.data.filas.map((fila, i) => (
                   <tr key={i}>
-                    {reporte.data.columnas.map(col => <td key={col.key}>{formatearCelda(fila[col.key])}</td>)}
+                    {reporte.data.columnas.map(col => <td key={col.key}>{formatearCelda(fila[col.key], col.key)}</td>)}
                   </tr>
                 ))
               )}

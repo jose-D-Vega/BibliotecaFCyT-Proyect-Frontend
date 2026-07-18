@@ -67,6 +67,7 @@ export default function ConfiguracionReporte({
         librosInfo={librosInfo}
         onSeleccionarLibro={onSeleccionarLibro}
         onQuitarLibro={onQuitarLibro}
+        entidadKey={entidadActual.key}
       />
 
 
