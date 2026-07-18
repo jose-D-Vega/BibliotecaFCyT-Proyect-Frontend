@@ -1,4 +1,4 @@
-.sesiones-admin{
+.sesiones-admin {
 
   width:100%;
 
@@ -12,14 +12,20 @@
 
 
 
-.sesiones-admin__header{
+/* =========================
+   HEADER
+========================= */
+
+
+.sesiones-admin__header {
 
   margin-bottom:25px;
 
 }
 
 
-.sesiones-admin__header h1{
+
+.sesiones-admin__header h1 {
 
   margin:0;
 
@@ -27,11 +33,17 @@
 
 }
 
-.sesiones-admin__title{
-  font-family: "Times New Roman", serif;
+
+
+.sesiones-admin__title {
+
+  font-family:"Times New Roman", serif;
+
 }
 
-.sesiones-admin__header p{
+
+
+.sesiones-admin__header p {
 
   margin-top:6px;
 
@@ -41,8 +53,14 @@
 
 
 
+/* =========================
+   CONTAINER
+========================= */
 
-.sesiones-admin__container{
+
+.sesiones-admin__container {
+
+  position:relative;
 
   background:#12233f;
 
@@ -54,72 +72,66 @@
 
   min-height:500px;
 
-}
-
-
-
-.sesiones-loading{
-
-  height:300px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  color:rgba(255,255,255,.65);
+  overflow:hidden;
 
 }
+
 
 
 /* =========================
    LOADING
 ========================= */
 
-.sesiones-admin__container{
-  position:relative;
-  min-height:300px;
-}
 
+.sesiones-loading {
 
-.sesiones-loading{
   min-height:300px;
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
+
   flex-direction:column;
 
   gap:14px;
+
 }
 
 
-.sesiones-spinner{
+
+.sesiones-spinner {
 
   width:52px;
+
   height:52px;
 
   border-radius:50%;
 
   border:3px solid rgba(255,255,255,.15);
-  border-top:3px solid #fff;
+
+  border-top:3px solid white;
 
   animation:sesionesSpin .8s linear infinite;
 
 }
 
 
-@keyframes sesionesSpin{
 
-  to{
+@keyframes sesionesSpin {
+
+  to {
+
     transform:rotate(360deg);
+
   }
 
 }
 
 
-.sesiones-loading p{
+
+.sesiones-loading p {
 
   margin:0;
 
@@ -129,28 +141,100 @@
 
 }
 
+
+
+/* =========================
+   TABLET
+========================= */
+
+
+@media(max-width:1024px){
+
+
+  .sesiones-admin {
+
+    padding:22px;
+
+  }
+
+
+  .sesiones-admin__container {
+
+    padding:16px;
+
+    border-radius:20px;
+
+  }
+
+
+}
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
 @media(max-width:768px){
 
 
-  .sesiones-admin{
+  .sesiones-admin {
 
     padding:18px;
 
   }
 
 
-  .sesiones-admin__header h1{
+  .sesiones-admin__header h1 {
 
     font-size:1.6rem;
 
   }
 
 
-  .sesiones-admin__container{
+  .sesiones-admin__header p {
 
-    padding:14px;
+    font-size:.9rem;
+
+  }
+
+
+  .sesiones-admin__container {
+
+    padding:12px;
 
     border-radius:18px;
+
+    min-height:300px;
+
+  }
+
+
+  .sesiones-loading {
+
+    min-height:250px;
+
+  }
+
+
+}
+
+
+
+@media(max-width:480px){
+
+
+  .sesiones-admin {
+
+    padding:12px;
+
+  }
+
+
+  .sesiones-admin__title {
+
+    font-size:1.4rem;
 
   }
 
