@@ -8,6 +8,7 @@ const ADMIN_NAV = [
   { path: "/admin/catalogo", label: "Catálogo" },
   { path: "/admin/sanciones", label: "Sanciones" },
   { path: "/admin/reportes", label: "Reportes" },
+  { path: "/admin/actividades", label: "Historial de actividades" },
   { path: "/admin/usuarios", label: "Usuarios" },
   { path: "/admin/sesiones", label: "Sesiones" }
 ];

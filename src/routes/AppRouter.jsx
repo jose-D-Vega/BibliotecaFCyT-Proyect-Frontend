@@ -35,6 +35,7 @@ import ModificarMaterial from '../pages/admin/ModificarMaterial'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
 import NuevaSancionPage from '../pages/admin/prueba/NuevaSancionPage'
 import AdminReportesPage from '../pages/admin/AdminReportesPage'
+import AdminActividadesPage from '../pages/admin/AdminActividadesPage'
 import PerfilAdminPage from '../pages/admin/PerfilAdminPage'
 import GestionPrestamosPage from '../pages/admin/prueba/GestionPrestamosPage'
 import GestionUsuarios from '../pages/admin/GestionUsuarios'
@@ -145,6 +146,7 @@ const AppRouter = () => {
           <Route path="sanciones/comportamiento/:id_usuario" element={<DetalleSancionesComportamientoPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="reportes" element={<AdminReportesPage />} />
+          <Route path="actividades" element={<AdminActividadesPage />} />
         </Route>
 
         {/* BIBLIOTECARIO */}
@@ -167,6 +169,7 @@ const AppRouter = () => {
           <Route path="sanciones/comportamiento/:id_usuario" element={<DetalleSancionesComportamientoPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />
           <Route path="reportes" element={<AdminReportesPage />} />
+          <Route path="actividades" element={<AdminActividadesPage />} />
           {/* Sin: usuarios, catalogo/nuevo */}
         </Route>
 

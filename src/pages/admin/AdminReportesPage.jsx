@@ -25,6 +25,7 @@ export default function AdminReportesPage() {
   const [reporte, setReporte] = useState(null)
   const [generando, setGenerando] = useState(false)
   const [error, setError] = useState(null)
+  const [resetKey, setResetKey] = useState(0)
 
   useEffect(() => {
     const cargarConfig = async () => {
@@ -88,6 +89,7 @@ export default function AdminReportesPage() {
     setOrden({ columna: "", direccion: "ASC" })
     setReporte(null)
     setError(null)
+    setResetKey(k => k + 1)
   }
 
   // Vuelve a la config del reporte actual (misma entidad) pero deja todo en blanco,
@@ -102,6 +104,7 @@ export default function AdminReportesPage() {
     setOrden({ columna: "", direccion: "ASC" })
     setReporte(null)
     setError(null)
+    setResetKey(k => k + 1)
   }
 
   // Vuelve de la vista de resultado a la config, conservando filtros/columnas elegidos
@@ -263,6 +266,7 @@ export default function AdminReportesPage() {
             librosInfo={librosInfo}
             onSeleccionarLibro={handleSeleccionarLibro}
             onQuitarLibro={handleQuitarLibro}
+            resetKey={resetKey}
           />
         )}
 
