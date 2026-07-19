@@ -35,17 +35,16 @@ const AdminLayout = () => {
 
   return (
     <div className="admin-layout">
-      <div className="no-print">
-        <Navbar
-          onToggleSidebar={handleToggleSidebar}
-          role="admin"
-          onLogout={handleLogout}
-          onSwitchRole={handleSwitchRole}
-          onViewProfile={handleViewProfile}
-        />
+      <Navbar
+        className="no-print"
+        onToggleSidebar={handleToggleSidebar}
+        role="admin"
+        onLogout={handleLogout}
+        onSwitchRole={handleSwitchRole}
+        onViewProfile={handleViewProfile}
+      />
 
-        <SidebarAdmin isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      </div>
+      <SidebarAdmin className="no-print" isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main className="admin-layout__main">
         <div className="admin-layout__content">
@@ -53,9 +52,7 @@ const AdminLayout = () => {
         </div>
       </main>
 
-      <div className="no-print">
-        <Footer />
-      </div>
+      <Footer className="no-print" />
     </div>
   );
 };

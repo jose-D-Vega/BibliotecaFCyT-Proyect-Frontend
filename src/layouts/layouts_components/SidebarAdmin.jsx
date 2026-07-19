@@ -19,19 +19,20 @@ const ADMIN_NAV = [
   { path: "/admin/catalogo", label: "Catálogo", icon: LibraryBig },
   { path: "/admin/sanciones", label: "Sanciones", icon: TriangleAlert },
   { path: "/admin/reportes", label: "Reportes", icon: ChartBar },
+  { path: "/admin/actividades", label: "Historial de actividades" },
   { path: "/admin/usuarios", label: "Usuarios", icon: Users },
   { path: "/admin/sesiones", label: "Sesiones", icon: ShieldCheck }
 ]
 
-const SidebarAdmin = ({ isOpen, onClose }) => {
+const SidebarAdmin = ({ isOpen, onClose, className = "", }) => {
   return (
     <>
       <div
-        className={`sidebar-overlay ${isOpen ? "active" : ""}`}
+        className={`sidebar-overlay ${isOpen ? "active" : ""} ${className}`}
         onClick={onClose}
       ></div>
 
-      <aside className={`sidebar sidebar-admin ${isOpen ? "open" : ""}`}>
+      <aside className={`sidebar sidebar-admin ${isOpen ? "open" : ""} ${className}`}>
         <div className="sidebar-admin__header">
           <div>
             <p className="sidebar-admin__subtitle">Panel de gestión</p>

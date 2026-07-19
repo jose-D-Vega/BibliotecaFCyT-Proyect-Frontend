@@ -1,32 +1,22 @@
-import { useState } from "react"
+import { useState } from "react";
 
-import SolicitudTipoBadge from "./SolicitudTipoBadge"
-import PrestamoSolicitudModal from "./PrestamoSolicitudModal"
+import SolicitudTipoBadge from "./SolicitudTipoBadge";
+import PrestamoSolicitudModal from "./PrestamoSolicitudModal";
+import { capitalizeWords } from "../utils/textFormatters";
 
-import "./styles/PrestamoSolicitudCard.css"
-
-function capitalizeWords(text) {
-  return (text || "")
-    .toLowerCase()
-    .split(" ")
-    .filter(Boolean)
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ")
-}
+import "./styles/PrestamoSolicitudCard.css";
 
 function PrestamoSolicitudCard({ solicitud, onAceptar }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const totalMateriales = solicitud.materiales.length
-  const textoTipoSolicitud = solicitud.tipoSolicitud || "Préstamo"
+  const totalMateriales = solicitud.materiales.length;
+  const textoTipoSolicitud = solicitud.tipoSolicitud || "Préstamo";
 
   return (
     <>
       <article className="solicitud-card-admin">
-
         {/* LEFT SIDE */}
         <div className="solicitud-card-admin__main">
-
           <div className="solicitud-card-admin__user">
             <h2 className="solicitud-card-admin__user-name">
               {capitalizeWords(solicitud.usuario)}
@@ -54,21 +44,17 @@ function PrestamoSolicitudCard({ solicitud, onAceptar }) {
           <div className="solicitud-card-admin__badge-slot">
             <SolicitudTipoBadge tipo={textoTipoSolicitud} />
           </div>
-
         </div>
 
         {/* RIGHT SIDE */}
         <div className="solicitud-card-admin__actions">
-
           <button
             className="solicitud-card-admin__btn solicitud-card-admin__btn--details"
             onClick={() => setOpen(true)}
           >
             Ver detalles →
           </button>
-
         </div>
-
       </article>
 
       <PrestamoSolicitudModal
@@ -78,7 +64,7 @@ function PrestamoSolicitudCard({ solicitud, onAceptar }) {
         onAceptar={onAceptar}
       />
     </>
-  )
+  );
 }
 
-export default PrestamoSolicitudCard
+export default PrestamoSolicitudCard;

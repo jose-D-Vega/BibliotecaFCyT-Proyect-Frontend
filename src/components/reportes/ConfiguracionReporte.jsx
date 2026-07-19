@@ -28,7 +28,8 @@ export default function ConfiguracionReporte({
   onOrdenChange,
   onGenerar,
   onCambiarTipo,
-  onLimpiarTodo
+  onLimpiarTodo,
+  resetKey,
 }) {
   return (
     <div className="reportes-config no-print">
@@ -68,6 +69,7 @@ export default function ConfiguracionReporte({
         onSeleccionarLibro={onSeleccionarLibro}
         onQuitarLibro={onQuitarLibro}
         entidadKey={entidadActual.key}
+        resetKey={resetKey}
       />
 
 

@@ -1,9 +1,9 @@
 import "../styles/Footer.css";
 import logoCompleto from "../../assets/icons/logo-web-blanco.png";
 
-const Footer = () => {
+const Footer = ({ className = "" }) => {
   return (
-    <footer className="app-footer">
+    <footer className={`app-footer ${className}`}>
       <div className="app-footer__container">
         <div className="app-footer__col">
           <img

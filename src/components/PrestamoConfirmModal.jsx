@@ -1,17 +1,9 @@
 import { useState, useEffect } from "react"
 
+import { approveRenewal, rejectRenewal, respondDetalle } from "../services/loans.services"
+import { capitalizeWords } from "../utils/textFormatters"
+
 import "./styles/PrestamoConfirmModal.css"
-
-const API_URL = "http://localhost:3210/api"
-
-function capitalizeWords(text) {
-  return (text || "")
-    .toLowerCase()
-    .split(" ")
-    .filter(Boolean)
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ")
-}
 
 function PrestamoConfirmModal({
   open,
@@ -26,6 +18,7 @@ function PrestamoConfirmModal({
 
   const [observaciones, setObservaciones] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
   const [loadingApprove, setLoadingApprove] = useState(false)
   const [loadingReject, setLoadingReject] = useState(false)
@@ -39,6 +32,7 @@ function PrestamoConfirmModal({
       setOpenRejected(false)
       setObservaciones("")
       setLoading(false)
+      setError("")
       setLoadingApprove(false)
       setLoadingReject(false)
     }
@@ -94,14 +88,7 @@ function PrestamoConfirmModal({
     try {
       setLoadingApprove(true)
 
-      const token = localStorage.getItem("token")
-
-      await fetch(`${API_URL}/loans/${solicitud.id}/renew/approve`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      await approveRenewal(solicitud.id)
 
       onSuccess?.()
       onClose()
@@ -120,14 +107,7 @@ function PrestamoConfirmModal({
     try {
       setLoadingReject(true)
 
-      const token = localStorage.getItem("token")
-
-      await fetch(`${API_URL}/loans/${solicitud.id}/renew/reject`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      await rejectRenewal(solicitud.id)
 
       onSuccess?.()
       onClose()
@@ -145,8 +125,7 @@ function PrestamoConfirmModal({
   const handleConfirm = async () => {
     try {
       setLoading(true)
-
-      const token = localStorage.getItem("token")
+      setError("")
 
       const all = solicitud.materiales.flatMap(m =>
         m.ejemplares.map(e => ({
@@ -155,21 +134,26 @@ function PrestamoConfirmModal({
         }))
       )
 
-      for (const item of all) {
-        await fetch(
-          `${API_URL}/loans/${solicitud.id}/detalle/${item.ejemplar}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              estado: item.accepted ? "aprobado" : "rechazado",
-              observaciones: item.accepted ? "" : observaciones
-            })
-          }
+      const resultados = await Promise.allSettled(
+        all.map(item =>
+          respondDetalle(
+            solicitud.id,
+            item.ejemplar,
+            item.accepted ? "aprobado" : "rechazado",
+            item.accepted ? "" : observaciones
+          )
         )
+      )
+
+      const fallidos = resultados
+        .map((r, i) => ({ resultado: r, ejemplar: all[i].ejemplar }))
+        .filter(({ resultado }) => resultado.status === "rejected")
+
+      if (fallidos.length > 0) {
+        setError(
+          `No se pudo actualizar ${fallidos.length === 1 ? "el ejemplar" : "los ejemplares"} ${fallidos.map(f => `#${f.ejemplar}`).join(", ")}. Los demás sí se guardaron correctamente — podés reintentar solo esos.`
+        )
+        return // no cerramos el modal, para que pueda reintentar
       }
 
       onSuccess?.()
@@ -177,6 +161,7 @@ function PrestamoConfirmModal({
 
     } catch (err) {
       console.error(err)
+      setError("Ocurrió un error inesperado al confirmar la solicitud.")
     } finally {
       setLoading(false)
     }
@@ -311,6 +296,12 @@ function PrestamoConfirmModal({
         )}
 
         <div className="prestamo-modal__actions">
+
+          {error && (
+            <p style={{ color: "#f87171", fontSize: "0.875rem", width: "100%", margin: "0 0 8px" }}>
+              {error}
+            </p>
+          )}
 
           <button className="cancel-btn" onClick={onClose}>
             Cancelar

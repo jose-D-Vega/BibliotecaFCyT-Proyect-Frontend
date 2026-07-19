@@ -2,21 +2,20 @@ import { useState } from "react"
 
 import PrestamoEstadoBadge from "./PrestamoEstadoBadge"
 import PrestamoDetalleModal from "./PrestamoDetalleModal"
+import { cancelLoanSmart, activateLoan } from "../services/loans.services"
+import { capitalizeWords } from "../utils/textFormatters"
 
 import "./styles/PrestamoCard.css"
 
-const API_URL = "http://localhost:3210/api"
+// ⚠️ Política de la biblioteca: días de plazo desde la activación hasta la fecha
+// tope de devolución. Este valor es SOLO para la previsualización que se muestra
+// en el modal de confirmación de activación — el valor real y definitivo lo
+// calcula el backend en `activateLoan` (DIAS_PRESTAMO_ACTIVO en
+// backend/src/config/loans.config.js). Si cambia la política ahí, hay que
+// actualizar este número acá también para que la previsualización no mienta.
+const DIAS_PRESTAMO_ACTIVO = 5
 
 /* ----------------- helpers ----------------- */
-
-function capitalizeWords(text) {
-  return (text || "")
-    .toLowerCase()
-    .split(" ")
-    .filter(Boolean)
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ")
-}
 
 function formatCount(value, singular, plural) {
   return `${value} ${value === 1 ? singular : plural}`
@@ -24,7 +23,7 @@ function formatCount(value, singular, plural) {
 
 /* ------------------------------------------ */
 
-function PrestamoCard({ prestamo, onUpdated }) {
+function PrestamoCardAdmin({ prestamo, onUpdated }) {
   const [openDetails, setOpenDetails] = useState(false)
   const [openCancelModal, setOpenCancelModal] = useState(false)
   const [loadingCancel, setLoadingCancel] = useState(false)
@@ -56,7 +55,7 @@ function PrestamoCard({ prestamo, onUpdated }) {
 
   function getFechaDevolucion() {
     const d = new Date()
-    d.setDate(d.getDate() + 5)
+    d.setDate(d.getDate() + DIAS_PRESTAMO_ACTIVO)
     return d.toLocaleDateString("es-PY")
   }
 
@@ -64,28 +63,14 @@ function PrestamoCard({ prestamo, onUpdated }) {
     try {
       setLoadingCancel(true)
 
-      const token = localStorage.getItem("token")
-
-      const res = await fetch(`${API_URL}/loans/${prestamo.id}/cancel-smart`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        alert(data?.error || "Error al cancelar préstamo")
-        return
-      }
+      await cancelLoanSmart(prestamo.id)
 
       setOpenCancelModal(false)
       onUpdated?.()
 
     } catch (err) {
       console.error(err)
-      alert("Error de conexión")
+      alert(err.response?.data?.error || "Error al cancelar préstamo")
     } finally {
       setLoadingCancel(false)
     }
@@ -95,28 +80,14 @@ function PrestamoCard({ prestamo, onUpdated }) {
     try {
       setLoadingActivate(true)
 
-      const token = localStorage.getItem("token")
-
-      const res = await fetch(`${API_URL}/loans/${prestamo.id}/activate`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        alert(data?.error || "Error al activar préstamo")
-        return
-      }
+      await activateLoan(prestamo.id)
 
       setOpenActivateModal(false)
       onUpdated?.()
 
     } catch (err) {
       console.error(err)
-      alert("Error de conexión")
+      alert(err.response?.data?.error || "Error al activar préstamo")
     } finally {
       setLoadingActivate(false)
     }
@@ -351,4 +322,4 @@ switch (estado) {
   )
 }
 
-export default PrestamoCard
+export default PrestamoCardAdmin

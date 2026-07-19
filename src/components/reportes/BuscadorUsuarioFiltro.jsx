@@ -7,7 +7,7 @@ import { buscarUsuarios } from "../../services/reports.services"
 // guardarlo en estado interno. Así, si este componente se desmonta y se vuelve a montar
 // (por ejemplo al volver del resultado a la config del reporte), el usuario elegido sigue
 // visible — antes se perdía visualmente porque el estado interno arrancaba en null de nuevo.
-export default function BuscadorUsuarioFiltro({ usuarioSeleccionado, onSeleccionar, onQuitar, soloStaff = false }) {
+export default function BuscadorUsuarioFiltro({ usuarioSeleccionado, onSeleccionar, onQuitar, soloStaff = false, placeholder = "Nombre, correo o CI..." }) {
   const [query, setQuery] = useState("")
   const [resultados, setResultados] = useState([])
   const [buscando, setBuscando] = useState(false)
@@ -58,10 +58,9 @@ export default function BuscadorUsuarioFiltro({ usuarioSeleccionado, onSeleccion
   return (
     <div className="usuario-search-wrapper">
       <div className="usuario-search-input">
-        <Search size={14} />
         <input
           type="text"
-          placeholder="Nombre, correo o CI..."
+          placeholder={placeholder}
           value={query}
           onChange={(e) => handleQueryChange(e.target.value)}
           onFocus={() => setMostrarLista(true)}

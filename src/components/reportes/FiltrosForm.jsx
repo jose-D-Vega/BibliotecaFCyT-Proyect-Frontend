@@ -9,7 +9,7 @@ import { validarCambioFecha } from "../../utils/validarRangoFecha"
 export default function FiltrosForm({
   filtrosDisponibles, filtros, onFiltroChange,
   usuariosInfo, onSeleccionarUsuario, onQuitarUsuario,
-  librosInfo, onSeleccionarLibro, onQuitarLibro, entidadKey
+  librosInfo, onSeleccionarLibro, onQuitarLibro, entidadKey, resetKey
 }) {
   return (
     <div className="reportes-seccion">
@@ -23,6 +23,7 @@ export default function FiltrosForm({
               <label>{label}</label>
               {meta.type === "usuario_search" ? (
                 <BuscadorUsuarioFiltro
+                  key={`${filtroKey}-${resetKey}`}
                   usuarioSeleccionado={usuariosInfo[filtroKey] || null}
                   onSeleccionar={(usuario) => onSeleccionarUsuario(filtroKey, usuario)}
                   onQuitar={() => onQuitarUsuario(filtroKey)}
@@ -30,6 +31,7 @@ export default function FiltrosForm({
                 />
               ) : meta.type === "libro_search" ? (
                 <BuscadorLibroFiltro
+                  key={`${filtroKey}-${resetKey}`}
                   libroSeleccionado={librosInfo[filtroKey] || null}
                   onSeleccionar={(libro) => onSeleccionarLibro(filtroKey, libro)}
                   onQuitar={() => onQuitarLibro(filtroKey)}

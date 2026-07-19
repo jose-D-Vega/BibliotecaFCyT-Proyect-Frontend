@@ -566,6 +566,7 @@
   font-family: 'Source Sans 3', sans-serif;
   font-size: 13px;
   padding: 3px 10px;
+  max-width: 100%;
 }
 
 .usuario-search-dropdown {
