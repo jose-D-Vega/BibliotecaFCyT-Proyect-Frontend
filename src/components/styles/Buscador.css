@@ -9,54 +9,76 @@
   flex: 1;
   min-width: 0;
   box-sizing: border-box;
-  padding: 13px 14px;
+  padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: #f1f6fb;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 1rem;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  border: 1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#f1f6fb;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:1rem;
+  transition:border-color .2s ease,background .2s ease;
 }
 
-.buscador::placeholder { color: rgba(255, 255, 255, 0.35); }
+.buscador::placeholder {
+  color:rgba(255,255,255,.35);
+}
 
 .buscador:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.2);
+  background:rgba(255,255,255,.09);
+  border-color:rgba(255,255,255,.2);
 }
 
 .buscador:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.35);
+  outline:none;
+  background:rgba(255,255,255,.09);
+  border-color:rgba(255,255,255,.35);
 }
 
-.modo-btn {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 13px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-  white-space: nowrap;
-  flex-shrink: 0;
-  font-family: 'Source Sans 3', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
+.buscar-btn,
+.limpiar-btn {
+  background:rgba(255,255,255,.12);
+  color:#ffffff;
+  border:1px solid rgba(255,255,255,.20);
+  padding:12px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.2s;
+  white-space:nowrap;
+  flex-shrink:0;
+  font-family:'Source Sans 3',sans-serif;
+  font-weight:700;
+  font-size:.95rem;
 }
 
-.modo-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
+.buscar-btn:hover,
+.limpiar-btn:hover {
+  background:rgba(255,255,255,.18);
+  border-color:rgba(255,255,255,.30);
 }
 
-@media (max-width: 768px) {
-  .buscador-container { flex-direction: column; align-items: stretch; }
-  .modo-btn { width: 100%; text-align: center; }
+.limpiar-btn:hover {
+  background:rgba(255,255,255,.15);
+  color:white;
 }
 
-@media (max-width: 480px) {
-  .buscador, .modo-btn { padding: 11px 12px; font-size: 14px; }
+@media(max-width:768px){
+  .buscador-container {
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .buscar-btn,
+  .limpiar-btn {
+    width:100%;
+    text-align:center;
+  }
+}
+
+@media(max-width:480px){
+  .buscador,
+  .buscar-btn,
+  .limpiar-btn {
+    padding:11px 12px;
+    font-size:14px;
+  }
 }

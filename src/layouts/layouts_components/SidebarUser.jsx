@@ -1,12 +1,19 @@
 import { NavLink } from "react-router-dom";
+import {
+  House,
+  BookOpenCheck,
+  LibraryBig,
+  Undo2,
+  TriangleAlert
+} from "lucide-react";
 import "../styles/SidebarUser.css";
 
 const USER_NAV = [
-  { path: "/app/inicio", label: "Inicio" },
-  { path: "/app/prestamos", label: "Préstamos" },
-  { path: "/app/catalogo", label: "Catálogo" },
-  { path: "/app/devoluciones", label: "Devoluciones" },
-  { path: "/app/sanciones", label: "Sanciones" },
+  { path: "/app/inicio", label: "Inicio", icon: House },
+  { path: "/app/prestamos", label: "Préstamos", icon: BookOpenCheck },
+  { path: "/app/catalogo", label: "Catálogo", icon: LibraryBig },
+  { path: "/app/devoluciones", label: "Devoluciones", icon: Undo2 },
+  { path: "/app/sanciones", label: "Sanciones", icon: TriangleAlert },
 ];
 
 const SidebarUser = ({ isOpen, onClose }) => {
@@ -35,19 +42,23 @@ const SidebarUser = ({ isOpen, onClose }) => {
         </div>
 
         <nav className="sidebar-user__nav">
-          {USER_NAV.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `sidebar-user__item ${isActive ? "sidebar-user__item--active" : ""}`
-              }
-              onClick={onClose}
-            >
-              <span className="sidebar-user__bullet"></span>
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+          {USER_NAV.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `sidebar-user__item ${isActive ? "sidebar-user__item--active" : ""}`
+                }
+                onClick={onClose}
+              >
+                <Icon className="sidebar-user__icon" />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
       </aside>
     </>

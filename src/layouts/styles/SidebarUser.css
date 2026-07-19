@@ -36,7 +36,7 @@
 
 .sidebar-user__header {
   padding: 24px 18px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255,255,255,.08);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -45,10 +45,10 @@
 
 .sidebar-user__subtitle {
   margin: 0 0 6px;
-  color: rgba(241, 246, 251, 0.68);
-  font-size: 0.82rem;
+  color: rgba(241,246,251,.68);
+  font-size: .82rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: .08em;
 }
 
 .sidebar-user__title {
@@ -64,14 +64,14 @@
   height: 38px;
   border-radius: 12px;
   border: none;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,.08);
   color: #ffffff;
   font-size: 1.5rem;
   cursor: pointer;
 }
 
 .sidebar-user__close:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255,255,255,.16);
 }
 
 .sidebar-user__nav {
@@ -85,51 +85,62 @@
   width: 100%;
   background: transparent;
   color: #f3f7fb;
-  padding: 14px 14px;
+  padding: 14px;
   border-radius: 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   text-align: left;
   font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all .2s ease;
 }
 
 .sidebar-user__item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: rgba(255,255,255,.08);
+  color:#ffffff;
   transform: translateX(3px);
 }
 
 .sidebar-user__item--active {
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
+  background: rgba(255,255,255,.14);
+  color:#ffffff;
 }
 
-.sidebar-user__item--active .sidebar-user__bullet {
-  background: #ffffff;
+.sidebar-user__item--active .sidebar-user__icon {
+  color:#ffffff;
 }
 
-.sidebar-user__bullet {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #8fb1d8;
-  flex-shrink: 0;
+.sidebar-user__icon {
+  width:20px;
+  height:20px;
+  color:#8fb1d8;
+  flex-shrink:0;
+  stroke-width:2.2;
 }
 
-@media (max-width: 480px) {
+.sidebar-user__item:hover .sidebar-user__icon {
+  color:#ffffff;
+}
+
+@media(max-width:480px){
+
   .sidebar {
-    width: 270px;
+    width:270px;
   }
 
   .sidebar-user__title {
-    font-size: 1.2rem;
+    font-size:1.2rem;
   }
 
   .sidebar-user__item {
-    font-size: 0.96rem;
+    font-size:.96rem;
   }
+
+  .sidebar-user__icon {
+    width:18px;
+    height:18px;
+  }
+
 }
