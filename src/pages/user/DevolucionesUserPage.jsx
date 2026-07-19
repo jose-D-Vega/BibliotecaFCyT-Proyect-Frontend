@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { getDevolucionesUsuario } from '../../../services/returns.services'
-import { getDetalleDevoluciones } from '../../../services/returns.services'
-import ModalDetalleDevolucion from '../../../components/devoluciones/ModalDetalleDevolucion'
-import './DevolucionesUserPage.css'
+import { getDevolucionesUsuario } from '../../services/returns.services'
+import { getDetalleDevoluciones } from '../../services/returns.services'
+import ModalDetalleDevolucion from '../../components/devoluciones/ModalDetalleDevolucion'
+import './styles/DevolucionesUserPage.css'
 
 const formatFecha = (fecha) => {
   if (!fecha) return '—'
@@ -188,7 +188,6 @@ const DevolucionesUserPage = () => {
         <ModalDetalleDevolucion
           prestamo={prestamoDetalle}
           onCerrar={() => setPrestamoDetalle(null)}
-          onActualizar={fetchHistorial}
         />
       )}
     </div>

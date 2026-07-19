@@ -18,8 +18,8 @@ import DashboardUser from '../pages/user/DashboardUser'
 import CatalogoUserPage from '../pages/user/CatalogoUserPage'
 import LibroDetalleUserPage from '../pages/user/LibroDetalleUserPage'
 import MisSolicitudesPage from '../pages/user/MisSolicitudesPage'
-import PrestamosPage from '../pages/user/prueba/PrestamosPage'
-import DevolucionesUserPage from '../pages/user/prueba/DevolucionesUserPage'
+import PrestamosUserPage from '../pages/user/PrestamosUserPage'
+import DevolucionesUserPage from '../pages/user/DevolucionesUserPage'
 import SancionesUserPage from '../pages/user/SancionesUserPage'
 
 import PerfilUserPage from '../pages/user/PerfilUserPage'
@@ -115,7 +115,7 @@ const AppRouter = () => {
           <Route path="catalogo/:id" element={<LibroDetalleUserPage />} />
           <Route path="solicitudes" element={<MisSolicitudesPage />} />
           <Route path="perfil" element={<PerfilUserPage />} />
-          <Route path="prestamos" element={<PrestamosPage />} />
+          <Route path="prestamos" element={<PrestamosUserPage />} />
           <Route path="devoluciones" element={<DevolucionesUserPage />} />
           <Route path="sanciones" element={<SancionesUserPage />} />
         </Route>

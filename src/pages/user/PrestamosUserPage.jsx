@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PrestamosActivos from '../../../components/prestamos/PrestamosActivos'
-import HistorialPrestamos from '../../../components/prestamos/HistorialPrestamos'
-import '../../../components/styles/Prestamos.css'
+import PrestamosActivos from '../../components/prestamos/PrestamosActivos'
+import HistorialPrestamos from '../../components/prestamos/HistorialPrestamos'
+import './styles/Prestamos.css'
 
 const TABS = [
   { id: 'activos', label: 'Mis préstamos' },
   { id: 'historial', label: 'Historial' },
 ]
 
-function PrestamosPage() {
+function PrestamosUserPage() {
   const [tabActiva, setTabActiva] = useState('activos')
   const navigate = useNavigate()
 
@@ -46,4 +46,4 @@ function PrestamosPage() {
   )
 }
 
-export default PrestamosPage
+export default PrestamosUserPage

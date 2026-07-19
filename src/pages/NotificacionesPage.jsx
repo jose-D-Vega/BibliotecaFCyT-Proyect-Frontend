@@ -3,7 +3,7 @@ import { getNotificaciones, marcarLeida, marcarTodasLeidas } from '../services/n
 import { useNotifications } from '../context/NotificationsContext'
 import NotificacionesFilters from '../components/NotificacionesFilters'
 import PrestamoPagination from '../components/PrestamoPagination'
-import './NotificacionesPage.css'
+import './styles/NotificacionesPage.css'
 import { useAuth } from '../context/AuthContext'
 import { getIconoTipo, getTiposPorRol } from '../utils/notificacionTipos'
 
