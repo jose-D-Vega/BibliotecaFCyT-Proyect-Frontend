@@ -16,7 +16,7 @@ const ModalEditarDescripcion = ({ sancion, onGuardar, onCancelar, loading }) => 
   }
 
   return (
-    <div className="modal-sancion-overlay" onClick={onCancelar}>
+    <div className="modal-sancion-overlay overlay-in-card" onClick={onCancelar}>
       <div className="modal-sancion-box" onClick={e => e.stopPropagation()} style={{ maxWidth: 480 }}>
 
         <div className="modal-sancion__header">

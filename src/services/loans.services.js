@@ -47,6 +47,15 @@ export const respondDetalle = async (id_prestamo, id_ejemplar, estado, observaci
   return data
 }
 
+// Versión en lote: envía todas las respuestas de una solicitud en una sola
+// petición (una sola transacción en el backend), en vez de una petición por
+// ejemplar. Evita saturar el pool de conexiones cuando la solicitud tiene
+// varios ejemplares.
+export const respondDetalleBatch = async (id_prestamo, respuestas) => {
+  const { data } = await api.patch(`/loans/${id_prestamo}/detalle-batch`, { respuestas })
+  return data
+}
+
 export const activateLoan = async (id) => {
   const { data } = await api.patch(`/loans/${id}/activate`)
   return data

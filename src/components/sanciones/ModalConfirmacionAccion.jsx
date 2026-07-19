@@ -12,7 +12,7 @@ const ModalConfirmacionAccion = ({
   onConfirmar,
   onCancelar,
 }) => (
-  <div className="modal-sancion-overlay" onClick={onCancelar}>
+  <div className="modal-sancion-overlay overlay-in-card" onClick={onCancelar}>
     <div
       className="modal-sancion-box"
       style={{ maxWidth: 420 }}

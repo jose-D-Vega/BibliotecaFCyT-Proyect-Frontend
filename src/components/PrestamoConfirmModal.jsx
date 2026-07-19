@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import { approveRenewal, rejectRenewal, respondDetalle } from "../services/loans.services"
+import { approveRenewal, rejectRenewal, respondDetalleBatch } from "../services/loans.services"
 import { capitalizeWords } from "../utils/textFormatters"
 
 import "./styles/PrestamoConfirmModal.css"
@@ -127,41 +127,28 @@ function PrestamoConfirmModal({
       setLoading(true)
       setError("")
 
-      const all = solicitud.materiales.flatMap(m =>
-        m.ejemplares.map(e => ({
-          ejemplar: e,
-          accepted: selectedCopies.includes(e)
-        }))
+      const respuestas = solicitud.materiales.flatMap(m =>
+        m.ejemplares.map(e => {
+          const accepted = selectedCopies.includes(e)
+          return {
+            id_ejemplar: e,
+            estado: accepted ? "aprobado" : "rechazado",
+            observaciones: accepted ? "" : observaciones
+          }
+        })
       )
 
-      const resultados = await Promise.allSettled(
-        all.map(item =>
-          respondDetalle(
-            solicitud.id,
-            item.ejemplar,
-            item.accepted ? "aprobado" : "rechazado",
-            item.accepted ? "" : observaciones
-          )
-        )
-      )
-
-      const fallidos = resultados
-        .map((r, i) => ({ resultado: r, ejemplar: all[i].ejemplar }))
-        .filter(({ resultado }) => resultado.status === "rejected")
-
-      if (fallidos.length > 0) {
-        setError(
-          `No se pudo actualizar ${fallidos.length === 1 ? "el ejemplar" : "los ejemplares"} ${fallidos.map(f => `#${f.ejemplar}`).join(", ")}. Los demás sí se guardaron correctamente — podés reintentar solo esos.`
-        )
-        return // no cerramos el modal, para que pueda reintentar
-      }
+      await respondDetalleBatch(solicitud.id, respuestas)
 
       onSuccess?.()
       onClose()
 
     } catch (err) {
       console.error(err)
-      setError("Ocurrió un error inesperado al confirmar la solicitud.")
+      setError(
+        err.response?.data?.error ||
+        "Ocurrió un error inesperado al confirmar la solicitud."
+      )
     } finally {
       setLoading(false)
     }
