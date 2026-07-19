@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
-import { approveRenewal, rejectRenewal, respondDetalleBatch } from "../services/loans.services"
-import { capitalizeWords } from "../utils/textFormatters"
+import { approveRenewal, rejectRenewal, respondDetalleBatch } from "../../services/loans.services"
+import { capitalizeWords } from "../../utils/textFormatters"
 
 import "./styles/PrestamoConfirmModal.css"
 

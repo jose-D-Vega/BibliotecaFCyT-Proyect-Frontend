@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from '../../context/AuthContext';
 import "./styles/Navbar.css";
 import logoFcyt from "../../assets/icons/LogoFCyT.png";
-import NotificacionesBadge from '../../components/NotificacionesBadge'
+import NotificacionesBadge from '../../components/notificaciones/NotificacionesBadge'
 
 const Navbar = ({
   onToggleSidebar,

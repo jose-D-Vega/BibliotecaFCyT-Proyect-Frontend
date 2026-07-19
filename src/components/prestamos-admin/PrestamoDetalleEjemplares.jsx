@@ -1,4 +1,4 @@
-import { formatEstado } from "../utils/textFormatters";
+import { formatEstado } from "../../utils/textFormatters";
 
 function PrestamoDetalleEjemplares({ materiales, detalles, estado }) {
   function getDetalle(id) {

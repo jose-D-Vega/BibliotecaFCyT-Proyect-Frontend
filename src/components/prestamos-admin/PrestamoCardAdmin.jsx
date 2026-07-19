@@ -2,10 +2,10 @@ import { useState } from "react"
 
 import PrestamoEstadoBadge from "./PrestamoEstadoBadge"
 import PrestamoDetalleModal from "./PrestamoDetalleModal"
-import { cancelLoanSmart, activateLoan } from "../services/loans.services"
-import { capitalizeWords } from "../utils/textFormatters"
+import { cancelLoanSmart, activateLoan } from "../../services/loans.services"
+import { capitalizeWords } from "../../utils/textFormatters"
 
-import "./styles/PrestamoCard.css"
+import "./styles/PrestamoCardAdmin.css"
 
 // ⚠️ Política de la biblioteca: días de plazo desde la activación hasta la fecha
 // tope de devolución. Este valor es SOLO para la previsualización que se muestra

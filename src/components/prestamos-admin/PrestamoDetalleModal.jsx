@@ -1,8 +1,8 @@
 import "./styles/PrestamoDetalleModal.css";
 import PrestamoDetalleInfo from "./PrestamoDetalleInfo";
 import PrestamoDetalleEjemplares from "./PrestamoDetalleEjemplares.jsx";
-import PrestamoAccionModal from "./PrestamoAccionModal";
-import { capitalizeWords } from "../utils/textFormatters";
+import PrestamoAccionModal from "./PrestamoAccionModal.jsx";
+import { capitalizeWords } from "../../utils/textFormatters.js";
 
 function PrestamoDetalleModal({
   open,

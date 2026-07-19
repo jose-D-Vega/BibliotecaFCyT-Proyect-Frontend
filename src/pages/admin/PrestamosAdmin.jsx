@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
-import "../styles/styles_admin/PrestamosAdmin.css"
+import "./styles/PrestamosAdmin.css"
 
-import PrestamoTabs from "../../components/PrestamoTabs"
-import PrestamoSolicitudCard from "../../components/PrestamoSolicitudCard"
-import PrestamoCardAdmin from "../../components/PrestamoCardAdmin"
-import PrestamoFilters from "../../components/PrestamoFilters"
-import PrestamoConfirmModal from "../../components/PrestamoConfirmModal"
-import PrestamoPagination from "../../components/PrestamoPagination"
-import SolicitudFilters from "../../components/SolicitudFilters"
+import PrestamoTabs from "../../components/prestamos-admin/PrestamoTabs"
+import PrestamoSolicitudCard from "../../components/prestamos-admin/PrestamoSolicitudCard"
+import PrestamoCardAdmin from "../../components/prestamos-admin/PrestamoCardAdmin"
+import PrestamoFilters from "../../components/prestamos-admin/PrestamoFilters"
+import PrestamoConfirmModal from "../../components/prestamos-admin/PrestamoConfirmModal"
+import PrestamoPagination from "../../components/prestamos-admin/PrestamoPagination"
+import SolicitudFilters from "../../components/prestamos-admin/SolicitudFilters"
 import { getLoans } from "../../services/loans.services"
 
 const ITEMS_PER_PAGE = 6

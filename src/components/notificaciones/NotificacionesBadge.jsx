@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useNotifications } from '../context/NotificationsContext'
-import { useAuth } from '../context/AuthContext'
+import { useNotifications } from '../../context/NotificationsContext'
+import { useAuth } from '../../context/AuthContext'
 import './styles/NotificacionesBadge.css'
-import { getIconoTipo } from '../utils/notificacionTipos'
+import { getIconoTipo } from '../../utils/notificacionTipos'
 
 const PREFIJO_POR_ROL = {
   admin: '/admin',

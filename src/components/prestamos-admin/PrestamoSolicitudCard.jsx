@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import SolicitudTipoBadge from "./SolicitudTipoBadge";
 import PrestamoSolicitudModal from "./PrestamoSolicitudModal";
-import { capitalizeWords } from "../utils/textFormatters";
+import { capitalizeWords } from "../../utils/textFormatters";
 
 import "./styles/PrestamoSolicitudCard.css";
 

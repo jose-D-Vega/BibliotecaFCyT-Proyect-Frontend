@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { getLabelTipo } from '../utils/notificacionTipos'
+import { getLabelTipo } from '../../utils/notificacionTipos'
 import './styles/NotificacionesFilters.css'
 
 const ESTADOS = [

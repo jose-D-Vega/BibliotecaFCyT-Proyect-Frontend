@@ -1,4 +1,4 @@
-import { capitalizeWords, formatEstado } from "../utils/textFormatters";
+import { capitalizeWords, formatEstado } from "../../utils/textFormatters";
 
 function PrestamoAccionModal({
   tipo,

@@ -16,7 +16,7 @@ import {
   onlyLettersRegex,
   onlyNumbersRegex,
   authorRegex
-} from "../../components/NuevoMaterialHelpers"
+} from "../../components/catalogo/NuevoMaterialHelpers"
 
 function NuevoMaterial() {
 
