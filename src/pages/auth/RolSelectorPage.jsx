@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import logoFCyT from '../../assets/icons/LogoFCyT.png'
-import './auth_styles/RolSelectorPage.css'
+import './styles/RolSelectorPage.css'
 
 const RolSelectorPage = () => {
   const { user, selectRol } = useAuth()

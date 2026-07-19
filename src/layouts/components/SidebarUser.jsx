@@ -6,7 +6,7 @@ import {
   Undo2,
   TriangleAlert
 } from "lucide-react";
-import "../styles/SidebarUser.css";
+import "./styles/SidebarUser.css";
 
 const USER_NAV = [
   { path: "/app/inicio", label: "Inicio", icon: House },

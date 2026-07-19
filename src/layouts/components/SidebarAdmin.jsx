@@ -11,7 +11,7 @@ import {
   ShieldCheck
 } from "lucide-react"
 
-import "../styles/SidebarAdmin.css"
+import "./styles/SidebarAdmin.css"
 
 const ADMIN_NAV = [
   { path: "/admin/inicio", label: "Inicio", icon: House },
