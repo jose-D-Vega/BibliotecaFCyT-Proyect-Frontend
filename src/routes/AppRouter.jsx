@@ -16,8 +16,8 @@ import CompletarPerfilPage from '../pages/auth/CompletarPerfilPage'
 
 import DashboardUser from '../pages/user/DashboardUser'
 import CatalogoUserPage from '../pages/user/CatalogoUserPage'
-import DetalleLibroUserPage from '../pages/user/DetalleLibroUserPage'
-import CarritoPage from '../pages/user/Carrito'
+import LibroDetalleUserPage from '../pages/user/LibroDetalleUserPage'
+import MisSolicitudesPage from '../pages/user/MisSolicitudesPage'
 import PrestamosPage from '../pages/user/prueba/PrestamosPage'
 import DevolucionesUserPage from '../pages/user/prueba/DevolucionesUserPage'
 import SancionesUserPage from '../pages/user/SancionesUserPage'
@@ -28,8 +28,8 @@ import NotificacionesPage from '../pages/NotificacionesPage'
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
 import PrestamosAdminPage from '../pages/admin/PrestamosAdminPage'
 import AdminDevolucionesPage from '../pages/admin/prueba/AdminDevolucionesPage'
-import AdminCatalogoPage from '../pages/admin/AdminCatalogoPage'
-import DetalleLibroAdminPage from '../pages/admin/DetalleLibroAdminPage'
+import CatalogoAdminPage from '../pages/admin/CatalogoAdminPage'
+import LibroDetalleAdminPage from '../pages/admin/LibroDetalleAdminPage'
 import NuevoMaterial from '../pages/admin/NuevoMaterial'
 import ModificarMaterial from '../pages/admin/ModificarMaterial'
 import AdminSancionesPage from '../pages/admin/prueba/AdminSancionesPage'
@@ -112,8 +112,8 @@ const AppRouter = () => {
           <Route path="inicio" element={<DashboardUser />} />
           <Route path="notificaciones" element={<NotificacionesPage />} /> 
           <Route path="catalogo" element={<CatalogoUserPage />} />
-          <Route path="catalogo/:id" element={<DetalleLibroUserPage />} />
-          <Route path="carrito" element={<CarritoPage />} />
+          <Route path="catalogo/:id" element={<LibroDetalleUserPage />} />
+          <Route path="solicitudes" element={<MisSolicitudesPage />} />
           <Route path="perfil" element={<PerfilUserPage />} />
           <Route path="prestamos" element={<PrestamosPage />} />
           <Route path="devoluciones" element={<DevolucionesUserPage />} />
@@ -134,9 +134,9 @@ const AppRouter = () => {
           <Route path="notificaciones" element={<NotificacionesPage />} /> 
           <Route path="prestamos" element={<PrestamosAdminPage />} />
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
-          <Route path="catalogo" element={<AdminCatalogoPage />} />
+          <Route path="catalogo" element={<CatalogoAdminPage />} />
           <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
-          <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
+          <Route path="catalogo/:id" element={<LibroDetalleAdminPage />} />
           <Route path="catalogo/nuevo" element={<NuevoMaterial />} />
           <Route path="perfil" element={<PerfilAdminPage />} />
           <Route path="usuarios" element={<GestionUsuarios />} />
@@ -162,9 +162,9 @@ const AppRouter = () => {
           <Route path="inicio" element={<AdminDashboardPage />} />
           <Route path="prestamos" element={<GestionPrestamosPage />} />
           <Route path="devoluciones" element={<AdminDevolucionesPage />} />
-          <Route path="catalogo" element={<AdminCatalogoPage />} />
+          <Route path="catalogo" element={<CatalogoAdminPage />} />
           <Route path="catalogo/:id/editar" element={<ModificarMaterial />} />
-          <Route path="catalogo/:id" element={<DetalleLibroAdminPage />} />
+          <Route path="catalogo/:id" element={<LibroDetalleAdminPage />} />
           <Route path="sanciones/prestamo/:id_prestamo" element={<DetalleSancionesPrestamoPage />} />
           <Route path="sanciones/comportamiento/:id_usuario" element={<DetalleSancionesComportamientoPage />} />
           <Route path="sanciones" element={<AdminSancionesPage />} />

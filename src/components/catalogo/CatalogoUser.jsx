@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import Buscador from "../../components/Buscador"
-import Filtros from "../../components/Filtros"
-import ListaLibros from "../../components/ListaLibros"
-import CatalogoPagination from "../../components/CatalogoPagination"
-import "../styles/styles_user/Catalogo.css"
+import Buscador from "./Buscador"
+import Filtros from "./Filtros"
+import ListaLibros from "./ListaLibros"
+import CatalogoPagination from "./CatalogoPagination"
+import "./styles/Catalogo.css"
 
-function Catalogo({ onVerDetalle, onIrAlCarrito }) {
+function CatalogoUser({ onVerDetalle, onIrAlCarrito }) {
   const [pagina, setPagina] = useState(1)
   const [busqueda, setBusqueda] = useState("")
   const [busquedaAplicada, setBusquedaAplicada] = useState("")
@@ -81,4 +81,4 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
   )
 }
 
-export default Catalogo
+export default CatalogoUser

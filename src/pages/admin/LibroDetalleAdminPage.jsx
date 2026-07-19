@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getBookById, getCopiesByBook } from '../../services/books.services'
-import LibroDetalleAdmin from './LibroDetalleAdmin'
+import LibroDetalleAdmin from '../../components/catalogo/LibroDetalleAdmin'
+import "./styles/LibroDetalleAdmin.css"
 
-function DetalleLibroAdminPage() {
+function LibroDetalleAdminPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [libro, setLibro] = useState(null)
@@ -50,4 +51,4 @@ function DetalleLibroAdminPage() {
   )
 }
 
-export default DetalleLibroAdminPage
+export default LibroDetalleAdminPage

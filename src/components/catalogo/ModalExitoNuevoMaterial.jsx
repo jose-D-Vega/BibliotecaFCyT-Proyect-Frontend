@@ -1,6 +1,6 @@
-import "./styles/ModalExito.css"
+import "./styles/ModalExitoNuevoMaterial.css"
 
-function ModalExito({
+function ModalExitoNuevoMaterial({
   open,
   onClose
 }) {
@@ -37,4 +37,4 @@ function ModalExito({
   )
 }
 
-export default ModalExito
+export default ModalExitoNuevoMaterial

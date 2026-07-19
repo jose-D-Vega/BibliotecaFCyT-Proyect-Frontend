@@ -1,14 +1,11 @@
 import { useMemo, useState } from "react"
-import "../styles/styles_user/LibroDetalle.css"
+import "./styles/LibroDetalle.css"
 
-import LibroInfoItem from "../../components/LibroInfoItem"
-import EjemplarItem from "../../components/EjemplarItem"
-import FooterLogin from "../../components/FooterLogin"
-import { useNavigate } from "react-router-dom"
+import LibroInfoItem from "./LibroInfoItem"
+import EjemplarItem from "./EjemplarItem"
+import FooterLogin from "../login/FooterLogin"
 
 function LibroDetallePublic({ libro, ejemplares: ejemplaresProp, onVolver }) {
- 
-  const navigate = useNavigate()
 
   const data = useMemo(() => {
     return libro || {

@@ -1,4 +1,4 @@
-import logoCompleto from '../assets/icons/logo-web-blanco.png'
+import logoCompleto from '../../assets/icons/logo-web-blanco.png'
 
 const FooterLogin = ()=>{
     return (

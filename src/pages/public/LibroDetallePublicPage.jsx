@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getBookById, getCopiesByBook } from '../../services/books.services'
-import LibroDetallePublic from './LibroDetallePublic'
-import "../styles/LibroDetallePublicPage.css"
+import LibroDetallePublic from '../../components/catalogo/LibroDetallePublic'
+import "./styles/LibroDetallePublicPage.css"
 
 function LibroDetallePublicPage() {
   const { id } = useParams()

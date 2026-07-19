@@ -1,6 +1,6 @@
-import "./styles/CamposAutores.css"
+import "./styles/CamposAutoresNuevoMaterial.css"
 
-function CamposAutores({
+function CamposAutoresNuevoMaterial({
   autores,
   setAutores,
   error,
@@ -88,4 +88,4 @@ function CamposAutores({
   )
 }
 
-export default CamposAutores
+export default CamposAutoresNuevoMaterial

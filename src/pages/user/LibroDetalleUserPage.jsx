@@ -1,9 +1,9 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getBookById, getCopiesByBook } from '../../services/books.services'
-import LibroDetalle from './LibroDetalle'
+import LibroDetalle from '../../components/catalogo/LibroDetalleUser'
 
-function DetalleLibroUserPage() {
+function LibroDetalleUserPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
@@ -48,11 +48,11 @@ function DetalleLibroUserPage() {
       libro={libro}
       ejemplares={ejemplares}
       onVolver={() => navigate('/app/catalogo')}
-      onIrAlCarrito={() => navigate('/app/carrito')}
+      onIrAlCarrito={() => navigate('/app/solicitudes')}
       vieneDelDashboard={vieneDelDashboard}
       onVolverInicio={() => navigate('/app/inicio')}
     />
   )
 }
 
-export default DetalleLibroUserPage
+export default LibroDetalleUserPage

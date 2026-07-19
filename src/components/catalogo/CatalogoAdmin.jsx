@@ -1,14 +1,11 @@
-import "../styles/styles_user/Catalogo.css"
-import "../styles/styles_admin/CatalogoAdmin.css"
-import Buscador from "../../components/Buscador"
-import Filtros from "../../components/Filtros"
-import ListaLibros from "../../components/ListaLibros"
-import CatalogoPagination from "../../components/CatalogoPagination"
+import "./styles/Catalogo.css"
+import Buscador from "./Buscador"
+import Filtros from "./Filtros"
+import ListaLibros from "./ListaLibros"
+import CatalogoPagination from "./CatalogoPagination"
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 
 function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
-  const navigate = useNavigate()
 
   const [pagina, setPagina] = useState(1)
   const [busqueda, setBusqueda] = useState("")

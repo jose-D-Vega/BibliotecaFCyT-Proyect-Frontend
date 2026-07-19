@@ -2,9 +2,9 @@ import { useState } from "react"
 import { useCart } from '../../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import { createLoan } from '../../services/loans.services'
-import "../styles/styles_user/Carrito.css"
+import "./styles/MisSolicitudesPage.css"
 
-function CarritoPage() {
+function MisSolicitudesPage() {
   const {
     carrito,
     actualizarCantidad,
@@ -339,4 +339,4 @@ function CarritoPage() {
   )
 }
 
-export default CarritoPage
+export default MisSolicitudesPage

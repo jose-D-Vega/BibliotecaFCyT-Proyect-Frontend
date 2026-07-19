@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react"
-import LibroCard from "./LibroCard"
-import { getBooks } from "../services/books.services"
+import LibroCard from "../LibroCard"
+import { getBooks } from "../../services/books.services"
 import "./styles/ListaLibros.css"
 
 function ListaLibros({

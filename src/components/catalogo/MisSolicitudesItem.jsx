@@ -1,6 +1,6 @@
-import "./styles/CarritoItem.css"
+import "./styles/MisSolicitudesItem.css"
 
-function CarritoItem({ libro, onVerDetalle, onRemover }) {
+function MisSolicitudesItem({ libro, onVerDetalle, onRemover }) {
   return (
     <div className="carrito-item">
       <div className="carrito-item-imagen">
@@ -35,4 +35,4 @@ function CarritoItem({ libro, onVerDetalle, onRemover }) {
   )
 }
 
-export default CarritoItem
+export default MisSolicitudesItem
