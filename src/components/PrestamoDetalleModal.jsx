@@ -1,25 +1,8 @@
-import "./styles/PrestamoDetalleModal.css"
-import PrestamoDetalleInfo from "./PrestamoDetalleInfo"
-import PrestamoDetalleEjemplares from "./PrestamoDetalleEjemplares.jsx"
-import PrestamoAccionModal from "./PrestamoAccionModal"
-
-function capitalizeWords(text){
-  return (text || "")
-    .toLowerCase()
-    .split(" ")
-    .filter(Boolean)
-    .map(w=>w[0].toUpperCase()+w.slice(1))
-    .join(" ")
-}
-
-
-function formatEstado(text){
-  return (text || "")
-    .replaceAll("_"," ")
-    .toLowerCase()
-    .replace(/\b\w/g,l=>l.toUpperCase())
-}
-
+import "./styles/PrestamoDetalleModal.css";
+import PrestamoDetalleInfo from "./PrestamoDetalleInfo";
+import PrestamoDetalleEjemplares from "./PrestamoDetalleEjemplares.jsx";
+import PrestamoAccionModal from "./PrestamoAccionModal";
+import { capitalizeWords } from "../utils/textFormatters";
 
 function PrestamoDetalleModal({
   open,
@@ -39,48 +22,26 @@ function PrestamoDetalleModal({
   handleConfirmCancel,
   handleConfirmActivate,
 
-  loadingActivate=false,
-  loadingCancel=false
-}){
-
-  if(!open) return null
-
+  loadingActivate = false,
+  loadingCancel = false,
+}) {
+  if (!open) return null;
 
   return (
     <>
-
       <div className="prestamo-detalle-overlay">
-
         <div className="prestamo-detalle-modal">
-
-
           <header className="prestamo-detalle-header">
-
             <div>
-              <h2>
-                {capitalizeWords(prestamo.usuario)}
-              </h2>
-
+              <h2>{capitalizeWords(prestamo.usuario)}</h2>
             </div>
 
-
-            <button
-              className="prestamo-detalle-close"
-              onClick={onClose}
-            >
+            <button className="prestamo-detalle-close" onClick={onClose}>
               ✕
             </button>
-
           </header>
 
-
-
-          <PrestamoDetalleInfo
-            prestamo={prestamo}
-            estado={estadoActual}
-          />
-
-
+          <PrestamoDetalleInfo prestamo={prestamo} estado={estadoActual} />
 
           <PrestamoDetalleEjemplares
             materiales={prestamo.materiales || []}
@@ -88,75 +49,51 @@ function PrestamoDetalleModal({
             estado={estadoActual}
           />
 
-
-
-
           <div className="prestamo-detalle-actions">
-
-            {
-              puedeCancelar &&
+            {puedeCancelar && (
               <button
                 className="prestamo-detalle-btn prestamo-detalle-btn--cancel"
-                onClick={()=>setOpenCancelModal(true)}
+                onClick={() => setOpenCancelModal(true)}
               >
                 Cancelar préstamo
               </button>
-            }
+            )}
 
-
-            {
-              puedeActivar &&
+            {puedeActivar && (
               <button
                 className="prestamo-detalle-btn prestamo-detalle-btn--activate"
-                onClick={()=>setOpenActivateModal(true)}
+                onClick={() => setOpenActivateModal(true)}
               >
                 Activar préstamo
               </button>
-            }
-
+            )}
           </div>
-
-
         </div>
-
       </div>
 
-
-
-
-
-      {
-        openCancelModal &&
+      {openCancelModal && (
         <PrestamoAccionModal
           tipo="cancelar"
           usuario={prestamo.usuario}
           estado={estadoActual}
           loading={loadingCancel}
-          onClose={()=>setOpenCancelModal(false)}
+          onClose={() => setOpenCancelModal(false)}
           onConfirm={handleConfirmCancel}
         />
-      }
+      )}
 
-
-
-
-      {
-        openActivateModal &&
+      {openActivateModal && (
         <PrestamoAccionModal
           tipo="activar"
           usuario={prestamo.usuario}
           estado={estadoActual}
           loading={loadingActivate}
-          onClose={()=>setOpenActivateModal(false)}
+          onClose={() => setOpenActivateModal(false)}
           onConfirm={handleConfirmActivate}
         />
-      }
-
-
-
+      )}
     </>
-  )
+  );
 }
 
-
-export default PrestamoDetalleModal
+export default PrestamoDetalleModal;

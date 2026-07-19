@@ -10,6 +10,7 @@ const Navbar = ({
   onLogout,
   onSwitchRole,
   onViewProfile,
+  className = "",
 }) => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
@@ -42,7 +43,7 @@ const Navbar = ({
   const multiplesRoles = user?.rol == "admin" || user?.rol == "bibliotecario"
 
   return (
-    <header className="app-navbar">
+    <header className={`app-navbar ${className}`}>
       <div className="app-navbar__left">
         <button
           className="app-navbar__menu-btn"

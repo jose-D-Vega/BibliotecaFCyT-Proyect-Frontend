@@ -13,15 +13,15 @@ const ADMIN_NAV = [
   { path: "/admin/sesiones", label: "Sesiones" }
 ];
 
-const SidebarAdmin = ({ isOpen, onClose }) => {
+const SidebarAdmin = ({ isOpen, onClose, className = "", }) => {
   return (
     <>
       <div
-        className={`sidebar-overlay ${isOpen ? "active" : ""}`}
+        className={`sidebar-overlay ${isOpen ? "active" : ""} ${className}`}
         onClick={onClose}
       ></div>
 
-      <aside className={`sidebar sidebar-admin ${isOpen ? "open" : ""}`}>
+      <aside className={`sidebar sidebar-admin ${isOpen ? "open" : ""} ${className}`}>
         <div className="sidebar-admin__header">
           <div>
             <p className="sidebar-admin__subtitle">Panel de gestión</p>

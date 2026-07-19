@@ -20,13 +20,30 @@ export const cancelLoan = async (id) => {
   return data
 }
 
+// Cancelación "inteligente": decide server-side qué revertir según el estado actual
+// del préstamo (usada por el admin en vez de cancelLoan a secas)
+export const cancelLoanSmart = async (id) => {
+  const { data } = await api.patch(`/loans/${id}/cancel-smart`)
+  return data
+}
+
 export const renewLoan = async (id) => {
   const { data } = await api.patch(`/loans/${id}/renew`)
   return data
 }
 
-export const respondDetalle = async (id_prestamo, id_ejemplar, estado) => {
-  const { data } = await api.patch(`/loans/${id_prestamo}/detalle/${id_ejemplar}`, { estado })
+export const approveRenewal = async (id) => {
+  const { data } = await api.patch(`/loans/${id}/renew/approve`)
+  return data
+}
+
+export const rejectRenewal = async (id) => {
+  const { data } = await api.patch(`/loans/${id}/renew/reject`)
+  return data
+}
+
+export const respondDetalle = async (id_prestamo, id_ejemplar, estado, observaciones) => {
+  const { data } = await api.patch(`/loans/${id_prestamo}/detalle/${id_ejemplar}`, { estado, observaciones })
   return data
 }
 
