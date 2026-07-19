@@ -216,33 +216,17 @@
 
 }
 
-
-
-.sidebar-admin__item--active .sidebar-admin__bullet {
-
-  background:#fff;
-
-}
-
-
-
-.sidebar-admin__bullet {
-
-  width:10px;
-
-  height:10px;
-
-  border-radius:50%;
-
-  background:#8fb1d8;
-
+.sidebar-admin__icon {
+  width:20px;
+  height:20px;
+  color:#8fb1d8;
   flex-shrink:0;
-
+  stroke-width:2;
 }
 
-
-
-
+.sidebar-admin__item--active .sidebar-admin__icon {
+  color:#fff;
+}
 
 @media(max-width:1100px){
 

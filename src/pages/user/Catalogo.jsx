@@ -8,7 +8,7 @@ import "../styles/styles_user/Catalogo.css"
 function Catalogo({ onVerDetalle, onIrAlCarrito }) {
   const [pagina, setPagina] = useState(1)
   const [busqueda, setBusqueda] = useState("")
-  const [modoBusqueda, setModoBusqueda] = useState("titulo")
+  const [busquedaAplicada, setBusquedaAplicada] = useState("")
   const [areas, setAreas] = useState([])
   const [tipo, setTipo] = useState("")
   const [orden, setOrden] = useState("AZ")
@@ -16,7 +16,7 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
 
   useEffect(() => {
     setPagina(1)
-  }, [busqueda, modoBusqueda, areas, tipo, orden])
+  }, [busquedaAplicada, areas, tipo, orden])
 
   const resetFiltros = () => {
     setAreas([])
@@ -40,8 +40,7 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
         <Buscador
           busqueda={busqueda}
           setBusqueda={setBusqueda}
-          modoBusqueda={modoBusqueda}
-          setModoBusqueda={setModoBusqueda}
+          setBusquedaAplicada={setBusquedaAplicada}
         />
 
         <Filtros
@@ -61,8 +60,7 @@ function Catalogo({ onVerDetalle, onIrAlCarrito }) {
         <ListaLibros
           pagina={pagina}
           setPagina={setPagina}
-          busqueda={busqueda}
-          modoBusqueda={modoBusqueda}
+          busqueda={busquedaAplicada}
           areas={areas}
           tipo={tipo}
           orden={orden}

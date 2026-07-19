@@ -12,7 +12,7 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
 
   const [pagina, setPagina] = useState(1)
   const [busqueda, setBusqueda] = useState("")
-  const [modoBusqueda, setModoBusqueda] = useState("titulo")
+  const [busquedaAplicada, setBusquedaAplicada] = useState("")
   const [areas, setAreas] = useState([])
   const [tipo, setTipo] = useState("")
   const [orden, setOrden] = useState("AZ")
@@ -20,7 +20,7 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
 
   useEffect(() => {
     setPagina(1)
-  }, [busqueda, modoBusqueda, areas, tipo, orden])
+  }, [busquedaAplicada, areas, tipo, orden])
 
   const resetFiltros = () => {
     setAreas([])
@@ -38,12 +38,11 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
           <h1 className="titulo">Catálogo</h1>
         </div>
 
-        <Buscador
-          busqueda={busqueda}
-          setBusqueda={setBusqueda}
-          modoBusqueda={modoBusqueda}
-          setModoBusqueda={setModoBusqueda}
-        />
+          <Buscador
+            busqueda={busqueda}
+            setBusqueda={setBusqueda}
+            setBusquedaAplicada={setBusquedaAplicada}
+          />
 
         <Filtros
           areas={areas}
@@ -70,8 +69,7 @@ function CatalogoAdmin({ onVerDetalle, onNuevoLibro }) {
         <ListaLibros
           pagina={pagina}
           setPagina={setPagina}
-          busqueda={busqueda}
-          modoBusqueda={modoBusqueda}
+          busqueda={busquedaAplicada}
           areas={areas}
           tipo={tipo}
           orden={orden}

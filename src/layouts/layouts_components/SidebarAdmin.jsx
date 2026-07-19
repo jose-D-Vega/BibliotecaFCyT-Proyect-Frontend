@@ -1,16 +1,27 @@
-import { NavLink } from "react-router-dom";
-import "../styles/SidebarAdmin.css";
+import { NavLink } from "react-router-dom"
+import {
+  House,
+  BookOpenCheck,
+  Undo2,
+  LibraryBig,
+  TriangleAlert,
+  ChartBar,
+  Users,
+  ShieldCheck
+} from "lucide-react"
+
+import "../styles/SidebarAdmin.css"
 
 const ADMIN_NAV = [
-  { path: "/admin/inicio", label: "Inicio" },
-  { path: "/admin/prestamos", label: "Préstamos" },
-  { path: "/admin/devoluciones", label: "Devoluciones" },
-  { path: "/admin/catalogo", label: "Catálogo" },
-  { path: "/admin/sanciones", label: "Sanciones" },
-  { path: "/admin/reportes", label: "Reportes" },
-  { path: "/admin/usuarios", label: "Usuarios" },
-  { path: "/admin/sesiones", label: "Sesiones" }
-];
+  { path: "/admin/inicio", label: "Inicio", icon: House },
+  { path: "/admin/prestamos", label: "Préstamos", icon: BookOpenCheck },
+  { path: "/admin/devoluciones", label: "Devoluciones", icon: Undo2 },
+  { path: "/admin/catalogo", label: "Catálogo", icon: LibraryBig },
+  { path: "/admin/sanciones", label: "Sanciones", icon: TriangleAlert },
+  { path: "/admin/reportes", label: "Reportes", icon: ChartBar },
+  { path: "/admin/usuarios", label: "Usuarios", icon: Users },
+  { path: "/admin/sesiones", label: "Sesiones", icon: ShieldCheck }
+]
 
 const SidebarAdmin = ({ isOpen, onClose }) => {
   return (
@@ -47,7 +58,7 @@ const SidebarAdmin = ({ isOpen, onClose }) => {
               }
               onClick={onClose}
             >
-              <span className="sidebar-admin__bullet"></span>
+              <item.icon className="sidebar-admin__icon" />
               <span>{item.label}</span>
             </NavLink>
           ))}

@@ -12,10 +12,13 @@ function DetalleLibroAdminPage() {
 
   const fetchData = async () => {
     try {
+      setLoading(true)
+
       const [libroData, copiesData] = await Promise.all([
         getBookById(id),
         getCopiesByBook(id)
       ])
+
       setLibro(libroData)
       setEjemplares(copiesData)
     } catch {
@@ -29,7 +32,13 @@ function DetalleLibroAdminPage() {
     fetchData()
   }, [id])
 
-  if (loading) return <p>Cargando...</p>
+  if (loading) {
+    return (
+      <div className="detalle-loading">
+        <div className="spinner"></div>
+      </div>
+    )
+  }
 
   return (
     <LibroDetalleAdmin
