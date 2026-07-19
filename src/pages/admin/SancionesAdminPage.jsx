@@ -4,15 +4,15 @@ import {
   getSanctions, resolveSanction, escalateSanction,
   confirmSanction, rejectSanction, getSanctionsGrouped,
   getSancionesComportamientoAgrupadas
-} from '../../../services/sanctions.services'
-import SancionPendienteCard from '../../../components/sanciones/SancionPendienteCard'
-import ModalDetalleSancion from '../../../components/sanciones/ModalDetalleSancion'
-import SancionGrupoCard from '../../../components/sanciones/SancionGrupoCard'
-import ModalSancionesLoan from '../../../components/sanciones/ModalSancionesLoan'
-import SancionComportamientoCard from '../../../components/sanciones/SancionComportamientoCard'
-import ModalSancionesComportamiento from '../../../components/sanciones/ModalSancionesComportamiento'
-import ModalConfirmacionAccion from '../../../components/sanciones/ModalConfirmacionAccion'
-import './AdminSancionesPage.css'
+} from '../../services/sanctions.services'
+import SancionPendienteCard from '../../components/sanciones/SancionPendienteCard'
+import ModalDetalleSancion from '../../components/sanciones/ModalDetalleSancion'
+import SancionGrupoCard from '../../components/sanciones/SancionGrupoCard'
+import ModalSancionesLoan from '../../components/sanciones/ModalSancionesLoan'
+import SancionComportamientoCard from '../../components/sanciones/SancionComportamientoCard'
+import ModalSancionesComportamiento from '../../components/sanciones/ModalSancionesComportamiento'
+import ModalConfirmacionAccion from '../../components/sanciones/ModalConfirmacionAccion'
+import './styles/SancionesAdminPage.css'
 
 
 // Las tabs principales de la página
@@ -32,7 +32,7 @@ const SUB_TABS = [
 // Tabs que tienen sub-división préstamos / comportamiento
 const TABS_CON_SUBTABS = ['activa', 'resuelta,rechazada']
 
-const AdminSancionesPage = () => {
+const SancionesAdminPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -385,4 +385,4 @@ const handleEscalar = (sancion) => {
   )
 }
 
-export default AdminSancionesPage
+export default SancionesAdminPage

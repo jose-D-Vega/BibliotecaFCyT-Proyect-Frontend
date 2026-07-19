@@ -6,7 +6,7 @@ import SessionFilters from "../../components/sesiones/SessionFilters"
 import SessionTable from "../../components/sesiones/SessionTable"
 import SessionPagination from "../../components/sesiones/SessionPagination"
 
-import "../styles/styles_admin/SesionesAdmin.css"
+import "./styles/SesionesAdmin.css"
 
 
 function SesionesAdmin(){

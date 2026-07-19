@@ -1,6 +1,6 @@
 /**
  * Modal de confirmación genérico para acciones sobre sanciones.
- * Reemplaza window.confirm en AdminSancionesPage y ModalSancionesLoan.
+ * Reemplaza window.confirm en SancionesAdminPage y ModalSancionesLoan.
  */
 const ModalConfirmacionAccion = ({
   titulo,

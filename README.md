@@ -257,15 +257,15 @@ fronted/
 
 │ │ ├── prueba/
 
-│ │ │ ├── AdminDevolucionesPage.jsx
+│ │ │ ├── DevolucionesAdminPage.jsx
 
-│ │ │ ├── AdminDevolucionesPage.css
+│ │ │ ├── DevolucionesAdminPage.css
 
 │ │ │ ├── AdminPrestamosPage.jsx
 
-│ │ │ ├── AdminSancionesPage.jsx
+│ │ │ ├── SancionesAdminPage.jsx
 
-│ │ │ ├── AdminSancionesPage.css
+│ │ │ ├── SancionesAdminPage.css
 
 │ │ │ ├── EditarLibroPage.jsx
 

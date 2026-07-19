@@ -5,9 +5,9 @@ import { exportarReportePDF } from "../../utils/exportarReportePDF"
 import SelectorEntidad from "../../components/reportes/SelectorEntidad"
 import ConfiguracionReporte from "../../components/reportes/ConfiguracionReporte"
 import ResultadoReporte from "../../components/reportes/ResultadoReporte"
-import "../styles/styles_admin/AdminReportesPage.css"
+import "./styles/ReportesAdminPage.css"
 
-export default function AdminReportesPage() {
+export default function ReportesAdminPage() {
   const [entidades, setEntidades] = useState([])
   const [cargandoConfig, setCargandoConfig] = useState(true)
 

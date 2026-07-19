@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
-import { getLoanForSanction, createSanction } from '../../../services/sanctions.services'
-import BuscadorPrestamo      from '../../../components/sanciones/BuscadorPrestamo'
-import BuscadorUsuario       from '../../../components/sanciones/BuscadorUsuario'
-import SelectorEjemplares    from '../../../components/sanciones/SelectorEjemplares'
-import ProgresoSanciones     from '../../../components/sanciones/ProgresoSanciones'
-import ModalConfirmacionSancion from '../../../components/sanciones/ModalConfirmacionSancion'
-import ModalConfirmacionAccion from '../../../components/sanciones/ModalConfirmacionAccion'
-import './NuevaSancionPage.css'
+import { getLoanForSanction, createSanction } from '../../services/sanctions.services'
+import BuscadorPrestamo      from '../../components/sanciones/BuscadorPrestamo'
+import BuscadorUsuario       from '../../components/sanciones/BuscadorUsuario'
+import SelectorEjemplares    from '../../components/sanciones/SelectorEjemplares'
+import ProgresoSanciones     from '../../components/sanciones/ProgresoSanciones'
+import ModalConfirmacionSancion from '../../components/sanciones/ModalConfirmacionSancion'
+import ModalConfirmacionAccion from '../../components/sanciones/ModalConfirmacionAccion'
+import './styles/NuevaSancionPage.css'
 
 const TIPOS = [
   { value: 'falta_entrega',     label: 'Falta de entrega',         desc: 'El usuario no devolvió el material y el préstamo está vencido' },

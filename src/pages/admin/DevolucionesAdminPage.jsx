@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import TabPrestamosActivos from '../../../components/devoluciones/TabPrestamosActivos'
-import TabHistorialDevoluciones from '../../../components/devoluciones/TabHistorialDevoluciones'
-import './AdminDevolucionesPage.css'
+import TabPrestamosActivos from '../../components/devoluciones/TabPrestamosActivos'
+import TabHistorialDevoluciones from '../../components/devoluciones/TabHistorialDevoluciones'
+import './styles/DevolucionesAdminPage.css'
 
 const TABS = [
   { id: 'activos', label: 'Préstamos activos' },

@@ -3,7 +3,7 @@ import { Loader2, History, ChevronLeft, ChevronRight, ShieldCheck, UserRound, Pr
 import { getActividades } from "../../services/activity.services"
 import { validarCambioFecha } from "../../utils/validarRangoFecha"
 import BuscadorUsuarioFiltro from "../../components/reportes/BuscadorUsuarioFiltro"
-import "../styles/styles_admin/AdminActividadesPage.css"
+import "./styles/ActividadesAdminPage.css"
 import { exportarReportePDF } from "../../utils/exportarReportePDF"
 
 const TIPOS_ACCION = [
@@ -43,7 +43,7 @@ const VISTAS = {
 
 const obtenerLabel = (opciones, value) => opciones.find(o => o.value === value)?.label || value
 
-export default function AdminActividadesPage() {
+export default function ActividadesAdminPage() {
   const contenedorRef = useRef(null)
 
   const [vista, setVista] = useState("funcionarios")

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react"
 import { Users, UserCheck, ShieldAlert } from "lucide-react"
-import "../styles/styles_admin/GestionUsuarios.css" 
+import "./styles/GestionUsuarios.css" 
 
 export default function GestionUsuarios() {
   const [usuarios, setUsuarios] = useState([])
