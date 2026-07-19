@@ -6,6 +6,7 @@ import {
   LibraryBig,
   TriangleAlert,
   ChartBar,
+  History,
   Users,
   ShieldCheck
 } from "lucide-react"
@@ -19,12 +20,12 @@ const ADMIN_NAV = [
   { path: "/admin/catalogo", label: "Catálogo", icon: LibraryBig },
   { path: "/admin/sanciones", label: "Sanciones", icon: TriangleAlert },
   { path: "/admin/reportes", label: "Reportes", icon: ChartBar },
-  { path: "/admin/actividades", label: "Historial de actividades" },
+  { path: "/admin/actividades", label: "Historial de actividades", icon: History },
   { path: "/admin/usuarios", label: "Usuarios", icon: Users },
   { path: "/admin/sesiones", label: "Sesiones", icon: ShieldCheck }
 ]
 
-const SidebarAdmin = ({ isOpen, onClose, className = "", }) => {
+const SidebarAdmin = ({ isOpen, onClose, className = "" }) => {
   return (
     <>
       <div
@@ -66,7 +67,7 @@ const SidebarAdmin = ({ isOpen, onClose, className = "", }) => {
         </nav>
       </aside>
     </>
-  );
-};
+  )
+}
 
-export default SidebarAdmin;
+export default SidebarAdmin
