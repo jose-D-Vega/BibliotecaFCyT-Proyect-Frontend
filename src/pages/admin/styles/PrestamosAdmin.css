@@ -1,44 +1,49 @@
 .prestamos-admin {
   min-height: 100vh;
+  width: 100%;
   background: #16161d;
   color: #f1f6fb;
 
   display: flex;
   flex-direction: column;
+
+  overflow-x: hidden;
 }
 
 /* HEADER */
+
 .prestamos-admin__header {
+  width: 100%;
   padding: 36px 50px;
   background: #0c1a2e;
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  box-sizing: border-box;
 }
 
 /* BODY */
+
 .prestamos-admin__body {
-  padding: 36px 50px;
+  width: 100%;
+  flex: 1;
+
   position: relative;
 
-  flex: 1;
-  min-height: 0;
+  padding: 36px 50px;
+  min-height: calc(100vh - 140px);
+
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* =========================
-   LIST LAYOUT (FIX REAL)
+   LIST LAYOUT
 ========================= */
 
 .prestamos-admin__grid {
   display: flex;
   flex-direction: column;
   gap: 14px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .prestamos-admin__header,
-  .prestamos-admin__body {
-    padding: 24px 18px;
-  }
+  width: 100%;
 }
 
 /* =========================
@@ -58,34 +63,108 @@
   background: rgba(10, 12, 18, 0.55);
   backdrop-filter: blur(6px);
 
-  animation: fadeIn 0.15s ease-in-out;
+  animation: fadeIn .15s ease-in-out;
 
   pointer-events: all;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* SPINNER */
+
 .spinner {
   width: 52px;
   height: 52px;
   border-radius: 50%;
 
-  border: 3px solid rgba(255,255,255,0.15);
+  border: 3px solid rgba(255,255,255,.15);
   border-top: 3px solid #fff;
 
-  animation: spin 0.8s linear infinite;
+  animation: spin .8s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-overlay p {
   margin-top: 14px;
-  color: rgba(255,255,255,0.8);
-  font-size: 0.95rem;
+  color: rgba(255,255,255,.8);
+  font-size: .95rem;
+}
+
+/* =========================
+   TABLETS GRANDES
+========================= */
+
+@media (max-width: 1200px) {
+
+  .prestamos-admin__header,
+  .prestamos-admin__body {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .prestamos-admin__body {
+    min-height: calc(100vh - 130px);
+  }
+}
+
+/* =========================
+   TABLETS
+========================= */
+
+@media (max-width: 1024px) {
+
+  .prestamos-admin__header,
+  .prestamos-admin__body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .prestamos-admin__body {
+    min-height: calc(100vh - 120px);
+  }
+}
+
+/* =========================
+   MÓVILES GRANDES
+========================= */
+
+@media (max-width: 768px) {
+
+  .prestamos-admin__header,
+  .prestamos-admin__body {
+    padding: 24px 18px;
+  }
+
+  .prestamos-admin__body {
+    min-height: calc(100vh - 105px);
+  }
+}
+
+/* =========================
+   MÓVILES
+========================= */
+
+@media (max-width: 480px) {
+
+  .prestamos-admin__header,
+  .prestamos-admin__body {
+    padding: 18px 14px;
+  }
+
+  .prestamos-admin__body {
+    min-height: calc(100vh - 95px);
+  }
 }
