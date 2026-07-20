@@ -1,0 +1,166 @@
+@import '../../styles/Dashboard.css';
+
+/* ==========================================
+   LIBROS MÁS PRESTADOS
+   (FIX: antes usaba columnas fijas repeat(5,1fr),
+   lo que dejaba tarjetas chicas y espacio vacío
+   cuando había menos de 5 libros. Ahora usa
+   auto-fill + minmax para que siempre ocupen
+   todo el ancho disponible, y son más grandes)
+   ========================================== */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* ==========================================
+   ESTADOS VACÍOS Y PLACEHOLDER
+   ========================================== */
+.activity-panel__vacio {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.book-card__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 2.6rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+/* ==========================================
+   SPINNER DE CARGA (sin dependencias externas)
+   ========================================== */
+.dashboard-spinner-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: #0f1420;
+}
+
+.dashboard-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.85);
+  animation: dashboard-spin 0.8s linear infinite;
+}
+
+.dashboard-spinner-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+@keyframes dashboard-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dashboard-loading {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+}
+
+/* ==========================================
+   SKELETON DE CARGA
+   ========================================== */
+@keyframes skeleton-pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+.skeleton-card {
+  cursor: default;
+  pointer-events: none;
+}
+
+.skeleton-line {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-line--short {
+  width: 60%;
+  height: 12px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line--value {
+  width: 40%;
+  height: 28px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line--title {
+  width: 50%;
+  height: 20px;
+  margin-bottom: 8px;
+}
+
+.skeleton-line--sub {
+  width: 70%;
+  height: 12px;
+  margin-bottom: 20px;
+}
+
+.skeleton-bar-line {
+  width: 100%;
+  height: 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-bottom: 16px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  height: 180px;
+  margin-top: 10px;
+}
+
+.skeleton-bar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}

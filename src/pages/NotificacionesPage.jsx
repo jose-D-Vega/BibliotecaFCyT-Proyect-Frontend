@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getNotificaciones, marcarLeida, marcarTodasLeidas } from '../services/notifications.services'
 import { useNotifications } from '../context/NotificationsContext'
-import NotificacionesFilters from '../components/NotificacionesFilters'
-import PrestamoPagination from '../components/PrestamoPagination'
-import './NotificacionesPage.css'
+import NotificacionesFilters from '../components/notificaciones/NotificacionesFilters'
+import PrestamoPagination from '../components/prestamos-admin/PrestamoPagination'
+import './styles/NotificacionesPage.css'
 import { useAuth } from '../context/AuthContext'
 import { getIconoTipo, getTiposPorRol } from '../utils/notificacionTipos'
 
@@ -107,7 +107,10 @@ const hayFiltrosActivos = tipoFiltro || estadoFiltro || fechaDesde || fechaHasta
       )}
 
       {loading ? (
-        <p className="notif-page__estado">Cargando notificaciones...</p>
+        <div className="notif-page__loader">
+          <div className="notif-page__spinner"></div>
+          <p>Cargando notificaciones...</p>
+        </div>
       ) : error ? (
         <p className="notif-page__estado notif-page__estado--error">{error}</p>
       ) : notificaciones.length === 0 ? (

@@ -52,6 +52,75 @@ const TabHistorialDevoluciones = () => {
     setPagina(1)
     fetchHistorial({ search: '', fecha_desde: '', fecha_hasta: '', page: 1 })
   }
+const renderPaginacion = () => {
+  if (totalPaginas <= 1) return null
+
+  const paginas = []
+
+  for (let i = 1; i <= totalPaginas; i++) {
+    if (
+      i === 1 ||
+      i === totalPaginas ||
+      (i >= pagina - 1 && i <= pagina + 1)
+    ) {
+      paginas.push(i)
+    } else if (paginas[paginas.length - 1] !== '...') {
+      paginas.push('...')
+    }
+  }
+
+  return (
+    <div className="tab-paginacion">
+      <button
+        className="tab-paginacion__btn"
+        disabled={pagina === 1}
+        onClick={() => setPagina(1)}
+      >
+        «
+      </button>
+
+      <button
+        className="tab-paginacion__btn"
+        disabled={pagina === 1}
+        onClick={() => setPagina(pagina - 1)}
+      >
+        ‹
+      </button>
+
+      {paginas.map((p, i) =>
+        p === '...' ? (
+          <span key={i} className="tab-paginacion__btn">
+            ...
+          </span>
+        ) : (
+          <button
+            key={i}
+            className={`tab-paginacion__btn ${pagina === p ? 'activo' : ''}`}
+            onClick={() => setPagina(p)}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      <button
+        className="tab-paginacion__btn"
+        disabled={pagina === totalPaginas}
+        onClick={() => setPagina(pagina + 1)}
+      >
+        ›
+      </button>
+
+      <button
+        className="tab-paginacion__btn"
+        disabled={pagina === totalPaginas}
+        onClick={() => setPagina(totalPaginas)}
+      >
+        »
+      </button>
+    </div>
+  )
+}
 
   return (
     <div className="tab-content">
@@ -87,7 +156,12 @@ const TabHistorialDevoluciones = () => {
         
       </form>
 
-      {loading && <p className="tab-loading">Cargando historial...</p>}
+      {loading && (
+        <div className="tab-loading">
+          <div className="tab-spinner"></div>
+          <p>Cargando historial...</p>
+        </div>
+      )}
       {error && <p className="tab-error">{error}</p>}
 
       {!loading && !error && prestamos.length === 0 && (
@@ -106,19 +180,7 @@ const TabHistorialDevoluciones = () => {
             ))}
           </div>
 
-          {totalPaginas > 1 && (
-            <div className="tab-paginacion">
-              {Array.from({ length: totalPaginas }, (_, i) => (
-                <button
-                  key={i}
-                  className={`tab-paginacion__btn ${pagina === i + 1 ? 'activo' : ''}`}
-                  onClick={() => setPagina(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          )}
+         {renderPaginacion()}
         </>
       )}
 

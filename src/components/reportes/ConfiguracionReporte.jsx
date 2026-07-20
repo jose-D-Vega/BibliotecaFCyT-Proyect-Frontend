@@ -13,6 +13,7 @@ export default function ConfiguracionReporte({
   filtrosDisponibles,
   filtros,
   usuariosInfo,
+  librosInfo,
   orden,
   generando,
   onToggleExtension,
@@ -22,10 +23,13 @@ export default function ConfiguracionReporte({
   onFiltroChange,
   onSeleccionarUsuario,
   onQuitarUsuario,
+  onSeleccionarLibro,
+  onQuitarLibro,
   onOrdenChange,
   onGenerar,
   onCambiarTipo,
-  onLimpiarTodo
+  onLimpiarTodo,
+  resetKey,
 }) {
   return (
     <div className="reportes-config no-print">
@@ -61,7 +65,13 @@ export default function ConfiguracionReporte({
         usuariosInfo={usuariosInfo}
         onSeleccionarUsuario={onSeleccionarUsuario}
         onQuitarUsuario={onQuitarUsuario}
+        librosInfo={librosInfo}
+        onSeleccionarLibro={onSeleccionarLibro}
+        onQuitarLibro={onQuitarLibro}
+        entidadKey={entidadActual.key}
+        resetKey={resetKey}
       />
+
 
       <OrdenSelector
         columnasDisponibles={columnasDisponibles}

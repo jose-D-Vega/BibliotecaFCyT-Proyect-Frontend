@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import "../styles/styles_admin/NuevoMaterial.css"
+import "./styles/NuevoMaterial.css"
 
 import { createBook } from "../../services/books.services"
 
-import ModalExito from "../../components/ModalExito"
-import SelectPersonalizado from "../../components/SelectPersonalizado"
-import CamposAutores from "../../components/CamposAutores"
-import InputImagen from "../../components/InputImagen"
+import ModalExitoNuevoMaterial from "../../components/catalogo/ModalExitoNuevoMaterial"
+import SelectPersonalizadoNuevoMaterial from "../../components/catalogo/SelectPersonalizadoNuevoMaterial"
+import CamposAutoresNuevoMaterial from "../../components/catalogo/CamposAutoresNuevoMaterial"
+import InputImagen from "../../components/catalogo/InputImagen"
 
 import {
   opcionesCarrera,
@@ -16,7 +16,7 @@ import {
   onlyLettersRegex,
   onlyNumbersRegex,
   authorRegex
-} from "../../components/NuevoMaterialHelpers"
+} from "../../components/catalogo/NuevoMaterialHelpers"
 
 function NuevoMaterial() {
 
@@ -221,7 +221,7 @@ function NuevoMaterial() {
   return (
     <div className="nuevo-material-page">
 
-      <ModalExito
+      <ModalExitoNuevoMaterial
         open={successModal}
         onClose={() => {
           setSuccessModal(false)
@@ -253,7 +253,7 @@ function NuevoMaterial() {
           onSubmit={handleSubmit}
         >
 
-          <SelectPersonalizado
+          <SelectPersonalizadoNuevoMaterial
             label="Tipo de material"
             value={
               form.tipo === "libro"
@@ -302,7 +302,7 @@ function NuevoMaterial() {
 
           </div>
 
-          <SelectPersonalizado
+          <SelectPersonalizadoNuevoMaterial
             label="Carrera"
             multiple
             value={carreras}
@@ -314,7 +314,7 @@ function NuevoMaterial() {
             error={errors.carrera}
           />
 
-          <CamposAutores
+          <CamposAutoresNuevoMaterial
             autores={autores}
             setAutores={setAutores}
             error={errors.autores}

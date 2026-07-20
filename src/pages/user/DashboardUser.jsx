@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/styles_user/DashboardUser.css';
+import './styles/DashboardUser.css';
 
 import {
   MdSchool,

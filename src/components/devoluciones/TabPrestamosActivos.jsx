@@ -101,6 +101,72 @@ const TabPrestamosActivos = () => {
     cargarTodos()
   }
 
+  const renderPaginacion = (paginaActual, totalPaginas, cambiarPagina) => {
+  if (totalPaginas <= 1) return null
+
+  const paginas = []
+
+  for (let i = 1; i <= totalPaginas; i++) {
+    if (
+      i === 1 ||
+      i === totalPaginas ||
+      (i >= paginaActual - 1 && i <= paginaActual + 1)
+    ) {
+      paginas.push(i)
+    } else if (paginas[paginas.length - 1] !== '...') {
+      paginas.push('...')
+    }
+  }
+
+  return (
+    <div className="tab-paginacion">
+      <button
+        className="tab-paginacion__btn"
+        disabled={paginaActual === 1}
+        onClick={() => cambiarPagina(1)}
+      >
+        «
+      </button>
+      <button
+        className="tab-paginacion__btn"
+        disabled={paginaActual === 1}
+        onClick={() => cambiarPagina(paginaActual - 1)}
+      >
+        ‹
+      </button>
+
+      {paginas.map((p, i) =>
+        p === '...' ? (
+          <span key={i} className="tab-paginacion__btn">...</span>
+        ) : (
+          <button
+            key={i}
+            className={`tab-paginacion__btn ${paginaActual === p ? 'activo' : ''}`}
+            onClick={() => cambiarPagina(p)}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      <button
+        className="tab-paginacion__btn"
+        disabled={paginaActual === totalPaginas}
+        onClick={() => cambiarPagina(paginaActual + 1)}
+      >
+        ›
+      </button>
+      <button
+        className="tab-paginacion__btn"
+        disabled={paginaActual === totalPaginas}
+        onClick={() => cambiarPagina(totalPaginas)}
+      >
+        »
+      </button>
+    </div>
+  )
+}
+
   const totalNormales = todosLosPrestamos.filter(p => p.numero_renovacion === 0).length
   const totalRenovaciones = todosLosPrestamos.filter(p => p.numero_renovacion > 0).length
 
@@ -124,7 +190,12 @@ const TabPrestamosActivos = () => {
         )}
       </form>
 
-      {loading && <p className="tab-loading">Cargando préstamos...</p>}
+      {loading && (
+        <div className="tab-loading">
+          <div className="tab-spinner"></div>
+          <p>Cargando préstamos...</p>
+        </div>
+      )}
       {error && <p className="tab-error">{error}</p>}
 
       {!loading && !error && todosLosPrestamos.length === 0 && (
@@ -151,18 +222,10 @@ const TabPrestamosActivos = () => {
                   />
                 ))}
               </div>
-              {totalPaginasPrestamos > 1 && (
-                <div className="tab-paginacion">
-                  {Array.from({ length: totalPaginasPrestamos }, (_, i) => (
-                    <button
-                      key={i}
-                      className={`tab-paginacion__btn ${paginaPrestamos === i + 1 ? 'activo' : ''}`}
-                      onClick={() => setPaginaPrestamos(i + 1)}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
+              {renderPaginacion(
+                paginaPrestamos,
+                totalPaginasPrestamos,
+                setPaginaPrestamos
               )}
             </div>
           )}
@@ -183,18 +246,10 @@ const TabPrestamosActivos = () => {
                   />
                 ))}
               </div>
-              {totalPaginasRenovaciones > 1 && (
-                <div className="tab-paginacion">
-                  {Array.from({ length: totalPaginasRenovaciones }, (_, i) => (
-                    <button
-                      key={i}
-                      className={`tab-paginacion__btn ${paginaRenovaciones === i + 1 ? 'activo' : ''}`}
-                      onClick={() => setPaginaRenovaciones(i + 1)}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
+              {renderPaginacion(
+                paginaRenovaciones,
+                totalPaginasRenovaciones,
+                setPaginaRenovaciones
               )}
             </div>
           )}

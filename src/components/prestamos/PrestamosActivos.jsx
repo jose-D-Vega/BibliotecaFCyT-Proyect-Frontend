@@ -38,7 +38,12 @@ function PrestamosActivos() {
 
   useEffect(() => { cargarPrestamos() }, [])
 
-  if (loading) return <p className="prestamos-loading">Cargando préstamos...</p>
+  if (loading) return (
+  <div className="prestamos-loading">
+    <div className="prestamos-spinner"></div>
+    <span>Cargando préstamos...</span>
+  </div>
+)
 
   if (prestamos.length === 0) {
     return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/styles_admin/DashboardAdmin.css';
+import './styles/DashboardAdmin.css';
 
 import {
   MdAccountBalance,

@@ -201,7 +201,12 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
           
         </div>
 
-        {loading && <p className="modal-dev__loading">Cargando...</p>}
+        {loading && (
+          <div className="tab-loading">
+            <div className="tab-spinner"></div>
+            <p>Cargando detalle...</p>
+          </div>
+        )}
 
         {!loading && prestamo && (
           <>

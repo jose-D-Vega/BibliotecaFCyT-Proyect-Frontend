@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import Catalogo from './Catalogo'
+import Catalogo from '../../components/catalogo/CatalogoUser'
 
 function CatalogoUserPage() {
   const navigate = useNavigate()
@@ -7,7 +7,7 @@ function CatalogoUserPage() {
   return (
     <Catalogo
       onVerDetalle={(libro) => navigate(`/app/catalogo/${libro.id_libro}`)}
-      onIrAlCarrito={() => navigate('/app/carrito')}
+      onIrAlCarrito={() => navigate('/app/solicitudes')}
     />
   )
 }

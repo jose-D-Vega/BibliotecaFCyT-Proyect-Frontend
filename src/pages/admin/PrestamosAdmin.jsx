@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react"
+
 import { useLocation, useNavigate } from "react-router-dom"
 import { MdArrowBack } from "react-icons/md"
-import "../styles/styles_admin/PrestamosAdmin.css"
 
-import PrestamoTabs from "../../components/PrestamoTabs"
-import PrestamoSolicitudCard from "../../components/PrestamoSolicitudCard"
-import PrestamoCard from "../../components/PrestamoCard"
-import PrestamoFilters from "../../components/PrestamoFilters"
-import PrestamoConfirmModal from "../../components/PrestamoConfirmModal"
-import PrestamoPagination from "../../components/PrestamoPagination"
-import SolicitudFilters from "../../components/SolicitudFilters"
 
-const API_URL = "http://localhost:3210/api"
+import "./styles/PrestamosAdmin.css"
+
+
+import PrestamoTabs from "../../components/prestamos-admin/PrestamoTabs"
+import PrestamoSolicitudCard from "../../components/prestamos-admin/PrestamoSolicitudCard"
+import PrestamoCardAdmin from "../../components/prestamos-admin/PrestamoCardAdmin"
+import PrestamoFilters from "../../components/prestamos-admin/PrestamoFilters"
+import PrestamoConfirmModal from "../../components/prestamos-admin/PrestamoConfirmModal"
+import PrestamoPagination from "../../components/prestamos-admin/PrestamoPagination"
+import SolicitudFilters from "../../components/prestamos-admin/SolicitudFilters"
+import { getLoans } from "../../services/loans.services"
+
+const ITEMS_PER_PAGE = 6
 
 function PrestamosAdmin() {
     const location = useLocation()
@@ -23,7 +28,13 @@ function PrestamosAdmin() {
   const [solicitudes, setSolicitudes] = useState([])
   const [prestamos, setPrestamos] = useState([])
 
+  const [solicitudesPaginacion, setSolicitudesPaginacion] = useState({ total: 0, page: 1, totalPages: 1 })
+  const [prestamosPaginacion, setPrestamosPaginacion] = useState({ total: 0, page: 1, totalPages: 1 })
+
   const [loading, setLoading] = useState(false)
+
+  // Control real de carga: evita el flash de "no hay resultados" antes de que
+  // termine el primer fetch de cada pestaña
 
   const [loadedSolicitudes, setLoadedSolicitudes] = useState(false)
   const [loadedPrestamos, setLoadedPrestamos] = useState(false)
@@ -54,154 +65,139 @@ function PrestamosAdmin() {
       .replace(/[\u0300-\u036f]/g, "")
       .toUpperCase()
 
-    const getEmptyMessage = () => {
-  const estado = normalize(estadoFiltro)
+  const getEmptyMessage = () => {
+    const estado = normalize(estadoFiltro)
 
-  if (estado === "TODOS LOS ESTADOS") {
-    return "No hay préstamos registrados ahora mismo."
+    if (estado === "TODOS LOS ESTADOS") {
+      return "No hay préstamos registrados ahora mismo."
+    }
+
+    const map = {
+      APROBADO: "No hay préstamos aprobados ahora mismo.",
+      PARCIALMENTE_APROBADO: "No hay préstamos parcialmente aprobados ahora mismo.",
+      ACTIVO: "No hay préstamos activos ahora mismo.",
+      DEVUELTO: "No hay préstamos devueltos ahora mismo.",
+      VENCIDO: "No hay préstamos vencidos ahora mismo.",
+      RECHAZADO: "No hay préstamos rechazados ahora mismo.",
+      RESERVA_APROBADA: "No hay reservas aprobadas ahora mismo.",
+      RESERVA_PARCIALMENTE_APROBADA: "No hay reservas parcialmente aprobadas ahora mismo."
+    }
+
+    return map[estado] || "No hay préstamos en este estado ahora mismo."
   }
 
-  const map = {
-    APROBADO: "No hay préstamos aprobados ahora mismo.",
-    PARCIALMENTE_APROBADO: "No hay préstamos parcialmente aprobados ahora mismo.",
-    ACTIVO: "No hay préstamos activos ahora mismo.",
-    DEVUELTO: "No hay préstamos devueltos ahora mismo.",
-    VENCIDO: "No hay préstamos vencidos ahora mismo.",
-    RECHAZADO: "No hay préstamos rechazados ahora mismo.",
-    RESERVA_APROBADA: "No hay reservas aprobadas ahora mismo.",
-    RESERVA_PARCIALMENTE_APROBADA: "No hay reservas parcialmente aprobadas ahora mismo."
-  }
+  // =========================
+  // Helpers de mapeo (compartidos entre pestañas)
+  // =========================
 
-  return map[estado] || "No hay préstamos en este estado ahora mismo."
-}
+  // Agrupa `detalles` (ya incluido en la respuesta de /api/loans) por libro,
+  // igual que hace el backend en getLoanMaterials — pero sin pedir nada extra al servidor.
+  const agruparMaterialesPorLibro = (detalles = []) => {
+    const materialesMap = {}
 
-  const fetchLoanDetails = async (id, token) => {
-    const res = await fetch(`${API_URL}/loans/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
+    detalles.forEach((d) => {
+      const key = d.id_libro ?? `${d.titulo}-${d.autor}`
+
+      if (!materialesMap[key]) {
+        materialesMap[key] = {
+          id: d.id_libro,
+          titulo: d.titulo,
+          autor: d.autor,
+          ejemplares: []
+        }
+      }
+
+      materialesMap[key].ejemplares.push(d.id_ejemplar)
     })
-    const data = await res.json()
-    return data?.data
+
+    return Object.values(materialesMap)
   }
 
-  const fetchPrestamos = async () => {
+  const mapPrestamo = (p) => ({
+    id: p.id_prestamo,
+    usuario: p.nombre_apellido || "Usuario",
+    estado: p.estado_prestamo || "",
+
+    fechaPrestamo: p.fecha_solicitud?.split("T")[0] || "",
+    fechaEntrega: p.fecha_tope_devolucion?.split("T")[0] || "",
+
+    fechaRespuesta: p.fecha_respuesta?.split("T")[0] || "",
+    fechaActivacion: p.fecha_activacion?.split("T")[0] || "",
+    fechaDevolucion: p.fecha_devolucion?.split("T")[0] || "",
+
+    detalles: p.detalles || [],
+    materiales: agruparMaterialesPorLibro(p.detalles)
+  })
+
+  const mapSolicitud = (p) => {
+    let tipoSolicitud = "Préstamo"
+    if (p.estado_prestamo === "solicitud_reserva") tipoSolicitud = "Reserva"
+    if (p.estado_prestamo === "solicitud_renovacion") tipoSolicitud = "Renovación"
+
+    return {
+      id: p.id_prestamo,
+      usuario: p.nombre_apellido || "Usuario",
+      tipoSolicitud,
+      fecha: p.fecha_solicitud?.split("T")[0] || "",
+      fechaLimite: p.fecha_tope_devolucion?.split("T")[0] || "",
+      totalEjemplares: p.total_ejemplares ?? 0,
+      materiales: agruparMaterialesPorLibro(p.detalles)
+    }
+  }
+
+  const mapEstadoFiltroABackend = (valor) =>
+    valor === "Todos los estados" ? undefined : valor.toLowerCase()
+
+  const mapTipoAEstadosSolicitud = (tipo) => {
+    if (tipo === "PRESTAMO") return ["solicitado"]
+    if (tipo === "RESERVA") return ["solicitud_reserva"]
+    if (tipo === "RENOVACION") return ["solicitud_renovacion"]
+    return ["solicitado", "solicitud_reserva", "solicitud_renovacion"]
+  }
+
+
+
+  // =========================
+  // PRESTAMOS — un solo request, filtro y paginación reales del backend
+  // =========================
+  const fetchPrestamos = async (page = prestamosPage, estado = estadoFiltro) => {
+
     setLoading(true)
     try {
-      const token = localStorage.getItem("token")
-
-      const res = await fetch(`${API_URL}/loans?limit=200`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const resp = await getLoans({
+        estado: mapEstadoFiltroABackend(estado),
+        page,
+        limit: ITEMS_PER_PAGE
       })
 
-      const data = await res.json()
-      const list = Array.isArray(data?.data) ? data.data : []
-
-      const ESTADOS_VALIDOS = new Set([
-        "aprobado",
-        "parcialmente_aprobado",
-        "activo",
-        "devuelto",
-        "vencido",
-        "rechazado",
-        "reserva_aprobada",
-        "reserva_parcialmente_aprobada"
-      ])
-
-      const fullData = await Promise.all(
-        list
-          .filter(p =>
-            ESTADOS_VALIDOS.has((p.estado_prestamo || "").toLowerCase())
-          )
-          .map(async (p) => {
-
-            const detalle = await fetchLoanDetails(p.id_prestamo, token)
-
-            const materialesMap = {}
-
-            ;(detalle?.detalles || []).forEach((d) => {
-              const key = `${d.titulo}-${d.autor}`
-
-              if (!materialesMap[key]) {
-                materialesMap[key] = {
-                  titulo: d.titulo,
-                  autor: d.autor,
-                  ejemplares: []
-                }
-              }
-
-              materialesMap[key].ejemplares.push(d.id_ejemplar)
-            })
-
-            return {
-            id: p.id_prestamo,
-            usuario: p.nombre_apellido || "Usuario",
-            estado: p.estado_prestamo || "",
-
-            fechaPrestamo: p.fecha_solicitud?.split("T")[0] || "",
-            fechaEntrega: p.fecha_tope_devolucion?.split("T")[0] || "",
-
-            fechaRespuesta: p.fecha_respuesta?.split("T")[0] || "",
-            fechaActivacion: p.fecha_activacion?.split("T")[0] || "",
-            fechaDevolucion: p.fecha_devolucion?.split("T")[0] || "",
-
-            detalles: detalle?.detalles || [],
-
-            materiales: Object.values(materialesMap)
-            }
-          })
-      )
-
-      setPrestamos(fullData)
+      setPrestamos((resp.data || []).map(mapPrestamo))
+      setPrestamosPaginacion(resp.pagination || { total: 0, page: 1, totalPages: 1 })
     } finally {
       setLoading(false)
       setLoadedPrestamos(true)
     }
   }
 
-  const fetchSolicitudes = async () => {
+
+  // =========================
+  // SOLICITUDES — mismo endpoint, filtrando por los 3 estados de "solicitud"
+  // (o uno solo, según el tipo elegido) directamente en el backend
+  // =========================
+  const fetchSolicitudes = async (page = solicitudesPage, tipo = solicitudFiltro) => {
+
     setLoading(true)
     try {
-      const token = localStorage.getItem("token")
-
-      const res = await fetch(`${API_URL}/loans?limit=200`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const resp = await getLoans({
+        estados: mapTipoAEstadosSolicitud(tipo).join(","),
+        page,
+        limit: ITEMS_PER_PAGE
       })
 
-      const data = await res.json()
-      const list = Array.isArray(data?.data) ? data.data : []
 
-      const SOLO_SOLICITUDES = new Set([
-        "solicitado",
-        "solicitud_reserva",
-        "solicitud_renovacion"
-      ])
+      
+      setSolicitudes((resp.data || []).map(mapSolicitud))
+      setSolicitudesPaginacion(resp.pagination || { total: 0, page: 1, totalPages: 1 })
 
-      const filtradas = list.filter((p) =>
-        SOLO_SOLICITUDES.has(p.estado_prestamo)
-      )
-
-      const fullData = await Promise.all(
-        filtradas.map(async (p) => {
-          const detalle = await fetchLoanDetails(p.id_prestamo, token)
-
-          const materialesMap = {}
-
-          let tipoSolicitud = "Préstamo"
-          if (p.estado_prestamo === "solicitud_reserva") tipoSolicitud = "Reserva"
-          if (p.estado_prestamo === "solicitud_renovacion") tipoSolicitud = "Renovación"
-
-          return {
-            id: p.id_prestamo,
-            usuario: p.nombre_apellido || "Usuario",
-            tipoSolicitud,
-            fecha: p.fecha_solicitud?.split("T")[0] || "",
-            fechaLimite: p.fecha_tope_devolucion?.split("T")[0] || "",
-            totalEjemplares: p.total_ejemplares ?? 0,
-            materiales: detalle?.materiales
-          }
-        })
-      )
-
-      setSolicitudes(fullData)
     } finally {
       setLoading(false)
       setLoadedSolicitudes(true)
@@ -209,35 +205,32 @@ function PrestamosAdmin() {
   }
 
   useEffect(() => {
-    if (activeTab === "prestamos") fetchPrestamos()
-    if (activeTab === "solicitudes") fetchSolicitudes()
+    if (activeTab === "prestamos") fetchPrestamos(prestamosPage, estadoFiltro)
+    if (activeTab === "solicitudes") fetchSolicitudes(solicitudesPage, solicitudFiltro)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab])
+
+
+  // =========================
+  // Handlers de filtro — ahora disparan un fetch nuevo (el filtro ya es del backend)
+  // =========================
+  const handleEstadoFiltroChange = (valor) => {
+    setEstadoFiltro(valor)
+    setPrestamosPage(1)
+    fetchPrestamos(1, valor)
+  }
+
+  const handleSolicitudFiltroChange = (valor) => {
+    setSolicitudFiltro(valor)
+    setSolicitudesPage(1)
+    fetchSolicitudes(1, valor)
+  }
+
 
   const isLoading =
     loading ||
     (activeTab === "prestamos" && !loadedPrestamos) ||
     (activeTab === "solicitudes" && !loadedSolicitudes)
-
-  const solicitudesFiltradas = solicitudes.filter((s) => {
-    if (solicitudFiltro === "TODAS") return true
-    return normalize(s.tipoSolicitud) === normalize(solicitudFiltro)
-  })
-
-  const prestamosFiltrados = prestamos.filter((p) => {
-    if (estadoFiltro === "Todos los estados") return true
-    return normalize(p.estado) === normalize(estadoFiltro)
-  })
-
-  const ITEMS_PER_PAGE = 6
-
-  const prestamosToShow = prestamosFiltrados.slice(
-    (prestamosPage - 1) * ITEMS_PER_PAGE,
-    prestamosPage * ITEMS_PER_PAGE
-  )
-
-  const totalPrestamosPages = Math.ceil(
-    prestamosFiltrados.length / ITEMS_PER_PAGE
-  )
 
   return (
     <main className="prestamos-admin">
@@ -282,17 +275,17 @@ function PrestamosAdmin() {
           <>
             <SolicitudFilters
               filtro={solicitudFiltro}
-              setFiltro={setSolicitudFiltro}
+              setFiltro={handleSolicitudFiltroChange}
               setPage={setSolicitudesPage}
             />
 
-            {solicitudesFiltradas.length === 0 ? (
+            {solicitudes.length === 0 ? (
               <p style={{ color: "#fff", padding: "20px" }}>
                 No hay solicitudes pendientes en este momento.
               </p>
             ) : (
               <div className="prestamos-admin__grid">
-                {solicitudesFiltradas.map((solicitud) => (
+                {solicitudes.map((solicitud) => (
                   <PrestamoSolicitudCard
                     key={solicitud.id}
                     solicitud={solicitud}
@@ -303,6 +296,18 @@ function PrestamosAdmin() {
                 ))}
               </div>
             )}
+
+            {solicitudesPaginacion.totalPages > 1 && (
+              <PrestamoPagination
+                currentPage={solicitudesPage}
+                totalPages={solicitudesPaginacion.totalPages}
+                onPageChange={(page) => {
+                  setSolicitudesPage(page)
+                  fetchSolicitudes(page, solicitudFiltro)
+                  window.scrollTo({ top: 0, behavior: "smooth" })
+                }}
+              />
+            )}
           </>
         )}
 
@@ -310,36 +315,32 @@ function PrestamosAdmin() {
           <>
             <PrestamoFilters
               estadoFiltro={estadoFiltro}
-              setEstadoFiltro={(value) => {
-                setEstadoFiltro(value)
-                setPrestamosPage(1)
-              }}
+              setEstadoFiltro={handleEstadoFiltroChange}
             />
 
-          <div className="prestamos-admin__grid">
-  {prestamosToShow.length === 0 ? (
-    <p style={{ color: "#fff", padding: "20px" }}>
-      {getEmptyMessage()}
-    </p>
-  ) : (
-    prestamosToShow.map((prestamo) => (
-      <PrestamoCard
-        key={prestamo.id}
-        prestamo={prestamo}
-        onUpdated={() => {
-          fetchPrestamos()
-        }}
-      />
-    ))
-  )}
-</div>
+            <div className="prestamos-admin__grid">
+              {prestamos.length === 0 ? (
+                <p style={{ color: "#fff", padding: "20px" }}>
+                  {getEmptyMessage()}
+                </p>
+              ) : (
+                prestamos.map((prestamo) => (
+                  <PrestamoCardAdmin
+                    key={prestamo.id}
+                    prestamo={prestamo}
+                    onUpdated={() => fetchPrestamos()}
+                  />
+                ))
+              )}
+            </div>
 
-            {totalPrestamosPages > 1 && (
+            {prestamosPaginacion.totalPages > 1 && (
               <PrestamoPagination
                 currentPage={prestamosPage}
-                totalPages={totalPrestamosPages}
+                totalPages={prestamosPaginacion.totalPages}
                 onPageChange={(page) => {
                   setPrestamosPage(page)
+                  fetchPrestamos(page, estadoFiltro)
                   window.scrollTo({ top: 0, behavior: "smooth" })
                 }}
               />
@@ -366,4 +367,4 @@ function PrestamosAdmin() {
   )
 }
 
-export default PrestamosAdmin
+export default PrestamosAdmin;

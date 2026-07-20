@@ -127,7 +127,7 @@ fronted/
 
 │ ├── Buscador.jsx
 
-│ ├── CamposAutores.jsx
+│ ├── CamposAutoresNuevoMaterial.jsx
 
 │ ├── CarritoItem.jsx
 
@@ -147,7 +147,7 @@ fronted/
 
 │ ├── ListaLibros.jsx
 
-│ ├── ModalExito.jsx
+│ ├── ModalExitoNuevoMaterial.jsx
 
 │ ├── NotificacionesBadge.jsx
 
@@ -171,7 +171,7 @@ fronted/
 
 │ ├── PrestamoTabs.jsx
 
-│ ├── SelectPersonalizado.jsx
+│ ├── SelectPersonalizadoNuevoMaterial.jsx
 
 │ ├── SolicitudFilters.jsx
 
@@ -257,15 +257,15 @@ fronted/
 
 │ │ ├── prueba/
 
-│ │ │ ├── AdminDevolucionesPage.jsx
+│ │ │ ├── DevolucionesAdminPage.jsx
 
-│ │ │ ├── AdminDevolucionesPage.css
+│ │ │ ├── DevolucionesAdminPage.css
 
 │ │ │ ├── AdminPrestamosPage.jsx
 
-│ │ │ ├── AdminSancionesPage.jsx
+│ │ │ ├── SancionesAdminPage.jsx
 
-│ │ │ ├── AdminSancionesPage.css
+│ │ │ ├── SancionesAdminPage.css
 
 │ │ │ ├── EditarLibroPage.jsx
 

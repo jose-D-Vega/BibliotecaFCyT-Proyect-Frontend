@@ -53,7 +53,7 @@ const ModalEditarSuspension = ({ sancion, onGuardar, onCancelar, loading }) => {
   const fechaFin = fechaFinEstimada()
 
   return (
-    <div className="modal-sancion-overlay" onClick={onCancelar}>
+    <div className="modal-sancion-overlay overlay-in-card" onClick={onCancelar}>
       <div className="modal-sancion-box" onClick={e => e.stopPropagation()} style={{ maxWidth: 420 }}>
 
         <div className="modal-sancion__header">

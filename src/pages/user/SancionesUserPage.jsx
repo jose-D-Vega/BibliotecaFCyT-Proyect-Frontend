@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { AlertTriangle, Clock, CheckCircle2, FileWarning, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ArrowLeft } from "lucide-react"
-import "../styles/styles_user/SancionesUserPage.css"
+import "./styles/SancionesUserPage.css"
 
 const ITEMS_POR_PAGINA = 5
 
@@ -146,7 +146,10 @@ export default function MisSanciones() {
   if (loading) {
     return (
       <div className="san-contenedor">
-        <p>Cargando tus sanciones...</p>
+        <div className="san-loader">
+          <div className="san-spinner"></div>
+          <p>Cargando tus sanciones...</p>
+        </div>
       </div>
     )
   }

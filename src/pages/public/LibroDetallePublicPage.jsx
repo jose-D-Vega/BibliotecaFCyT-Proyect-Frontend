@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getBookById, getCopiesByBook } from '../../services/books.services'
-import LibroDetallePublic from './LibroDetallePublic'
+import LibroDetallePublic from '../../components/catalogo/LibroDetallePublic'
+import "./styles/LibroDetallePublicPage.css"
 
 function LibroDetallePublicPage() {
   const { id } = useParams()
@@ -12,10 +13,13 @@ function LibroDetallePublicPage() {
 
   const fetchData = async () => {
     try {
+      setLoading(true)
+
       const [libroData, copiesData] = await Promise.all([
         getBookById(id),
         getCopiesByBook(id)
       ])
+
       setLibro(libroData)
       setEjemplares(copiesData)
     } catch {
@@ -29,7 +33,13 @@ function LibroDetallePublicPage() {
     fetchData()
   }, [id])
 
-  if (loading) return <p>Cargando...</p>
+if (loading) {
+  return (
+    <div className="libro-detalle-public-loading">
+      <div className="libro-detalle-public-spinner"></div>
+    </div>
+  )
+}
 
   return (
     <LibroDetallePublic

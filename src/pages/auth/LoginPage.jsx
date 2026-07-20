@@ -2,8 +2,8 @@ import { getGoogleLoginUrl } from '../../services/auth.services'
 import logoFCyT from '../../assets/icons/LogoFCyT.png'
 import logoCompleto from '../../assets/icons/logo-web-blanco.png'
 import fondoBiblioteca from '../../assets/images/biblioteca-fondo.jpg'
-import './auth_styles/LoginPage.css'
-import FooterLogin from '../../components/FooterLogin'
+import './styles/LoginPage.css'
+import FooterLogin from '../../components/login/FooterLogin'
 
 const LoginPage = () => {
   const handleGoogleLogin = () => {

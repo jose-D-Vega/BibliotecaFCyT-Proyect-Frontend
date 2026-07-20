@@ -97,7 +97,10 @@ const ModalDetalleSancion = ({ sancion, onCerrar, onConfirmar, onRechazar }) => 
           <div className="modal-sancion__seccion">
             <span className="modal-sancion__seccion-titulo">Ejemplares del préstamo</span>
             {loadingPrest && (
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>Cargando ejemplares...</p>
+              <div className="sanciones-loading-modal">
+                <div className="sanciones-spinner"></div>
+                <p>Cargando ejemplares...</p>
+              </div>
             )}
             {errorPrest && (
               <p className="sanciones-error">{errorPrest}</p>
