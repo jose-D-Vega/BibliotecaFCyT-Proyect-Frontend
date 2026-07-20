@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { getLoans, getLoanById, respondDetalle, activateLoan, cancelLoan } from '../../../services/loans.services'
 
 const ESTADOS = [
@@ -42,7 +43,9 @@ const ESTADOS_ACTIVABLES = ['aprobado', 'parcialmente_aprobado']
 const ESTADOS_CANCELABLES = ['solicitado', 'aprobado', 'parcialmente_aprobado', 'solicitud_reserva']
 
 const GestionPrestamosPage = () => {
-  const [filtroEstado, setFiltroEstado] = useState('')
+  const location = useLocation()
+
+  const [filtroEstado, setFiltroEstado] = useState(location.state?.filtroEstado || '')
   const [prestamos, setPrestamos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -53,6 +56,14 @@ const GestionPrestamosPage = () => {
   const [loadingDetalle, setLoadingDetalle] = useState(false)
   const [loadingAccion, setLoadingAccion] = useState(false)
   const [mensajeAccion, setMensajeAccion] = useState(null)
+
+  // Si llega un nuevo state de navegación (ej. desde una tarjeta del dashboard), aplicarlo
+  useEffect(() => {
+    if (location.state?.filtroEstado !== undefined) {
+      setFiltroEstado(location.state.filtroEstado)
+      setPage(1)
+    }
+  }, [location.state])
 
   const fetchPrestamos = async (estado, pagina) => {
     try {

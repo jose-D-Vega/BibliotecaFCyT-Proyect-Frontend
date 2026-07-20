@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/styles_admin/DashboardAdmin.css';
 
 import {
@@ -23,6 +24,7 @@ const DashboardAdmin = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
   const rolActivo = localStorage.getItem("rolActivo");
@@ -54,6 +56,35 @@ const DashboardAdmin = () => {
     cargarStats();
   }, [token, rolActivo]);
 
+  const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro, estadoLower }) => {
+    if (rolActivo === 'bibliotecario') {
+      navigate('/bibliotecario/prestamos', {
+        state: { filtroEstado: estadoLower || '', fromDashboard: true }
+      });
+    } else {
+      navigate('/admin/prestamos', {
+        state: {
+          tab: tab || 'prestamos',
+          estadoFiltro: estadoLabel,
+          solicitudFiltro: solicitudFiltro,
+          fromDashboard: true
+        }
+      });
+    }
+  };
+
+  const irADevoluciones = () => {
+    if (rolActivo === 'bibliotecario') {
+      navigate('/bibliotecario/devoluciones', {
+        state: { tab: 'historial', fromDashboard: true }
+      });
+    } else {
+      navigate('/admin/devoluciones', {
+        state: { tab: 'historial', fromDashboard: true }
+      });
+    }
+  };
+
   const construirTendenciaChart = () => {
     if (!stats) return [];
     const mesActual = new Date().getMonth() + 1;
@@ -74,65 +105,13 @@ const DashboardAdmin = () => {
     }));
   };
 
-  // SKELETON DE CARGA
+  // CARGA
   if (loading) {
     return (
-      <>
-        <header className="dashboard-header">
-          <div className="dashboard-header__container">
-            <div className="dashboard-header__brand">
-              <span className="dashboard-header__label">Portal Administrativo</span>
-              <div className="dashboard-header__title-wrapper">
-                <MdAccountBalance className="dashboard-header__icon" size={32} />
-                <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main className="dashboard-main">
-          <section className="stats-grid">
-            {[1, 2, 3, 4].map(i => (
-              <article key={i} className="stat-card skeleton-card">
-                <div className="skeleton-line skeleton-line--short"></div>
-                <div className="skeleton-line skeleton-line--value"></div>
-                <div className="skeleton-line skeleton-line--short"></div>
-              </article>
-            ))}
-          </section>
-
-          <section className="alerts-section">
-            <div className="alerts-grid">
-              {[1, 2, 3].map(i => (
-                <article key={i} className="alert-card skeleton-card">
-                  <div className="skeleton-line skeleton-line--short"></div>
-                  <div className="skeleton-line skeleton-line--sub"></div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="activity-chart-grid">
-            <article className="activity-panel skeleton-card">
-              <div className="skeleton-line skeleton-line--title"></div>
-              <div className="skeleton-line skeleton-line--sub"></div>
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="skeleton-bar-line"></div>
-              ))}
-            </article>
-
-            <article className="chart-panel skeleton-card">
-              <div className="skeleton-line skeleton-line--title"></div>
-              <div className="skeleton-line skeleton-line--sub"></div>
-              <div className="skeleton-chart-bars">
-                {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="skeleton-bar" style={{ height: `${30 + (i % 3) * 20}%` }}></div>
-                ))}
-              </div>
-            </article>
-          </section>
-        </main>
-      </>
+      <div className="dashboard-spinner-page">
+        <div className="dashboard-spinner"></div>
+        <p className="dashboard-spinner-text">Cargando panel del bibliotecario...</p>
+      </div>
     );
   }
 
@@ -151,11 +130,8 @@ const DashboardAdmin = () => {
       <header className="dashboard-header">
         <div className="dashboard-header__container">
           <div className="dashboard-header__brand">
-            <span className="dashboard-header__label">Portal Administrativo</span>
-            <div className="dashboard-header__title-wrapper">
-              <MdAccountBalance className="dashboard-header__icon" size={32} />
-              <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
-            </div>
+            <MdAccountBalance className="dashboard-header__icon" size={32} />
+            <h1 className="dashboard-header__title">Portal del Bibliotecario</h1>
           </div>
         </div>
       </header>
@@ -190,7 +166,7 @@ const DashboardAdmin = () => {
           </article>
 
           <article className="stat-card stat-card--hover-error">
-            <span className="stat-card__label">Libros Vencidos</span>
+            <span className="stat-card__label">Préstamos Vencidos</span>
             <span className="stat-card__value">{stats.librosVencidos}</span>
             <div className="stat-card__meta">
               <MdWarning className="stat-card__meta-icon" />
@@ -206,15 +182,21 @@ const DashboardAdmin = () => {
           </h2>
 
           <div className="alerts-grid">
-            <article className="alert-card alert-card--warning">
+            <article
+              className="alert-card alert-card--warning alert-card--clickable"
+              onClick={irADevoluciones}
+            >
               <div className="alert-card__icon-wrapper"><MdHourglassEmpty size={24} /></div>
               <div className="alert-card__content">
-                <p className="alert-card__title">{stats.porVencer} Libro{stats.porVencer !== 1 ? 's' : ''} por vencer</p>
-                <p className="alert-card__description">Revisar avisos automáticos</p>
+                <p className="alert-card__title">{stats.librosDevueltosHoy} Libro{stats.librosDevueltosHoy !== 1 ? 's' : ''} devuelto{stats.librosDevueltosHoy !== 1 ? 's' : ''}</p>
+                <p className="alert-card__description">Ver historial de devoluciones</p>
               </div>
             </article>
 
-            <article className="alert-card alert-card--error">
+            <article
+              className="alert-card alert-card--error alert-card--clickable"
+              onClick={() => irAPrestamos({ tab: 'prestamos', estadoLabel: 'Vencido', estadoLower: 'vencido' })}
+            >
               <div className="alert-card__icon-wrapper"><MdGavel size={24} /></div>
               <div className="alert-card__content">
                 <p className="alert-card__title">{stats.librosVencidos} Libro{stats.librosVencidos !== 1 ? 's' : ''} atrasado{stats.librosVencidos !== 1 ? 's' : ''}</p>
@@ -222,7 +204,10 @@ const DashboardAdmin = () => {
               </div>
             </article>
 
-            <article className="alert-card alert-card--info">
+            <article
+              className="alert-card alert-card--info alert-card--clickable"
+              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RESERVA', estadoLower: 'solicitud_reserva' })}
+            >
               <div className="alert-card__icon-wrapper"><MdBookmark size={24} /></div>
               <div className="alert-card__content">
                 <p className="alert-card__title">{stats.reservasPendientes} Reserva{stats.reservasPendientes !== 1 ? 's' : ''} pendiente{stats.reservasPendientes !== 1 ? 's' : ''}</p>

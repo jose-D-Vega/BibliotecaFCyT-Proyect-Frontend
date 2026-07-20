@@ -1,15 +1,31 @@
 @import '../Dashboard.css';
 
+/* ==========================================
+   LIBROS MÁS PRESTADOS
+   (FIX: antes usaba columnas fijas repeat(5,1fr),
+   lo que dejaba tarjetas chicas y espacio vacío
+   cuando había menos de 5 libros. Ahora usa
+   auto-fill + minmax para que siempre ocupen
+   todo el ancho disponible, y son más grandes)
+   ========================================== */
 .books-grid {
-  grid-template-columns: repeat(5, 1fr);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
 }
 
 @media (max-width: 1024px) {
-  .books-grid { grid-template-columns: repeat(3, 1fr); }
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.25rem;
+  }
 }
 
 @media (max-width: 600px) {
-  .books-grid { grid-template-columns: repeat(2, 1fr); }
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
 }
 
 /* ==========================================
@@ -30,9 +46,45 @@
   justify-content: center;
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.4);
-  font-size: 2rem;
+  font-size: 2.6rem;
   font-weight: 700;
   font-family: 'Playfair Display', serif;
+}
+
+/* ==========================================
+   SPINNER DE CARGA (sin dependencias externas)
+   ========================================== */
+.dashboard-spinner-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: #0f1420;
+}
+
+.dashboard-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.85);
+  animation: dashboard-spin 0.8s linear infinite;
+}
+
+.dashboard-spinner-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+@keyframes dashboard-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .dashboard-loading {

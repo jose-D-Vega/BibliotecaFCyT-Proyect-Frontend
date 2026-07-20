@@ -11,6 +11,7 @@ const TABS = [
 const DevolucionesPage = () => {
   const [tabActiva, setTabActiva] = useState('activos')
 
+  
   return (
     <div className="devoluciones-page">
       <h1 className="devoluciones-page__title">Devoluciones</h1>

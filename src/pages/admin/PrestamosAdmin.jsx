@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { MdArrowBack } from "react-icons/md"
 import "../styles/styles_admin/PrestamosAdmin.css"
 
 import PrestamoTabs from "../../components/PrestamoTabs"
@@ -12,20 +14,22 @@ import SolicitudFilters from "../../components/SolicitudFilters"
 const API_URL = "http://localhost:3210/api"
 
 function PrestamosAdmin() {
+    const location = useLocation()
+  const navigate = useNavigate()
+  const rolActivo = localStorage.getItem("rolActivo")
 
-  const [activeTab, setActiveTab] = useState("solicitudes")
+  const [activeTab, setActiveTab] = useState(location.state?.tab || "solicitudes")
 
   const [solicitudes, setSolicitudes] = useState([])
   const [prestamos, setPrestamos] = useState([])
 
   const [loading, setLoading] = useState(false)
 
-  // 🔥 NUEVO: control real de carga
   const [loadedSolicitudes, setLoadedSolicitudes] = useState(false)
   const [loadedPrestamos, setLoadedPrestamos] = useState(false)
 
-  const [solicitudFiltro, setSolicitudFiltro] = useState("TODAS")
-  const [estadoFiltro, setEstadoFiltro] = useState("Todos los estados")
+  const [solicitudFiltro, setSolicitudFiltro] = useState(location.state?.solicitudFiltro || "TODAS")
+  const [estadoFiltro, setEstadoFiltro] = useState(location.state?.estadoFiltro || "Todos los estados")
 
   const [prestamosPage, setPrestamosPage] = useState(1)
   const [solicitudesPage, setSolicitudesPage] = useState(1)
@@ -35,6 +39,13 @@ function PrestamosAdmin() {
     action: "",
     solicitud: null
   })
+
+  // Si llega un nuevo state de navegación (ej. desde otra tarjeta del dashboard), aplicarlo
+  useEffect(() => {
+    if (location.state?.tab) setActiveTab(location.state.tab)
+    if (location.state?.estadoFiltro) setEstadoFiltro(location.state.estadoFiltro)
+    if (location.state?.solicitudFiltro) setSolicitudFiltro(location.state.solicitudFiltro)
+  }, [location.state])
 
   const normalize = (str) =>
     (str || "")
@@ -72,9 +83,6 @@ function PrestamosAdmin() {
     return data?.data
   }
 
-  // =========================
-  // PRESTAMOS
-  // =========================
   const fetchPrestamos = async () => {
     setLoading(true)
     try {
@@ -149,9 +157,6 @@ function PrestamosAdmin() {
     }
   }
 
-  // =========================
-  // SOLICITUDES
-  // =========================
   const fetchSolicitudes = async () => {
     setLoading(true)
     try {
@@ -179,31 +184,6 @@ function PrestamosAdmin() {
           const detalle = await fetchLoanDetails(p.id_prestamo, token)
 
           const materialesMap = {}
-
-          /*;(detalle?.detalles || []).forEach((d) => {
-            const key = `${d.titulo}-${d.autor}`
-
-            if (!materialesMap[key]) {
-              materialesMap[key] = {
-                id: detalle.materiales.id,
-                titulo: d.titulo,
-                autor: d.autor,
-                ejemplares: []
-              }
-            }
-           ;(detalle?.materiales || []).forEach((m) => {
-              const key = `${m.id}`
-
-              if (!materialesMap[key]) {
-                materialesMap[key] = {
-                  titulo: m.titulo,
-                  autor: m.autor,
-                  ejemplares: m.ejemplares
-                }
-              }
-
-              materialesMap[key].ejemplares.push(m.id_ejemplar)
-            })*/
 
           let tipoSolicitud = "Préstamo"
           if (p.estado_prestamo === "solicitud_reserva") tipoSolicitud = "Reserva"
@@ -233,9 +213,6 @@ function PrestamosAdmin() {
     if (activeTab === "solicitudes") fetchSolicitudes()
   }, [activeTab])
 
-  // =========================
-  // LOADING FIX
-  // =========================
   const isLoading =
     loading ||
     (activeTab === "prestamos" && !loadedPrestamos) ||
@@ -266,9 +243,31 @@ function PrestamosAdmin() {
     <main className="prestamos-admin">
 
       <section className="prestamos-admin__header">
-        <h1>Gestión de Préstamos</h1>
-        <PrestamoTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      </section>
+
+  {location.state?.fromDashboard && (
+    <button
+      className="prestamos-admin__volver-btn"
+      onClick={() =>
+        navigate(
+          rolActivo === "bibliotecario"
+            ? "/bibliotecario/inicio"
+            : "/admin/inicio"
+        )
+      }
+    >
+      <MdArrowBack size={16} />
+      Volver al inicio
+    </button>
+  )}
+
+  <h1>Gestión de Préstamos</h1>
+
+  <PrestamoTabs
+    activeTab={activeTab}
+    setActiveTab={setActiveTab}
+  />
+
+</section>
 
       <section className="prestamos-admin__body">
 

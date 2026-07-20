@@ -83,57 +83,62 @@ const DashboardUser = () => {
   // SKELETON DE CARGA
   if (loading) {
     return (
-      <>
-        <header className="dashboard-header">
-          <div className="dashboard-header__container">
-            <div className="dashboard-header__brand">
-              <span className="dashboard-header__label">Bienvenidos al portal</span>
-              <div className="dashboard-header__title-wrapper">
-                <MdSchool className="dashboard-header__icon" size={32} />
-                <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
+      <div className="ud-page">
+        <header className="ud-header">
+          <div className="ud-header__container">
+            <div className="ud-header__brand">
+              <div className="ud-header__icon-box">
+                <MdSchool size={24} />
+              </div>
+              <div className="ud-header__text-group">
+                <span className="ud-header__badge">
+                  <span className="ud-header__badge-dot"></span>
+                  PORTAL DEL ESTUDIANTE
+                </span>
+                <h1 className="ud-header__title">Mi Biblioteca</h1>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="dashboard-main">
-          <section className="stats-grid">
+        <main className="ud-main">
+          <section className="ud-stats-grid">
             {[1, 2, 3, 4].map(i => (
-              <article key={i} className="stat-card skeleton-card">
-                <div className="skeleton-line skeleton-line--short"></div>
-                <div className="skeleton-line skeleton-line--value"></div>
-                <div className="skeleton-line skeleton-line--short"></div>
+              <article key={i} className="ud-stat-card ud-skeleton-card">
+                <div className="ud-skeleton-line ud-skeleton-line--short"></div>
+                <div className="ud-skeleton-line ud-skeleton-line--value"></div>
+                <div className="ud-skeleton-line ud-skeleton-line--short"></div>
               </article>
             ))}
           </section>
 
-          <section className="activity-chart-grid">
-            <article className="activity-panel skeleton-card">
-              <div className="skeleton-line skeleton-line--title"></div>
-              <div className="skeleton-line skeleton-line--sub"></div>
+          <section className="ud-activity-chart-grid">
+            <article className="ud-activity-panel ud-skeleton-card">
+              <div className="ud-skeleton-line ud-skeleton-line--title"></div>
+              <div className="ud-skeleton-line ud-skeleton-line--sub"></div>
               {[1, 2, 3, 4].map(i => (
-                <div key={i} className="skeleton-bar-line"></div>
+                <div key={i} className="ud-skeleton-bar-line"></div>
               ))}
             </article>
 
-            <article className="chart-panel skeleton-card">
-              <div className="skeleton-line skeleton-line--title"></div>
-              <div className="skeleton-line skeleton-line--sub"></div>
-              <div className="skeleton-chart-bars">
+            <article className="ud-chart-panel ud-skeleton-card">
+              <div className="ud-skeleton-line ud-skeleton-line--title"></div>
+              <div className="ud-skeleton-line ud-skeleton-line--sub"></div>
+              <div className="ud-skeleton-chart-bars">
                 {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="skeleton-bar" style={{ height: `${30 + (i % 3) * 20}%` }}></div>
+                  <div key={i} className="ud-skeleton-bar" style={{ height: `${30 + (i % 3) * 20}%` }}></div>
                 ))}
               </div>
             </article>
           </section>
         </main>
-      </>
+      </div>
     );
   }
 
   if (error || !stats) {
     return (
-      <div className="dashboard-loading">
+      <div className="ud-loading">
         <p>No se pudieron cargar tus estadísticas. Intentá nuevamente más tarde.</p>
       </div>
     );
@@ -142,81 +147,86 @@ const DashboardUser = () => {
   const chartData = construirFrecuenciaChart();
 
   return (
-    <>
-      <header className="dashboard-header">
-        <div className="dashboard-header__container">
-          <div className="dashboard-header__brand">
-            <span className="dashboard-header__label">Bienvenidos al portal</span>
-            <div className="dashboard-header__title-wrapper">
-              <MdSchool className="dashboard-header__icon" size={32} />
-              <h1 className="dashboard-header__title">Biblioteca FCyT</h1>
+    <div className="ud-page">
+      <header className="ud-header">
+        <div className="ud-header__container">
+          <div className="ud-header__brand">
+            <div className="ud-header__icon-box">
+              <MdSchool size={24} />
+            </div>
+            <div className="ud-header__text-group">
+              <span className="ud-header__badge">
+                <span className="ud-header__badge-dot"></span>
+                PORTAL DEL ESTUDIANTE
+              </span>
+              <h1 className="ud-header__title">Mi Biblioteca</h1>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="dashboard-main">
-        <section className="stats-grid">
-          <article className="stat-card stat-card--hover-primary">
-            <span className="stat-card__label">Libros Leídos</span>
-            <span className="stat-card__value">{stats.librosLeidos}</span>
-            <div className="stat-card__meta">
-              <MdAutoStories className="stat-card__meta-icon" />
+      <main className="ud-main">
+        <section className="ud-stats-grid">
+          <article className="ud-stat-card ud-stat-card--hover-primary">
+            <span className="ud-stat-card__label">Libros Leídos</span>
+            <span className="ud-stat-card__value">{stats.librosLeidos}</span>
+            <div className="ud-stat-card__meta">
+              <MdAutoStories className="ud-stat-card__meta-icon" />
               <span>Total acumulado</span>
             </div>
           </article>
 
-          <article className="stat-card stat-card--hover-primary">
-            <span className="stat-card__label">Préstamos Activos</span>
-            <span className="stat-card__value">{String(stats.prestamosActivos).padStart(2, '0')}</span>
-            <div className="stat-card__meta">
-              <MdHistory className="stat-card__meta-icon" />
+          <article className="ud-stat-card ud-stat-card--hover-primary">
+            <span className="ud-stat-card__label">Préstamos Activos</span>
+            <span className="ud-stat-card__value">{String(stats.prestamosActivos).padStart(2, '0')}</span>
+            <div className="ud-stat-card__meta">
+              <MdHistory className="ud-stat-card__meta-icon" />
               <span>En posesión</span>
             </div>
           </article>
 
-          <article className="stat-card stat-card--hover-primary">
-            <span className="stat-card__label">Reservas</span>
-            <span className="stat-card__value">{String(stats.reservas).padStart(2, '0')}</span>
-            <div className="stat-card__meta">
-              <MdBookmarkBorder className="stat-card__meta-icon" />
+          <article className="ud-stat-card ud-stat-card--hover-primary">
+            <span className="ud-stat-card__label">Reservas</span>
+            <span className="ud-stat-card__value">{String(stats.reservas).padStart(2, '0')}</span>
+            <div className="ud-stat-card__meta">
+              <MdBookmarkBorder className="ud-stat-card__meta-icon" />
               <span>En espera</span>
             </div>
           </article>
 
-          <article className={`stat-card stat-card--hover-primary ${stats.sancionado ? 'stat-card--alerta' : ''}`}>
-            <span className="stat-card__label">Estado de Cuenta</span>
-            <span className="stat-card__value">
+          <article className={`ud-stat-card ud-stat-card--hover-primary ${stats.sancionado ? 'ud-stat-card--alerta' : ''}`}>
+            <span className="ud-stat-card__label">Estado de Cuenta</span>
+            <span className="ud-stat-card__value">
               {stats.sancionado ? 'Sancionado' : 'Habilitado'}
             </span>
-            <div className="stat-card__meta">
+            <div className="ud-stat-card__meta">
               {stats.sancionado
-                ? <MdWarning className="stat-card__meta-icon" />
-                : <MdCheckCircle className="stat-card__meta-icon" />
+                ? <MdWarning className="ud-stat-card__meta-icon" />
+                : <MdCheckCircle className="ud-stat-card__meta-icon" />
               }
               <span>{stats.sancionado ? 'Con sanciones activas' : 'Sin sanciones activas'}</span>
             </div>
           </article>
         </section>
 
-        <section className="activity-chart-grid">
-          <article className="activity-panel">
-            <h2 className="activity-panel__title">Interés Académico</h2>
-            <p className="activity-panel__subtitle">Distribución de tus lecturas por libro</p>
+        <section className="ud-activity-chart-grid">
+          <article className="ud-activity-panel">
+            <h2 className="ud-activity-panel__title">Interés Académico</h2>
+            <p className="ud-activity-panel__subtitle">Distribución de tus lecturas por libro</p>
 
-            <div className="progress-list">
+            <div className="ud-progress-list">
               {stats.interesAcademico.length === 0 ? (
-                <p className="activity-panel__vacio">Todavía no tenés libros devueltos registrados.</p>
+                <p className="ud-activity-panel__vacio">Todavía no tenés libros devueltos registrados.</p>
               ) : (
                 stats.interesAcademico.map((item, i) => (
-                  <div key={i} className="progress-item">
-                    <div className="progress-item__header">
+                  <div key={i} className="ud-progress-item">
+                    <div className="ud-progress-item__header">
                       <span>{item.titulo}</span>
                       <span>{item.porcentaje}%</span>
                     </div>
-                    <div className="progress-item__bar">
+                    <div className="ud-progress-item__bar">
                       <div
-                        className={`progress-item__fill ${i === stats.interesAcademico.length - 1 ? 'progress-item__fill--secondary' : ''}`}
+                        className={`ud-progress-item__fill ${i === stats.interesAcademico.length - 1 ? 'ud-progress-item__fill--secondary' : ''}`}
                         style={{ width: `${item.porcentaje}%` }}
                       ></div>
                     </div>
@@ -226,48 +236,48 @@ const DashboardUser = () => {
             </div>
           </article>
 
-          <article className="chart-panel">
-            <div className="chart-panel__header">
+          <article className="ud-chart-panel">
+            <div className="ud-chart-panel__header">
               <div>
-                <h2 className="chart-panel__title">Frecuencia de mis Préstamos</h2>
-                <p className="chart-panel__subtitle">Préstamos registrados año {new Date().getFullYear()}</p>
+                <h2 className="ud-chart-panel__title">Frecuencia de mis Préstamos</h2>
+                <p className="ud-chart-panel__subtitle">Préstamos registrados año {new Date().getFullYear()}</p>
               </div>
             </div>
 
-            <div className="chart-panel__body">
+            <div className="ud-chart-panel__body">
               {chartData.map((m, i) => (
-                <div key={i} className="chart-bar">
-                  <div className="chart-bar__container">
-                    <div className="chart-bar__fill" style={{ height: `${m.alturaPct}%` }}></div>
+                <div key={i} className="ud-chart-bar">
+                  <div className="ud-chart-bar__container">
+                    <div className="ud-chart-bar__fill" style={{ height: `${m.alturaPct}%` }}></div>
                   </div>
-                  <span className="chart-bar__label">{m.label} ({m.cantidad})</span>
+                  <span className="ud-chart-bar__label">{m.label} ({m.cantidad})</span>
                 </div>
               ))}
             </div>
           </article>
         </section>
 
-        <section className="books-section">
-          <div className="books-section__header">
-            <h2 className="books-section__title">Últimos Recursos Utilizados</h2>
-            <p className="books-section__subtitle">Historial de devoluciones</p>
+        <section className="ud-books-section">
+          <div className="ud-books-section__header">
+            <h2 className="ud-books-section__title">Últimos Recursos Utilizados</h2>
+            <p className="ud-books-section__subtitle">Historial de devoluciones</p>
           </div>
 
           {stats.ultimosRecursos.length === 0 ? (
-            <p className="activity-panel__vacio">Todavía no devolviste ningún material.</p>
+            <p className="ud-activity-panel__vacio">Todavía no devolviste ningún material.</p>
           ) : (
-            <div className="books-grid">
+            <div className="ud-books-grid">
               {stats.ultimosRecursos.map((lib, i) => (
-                <article key={i} className="book-card">
-                  <div className="book-card__content">
-                    <div className="book-card__image-wrapper">
+                <article key={i} className="ud-book-card">
+                  <div className="ud-book-card__content">
+                    <div className="ud-book-card__image-wrapper">
                       {lib.imagen_url
-                        ? <img className="book-card__image" src={lib.imagen_url} alt={lib.titulo} />
-                        : <span className="book-card__image-placeholder">{lib.titulo?.charAt(0)}</span>
+                        ? <img className="ud-book-card__image" src={lib.imagen_url} alt={lib.titulo} />
+                        : <span className="ud-book-card__image-placeholder">{lib.titulo?.charAt(0)}</span>
                       }
                     </div>
-                    <h3 className="book-card__title">{lib.titulo}</h3>
-                    <p className="book-card__stats">
+                    <h3 className="ud-book-card__title">{lib.titulo}</h3>
+                    <p className="ud-book-card__stats">
                       {formatearTipoEstado(lib.estado_devuelto)} · {formatearFecha(lib.fecha_devolucion)}
                     </p>
                   </div>
@@ -277,31 +287,35 @@ const DashboardUser = () => {
           )}
         </section>
 
-        <section className="alerts-section">
-          <h2 className="alerts-section__title">
+        <section className="ud-info-section">
+          <h2 className="ud-info-section__title">
             <MdInfo size={22} /> Información de Biblioteca
           </h2>
 
-          <div className="alerts-grid">
-            <article className="alert-card alert-card--primary">
-              <MdSchedule size={22} />
-              <div>
-                <p className="alert-card__title">Horario</p>
-                <p>Lunes a Viernes: 07:00 — 15:00</p>
+          <div className="ud-info-grid">
+            <article className="ud-info-card">
+              <div className="ud-info-card__icon-box">
+                <MdSchedule size={22} />
+              </div>
+              <div className="ud-info-card__body">
+                <p className="ud-info-card__title">Horario</p>
+                <p className="ud-info-card__text">Lunes a Viernes: 07:00 — 15:00</p>
               </div>
             </article>
 
-            <article className="alert-card alert-card--primary">
-              <MdLocationOn size={22} />
-              <div>
-                <p className="alert-card__title">Ubicación</p>
-                <p>Campus FCyT</p>
+            <article className="ud-info-card">
+              <div className="ud-info-card__icon-box">
+                <MdLocationOn size={22} />
+              </div>
+              <div className="ud-info-card__body">
+                <p className="ud-info-card__title">Ubicación</p>
+                <p className="ud-info-card__text">Campus FCyT</p>
               </div>
             </article>
           </div>
         </section>
       </main>
-    </>
+    </div>
   );
 };
 
