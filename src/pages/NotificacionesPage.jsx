@@ -107,7 +107,10 @@ const hayFiltrosActivos = tipoFiltro || estadoFiltro || fechaDesde || fechaHasta
       )}
 
       {loading ? (
-        <p className="notif-page__estado">Cargando notificaciones...</p>
+        <div className="notif-page__loader">
+          <div className="notif-page__spinner"></div>
+          <p>Cargando notificaciones...</p>
+        </div>
       ) : error ? (
         <p className="notif-page__estado notif-page__estado--error">{error}</p>
       ) : notificaciones.length === 0 ? (

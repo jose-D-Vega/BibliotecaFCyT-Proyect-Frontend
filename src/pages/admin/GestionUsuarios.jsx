@@ -8,6 +8,8 @@ export default function GestionUsuarios() {
   const [loading, setLoading] = useState(true)
   const [busqueda, setBusqueda] = useState("")
   const [filtroActivo, setFiltroActivo] = useState("Todos")
+  const [pagina, setPagina] = useState(1)
+  const usuariosPorPagina = 10
   
   // Control de edición inline
   const [editandoId, setEditandoId] = useState(null)
@@ -91,6 +93,17 @@ export default function GestionUsuarios() {
     }
     return lista
   }, [usuarios, filtroActivo, busqueda])
+
+  const totalPaginas = Math.ceil(usuariosFiltrados.length / usuariosPorPagina)
+
+  const usuariosPaginaActual = usuariosFiltrados.slice(
+    (pagina - 1) * usuariosPorPagina,
+    pagina * usuariosPorPagina
+  )
+
+  useEffect(() => {
+    setPagina(1)
+  }, [filtroActivo, busqueda])
 
   const handleEditarClick = (usuario) => {
     setEditandoId(usuario.id_usuario)
@@ -189,7 +202,16 @@ export default function GestionUsuarios() {
     setUsuarioAEliminar(null)
   }
 
-  if (loading) return <div className="contenedor-usuarios"><p>Cargando panel de control...</p></div>
+  if (loading) {
+    return (
+      <div className="contenedor-usuarios usuarios-loading-page">
+        <div className="usuarios-loading-spinner"></div>
+        <p className="usuarios-loading-text">
+          Cargando panel de control...
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="contenedor-usuarios">
@@ -275,7 +297,7 @@ export default function GestionUsuarios() {
                   </td>
                 </tr>
               ) : (
-                usuariosFiltrados.map((usuario) => {
+                usuariosPaginaActual.map((usuario) => {
                   const editando = editandoId === usuario.id_usuario
                   return (
                     <tr key={usuario.id_usuario}>
@@ -340,6 +362,76 @@ export default function GestionUsuarios() {
           </table>
         </div>
       </main>
+
+      {totalPaginas > 1 && (
+  <div className="usuarios-paginacion">
+
+    <button
+      disabled={pagina === 1}
+      onClick={() => setPagina(1)}
+    >
+      ««
+    </button>
+
+    <button
+      disabled={pagina === 1}
+      onClick={() => setPagina(p => p - 1)}
+    >
+      ‹
+    </button>
+
+
+    {Array.from({ length: totalPaginas }, (_, i) => i + 1)
+      .filter(num => {
+        if (totalPaginas <= 5) return true
+
+        if (
+          num === 1 ||
+          num === totalPaginas ||
+          Math.abs(num - pagina) <= 1
+        ) {
+          return true
+        }
+
+        return false
+      })
+      .map((num, index, arr) => (
+        <React.Fragment key={num}>
+
+          {index > 0 && arr[index - 1] !== num - 1 && (
+            <span className="usuarios-puntos">
+              ...
+            </span>
+          )}
+
+          <button
+            className={pagina === num ? "activo" : ""}
+            onClick={() => setPagina(num)}
+          >
+            {num}
+          </button>
+
+        </React.Fragment>
+      ))
+    }
+
+
+    <button
+      disabled={pagina === totalPaginas}
+      onClick={() => setPagina(p => p + 1)}
+    >
+      ›
+    </button>
+
+    <button
+      disabled={pagina === totalPaginas}
+      onClick={() => setPagina(totalPaginas)}
+    >
+      »»
+    </button>
+
+  </div>
+)}
 
       {/* 🪟 MODAL DE CONFIRMACIÓN PARA ELIMINAR USUARIO */}
       {usuarioAEliminar && (

@@ -114,15 +114,60 @@
 .notif-page__limpiar-btn {
   align-self: flex-start;
   margin-top: -0.75rem;
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.75);
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.82rem;
-  font-weight: 600;
-  text-decoration: underline;
+  font-weight: 700;
   cursor: pointer;
-  padding: 0;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
 }
 
-.notif-page__limpiar-btn:hover { color: rgba(255,255,255,0.85); }
+.notif-page__limpiar-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.25);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.notif-page__limpiar-btn:active {
+  transform: translateY(0);
+}
+/* ==========================================
+   LOADER DE NOTIFICACIONES
+   ========================================== */
+
+.notif-page__loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 3rem 1rem;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.9rem;
+}
+
+.notif-page__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top-color: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  animation: notif-spin 0.8s linear infinite;
+}
+
+@keyframes notif-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

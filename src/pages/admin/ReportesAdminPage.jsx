@@ -217,13 +217,16 @@ export default function ReportesAdminPage() {
 
   // --- Render ---
 
-  if (cargandoConfig) {
-    return (
-      <div className="contenedor-reportes">
-        <p className="reportes-cargando"><Loader2 className="spin" size={18} /> Cargando módulo de reportes...</p>
-      </div>
-    )
-  }
+    if (cargandoConfig) {
+      return (
+        <div className="contenedor-reportes reportes-loading-page">
+          <Loader2 className="spin reportes-loading-spinner" size={44} />
+          <p className="reportes-loading-text">
+            Cargando módulo de reportes...
+          </p>
+        </div>
+      )
+    }
 
   return (
     <div className="contenedor-reportes">
