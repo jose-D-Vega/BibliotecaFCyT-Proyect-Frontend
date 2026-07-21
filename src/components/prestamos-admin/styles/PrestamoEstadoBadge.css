@@ -72,6 +72,11 @@
   color:#aab4ff;
 }
 
+.estado-badge.reserva-rechazada{
+  background:rgba(255,70,70,.14);
+  color:#ff9292;
+}
+
 /* =========================
    RENOVACIONES
 ========================= */

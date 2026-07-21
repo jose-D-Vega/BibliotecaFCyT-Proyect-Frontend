@@ -115,8 +115,11 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
       }
 
       // Si hay reservas afectadas por ejemplares dañados/perdidos, gestionarlas primero
-      if (result.data.reservas_afectadas?.length > 0) {
-        setReservasAfectadas(result.data.reservas_afectadas)
+      const reservasQueRequierenGestion = (result.data.reservas_afectadas || [])
+        .filter(r => r.estado_devuelto !== 'bueno')
+
+      if (reservasQueRequierenGestion.length > 0) {
+        setReservasAfectadas(reservasQueRequierenGestion)
         return // el resto del flujo continúa cuando se cierre ModalReservaAfectada
       }
 

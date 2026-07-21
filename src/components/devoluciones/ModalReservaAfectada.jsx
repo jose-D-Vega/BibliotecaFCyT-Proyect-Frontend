@@ -8,6 +8,7 @@ const ModalReservaAfectada = ({ reservas, onResuelto }) => {
   const [indice, setIndice] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [motivo, setMotivo] = useState('')
 
   const reserva = reservas[indice]
 
@@ -26,9 +27,10 @@ const ModalReservaAfectada = ({ reservas, onResuelto }) => {
       setError(null)
       const payload = accion === 'reasignar'
         ? { accion, id_ejemplar_nuevo: reserva.sustituto_disponible }
-        : { accion }
+        : { accion, motivo: motivo.trim() || undefined }
 
       await resolveReservaAfectada(reserva.id_prestamo, reserva.id_ejemplar_afectado, payload)
+      setMotivo('')
       avanzar()
     } catch (err) {
       setError(err.response?.data?.error || 'Error al gestionar la reserva afectada')
@@ -38,7 +40,7 @@ const ModalReservaAfectada = ({ reservas, onResuelto }) => {
   }
 
   return (
-    <div className="modal-dev-overlay">
+    <div className="modal-dev-overlay overlay-in-modal">
       <div className="modal-dev-box" style={{ maxWidth: 480 }} onClick={e => e.stopPropagation()}>
         <div className="modal-dev__header">
           <div>
@@ -73,9 +75,19 @@ const ModalReservaAfectada = ({ reservas, onResuelto }) => {
               </button>
             </>
           ) : (
-            <p className="nueva-sancion-hint">
-              No hay ningún ejemplar disponible del mismo libro para sustituirlo. La reserva deberá gestionarse manualmente.
-            </p>
+            <>
+              <p className="nueva-sancion-hint">
+                No hay ningún ejemplar disponible del mismo libro para sustituirlo.
+                Si descartás, este ítem se rechaza definitivamente de la reserva y se le avisa al usuario.
+              </p>
+              <textarea
+                className="nueva-sancion-textarea"
+                placeholder="Motivo (opcional)"
+                value={motivo}
+                onChange={e => setMotivo(e.target.value)}
+                rows={2}
+              />
+            </>
           )}
 
           {error && <p className="modal-dev__error">{error}</p>}
@@ -86,7 +98,7 @@ const ModalReservaAfectada = ({ reservas, onResuelto }) => {
             onClick={() => handleAccion('descartar')}
             disabled={loading}
           >
-            Gestionar manualmente más tarde
+            {loading ? 'Descartando...' : 'Descartar — no se le entregará este ejemplar'}
           </button>
         </div>
       </div>
