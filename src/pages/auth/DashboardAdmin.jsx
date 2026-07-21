@@ -12,20 +12,20 @@ import {
   MdHourglassEmpty,
   MdGavel,
   MdBookmark,
-  MdWifiTethering,
+  MdDevices,
   MdHistory,
-  MdPeopleAlt
+  MdPersonOutline
 } from 'react-icons/md';
 
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/admin-dashboard`
-  : "http://localhost:3210/api/admin-dashboard";
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3210/api';
+const ADMIN_URL = `${API_URL}/admin-dashboard`;
 
 const DashboardAdmin = () => {
   const [stats, setStats] = useState(null);
-  const [extraStats, setExtraStats] = useState(null);
+  const [extra, setExtra] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -35,6 +35,15 @@ const DashboardAdmin = () => {
 
   useEffect(() => {
     const cargarStats = async () => {
+      console.log("🔍 Iniciando carga... Token:", token ? "Presente" : "FALTA", "| Rol:", rolActivo);
+
+      if (!token) {
+        console.error("❌ No hay token de autenticación");
+        setError(true);
+        setLoading(false);
+        return;
+      }
+
       try {
         const headers = {
           "Authorization": `Bearer ${token}`,
@@ -42,58 +51,55 @@ const DashboardAdmin = () => {
           ...(rolActivo ? { "x-rol-activo": rolActivo } : {})
         };
 
-        const [resStats, resExtra] = await Promise.all([
-          fetch(`${API_URL}/mis-estadisticas`, { headers }),
-          fetch(`${API_URL}/extra-stats`, { headers })
+        const urlBase = `${ADMIN_URL}/mis-estadisticas`;
+        const urlExtra = `${ADMIN_URL}/extra-stats`;
+
+        console.log("📡 Haciendo fetch a:", urlBase, "y", urlExtra);
+
+        const [resBase, resExtra] = await Promise.all([
+          fetch(urlBase, { headers }),
+          fetch(urlExtra, { headers })
         ]);
 
-        const jsonStats = await resStats.json();
+        console.log("📦 Status Base:", resBase.status, "| Status Extra:", resExtra.status);
+
+        const jsonBase = await resBase.json();
         const jsonExtra = await resExtra.json();
 
-        if (!resStats.ok || !resExtra.ok) {
+        console.log("📊 Datos Base recibidos:", jsonBase);
+        console.log("📊 Datos Extra recibidos:", jsonExtra);
+
+        if (!resBase.ok || !resExtra.ok) {
+          console.error("❌ El servidor respondió con error:", jsonBase, jsonExtra);
           setError(true);
         } else {
-          setStats(jsonStats.data);
-          setExtraStats(jsonExtra.data);
+          setStats(jsonBase.data || jsonBase);
+          setExtra(jsonExtra.data || jsonExtra);
         }
       } catch (err) {
-        console.error("Error al cargar estadísticas del dashboard admin:", err);
+        console.error("💥 Error fatal de red o parseo:", err);
         setError(true);
       } finally {
         setLoading(false);
       }
     };
+
     cargarStats();
   }, [token, rolActivo]);
 
-  const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro, estadoLower }) => {
-    if (rolActivo === 'bibliotecario') {
-      navigate('/bibliotecario/prestamos', {
-        state: { filtroEstado: estadoLower || '', fromDashboard: true }
-      });
-    } else {
-      navigate('/admin/prestamos', {
-        state: {
-          tab: tab || 'prestamos',
-          estadoFiltro: estadoLabel,
-          solicitudFiltro: solicitudFiltro,
-          fromDashboard: true
-        }
-      });
-    }
+  const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro }) => {
+    navigate('/admin/prestamos', {
+      state: { tab: tab || 'prestamos', estadoFiltro: estadoLabel, solicitudFiltro, fromDashboard: true }
+    });
   };
 
   const irADevoluciones = () => {
-    if (rolActivo === 'bibliotecario') {
-      navigate('/bibliotecario/devoluciones', {
-        state: { tab: 'historial', fromDashboard: true }
-      });
-    } else {
-      navigate('/admin/devoluciones', {
-        state: { tab: 'historial', fromDashboard: true }
-      });
-    }
+    navigate('/admin/devoluciones', { state: { tab: 'historial', fromDashboard: true } });
   };
+
+  const irAUsuarios = () => navigate('/admin/usuarios', { state: { fromDashboard: true } });
+  const irASesiones = () => navigate('/admin/sesiones', { state: { fromDashboard: true } });
+  const irAActividades = () => navigate('/admin/actividades', { state: { fromDashboard: true } });
 
   const construirTendenciaChart = () => {
     if (!stats) return [];
@@ -116,26 +122,21 @@ const DashboardAdmin = () => {
   };
 
   const formatFecha = (fecha) => {
-    return new Date(fecha).toLocaleString('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    const d = new Date(fecha);
+    return d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }) + ' · ' +
+           d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
   };
 
-  // CARGA
   if (loading) {
     return (
       <div className="dashboard-spinner-page">
         <div className="dashboard-spinner"></div>
-        <p className="dashboard-spinner-text">Cargando panel de administración...</p>
+        <p className="dashboard-spinner-text">Cargando panel del administrador...</p>
       </div>
     );
   }
 
-  if (error || !stats) {
+  if (error || !stats || !extra) {
     return (
       <div className="dashboard-loading">
         <p>No se pudieron cargar las estadísticas. Intentá nuevamente más tarde.</p>
@@ -144,10 +145,7 @@ const DashboardAdmin = () => {
   }
 
   const chartData = construirTendenciaChart();
-
-  const totalRoles = extraStats
-    ? extraStats.usuariosPorRol.reduce((a, b) => a + Number(b.cantidad), 0)
-    : 0;
+  const totalUsuariosPorRol = extra.usuariosPorRol.reduce((acc, r) => acc + r.cantidad, 0);
 
   return (
     <>
@@ -155,7 +153,9 @@ const DashboardAdmin = () => {
         <div className="dashboard-header__container">
           <div className="dashboard-header__brand">
             <MdAdminPanelSettings className="dashboard-header__icon" size={32} />
-            <h1 className="dashboard-header__title">Panel de Administración</h1>
+            <h1 className="dashboard-header__title">
+  PRUEBA ADMIN FUNCIONANDO
+</h1>
           </div>
         </div>
       </header>
@@ -171,7 +171,7 @@ const DashboardAdmin = () => {
             </div>
           </article>
 
-          <article className="stat-card stat-card--hover-primary">
+          <article className="stat-card stat-card--hover-primary stat-card--clickable" onClick={irAUsuarios}>
             <span className="stat-card__label">Usuarios</span>
             <span className="stat-card__value">{stats.usuariosActivos}</span>
             <div className="stat-card__meta">
@@ -197,6 +197,15 @@ const DashboardAdmin = () => {
               <span className="stat-card__meta-text">Acción requerida</span>
             </div>
           </article>
+
+          <article className="stat-card stat-card--hover-primary stat-card--clickable" onClick={irASesiones}>
+            <span className="stat-card__label">Sesiones Activas</span>
+            <span className="stat-card__value">{extra.sesionesActivas}</span>
+            <div className="stat-card__meta">
+              <MdDevices className="stat-card__meta-icon" />
+              <span className="stat-card__meta-text">En este momento</span>
+            </div>
+          </article>
         </section>
 
         <section className="alerts-section">
@@ -206,10 +215,7 @@ const DashboardAdmin = () => {
           </h2>
 
           <div className="alerts-grid">
-            <article
-              className="alert-card alert-card--warning alert-card--clickable"
-              onClick={irADevoluciones}
-            >
+            <article className="alert-card alert-card--warning alert-card--clickable" onClick={irADevoluciones}>
               <div className="alert-card__icon-wrapper"><MdHourglassEmpty size={24} /></div>
               <div className="alert-card__content">
                 <p className="alert-card__title">{stats.librosDevueltosHoy} Libro{stats.librosDevueltosHoy !== 1 ? 's' : ''} devuelto{stats.librosDevueltosHoy !== 1 ? 's' : ''}</p>
@@ -219,7 +225,7 @@ const DashboardAdmin = () => {
 
             <article
               className="alert-card alert-card--error alert-card--clickable"
-              onClick={() => irAPrestamos({ tab: 'prestamos', estadoLabel: 'Vencido', estadoLower: 'vencido' })}
+              onClick={() => irAPrestamos({ tab: 'prestamos', estadoLabel: 'Vencido' })}
             >
               <div className="alert-card__icon-wrapper"><MdGavel size={24} /></div>
               <div className="alert-card__content">
@@ -230,7 +236,7 @@ const DashboardAdmin = () => {
 
             <article
               className="alert-card alert-card--info alert-card--clickable"
-              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RESERVA', estadoLower: 'solicitud_reserva' })}
+              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RESERVA' })}
             >
               <div className="alert-card__icon-wrapper"><MdBookmark size={24} /></div>
               <div className="alert-card__content">
@@ -239,6 +245,74 @@ const DashboardAdmin = () => {
               </div>
             </article>
           </div>
+        </section>
+
+        <section className="activity-chart-grid">
+          <article className="activity-panel">
+            <div className="activity-panel__header">
+              <h2 className="activity-panel__title">Usuarios por Rol</h2>
+              <span className="chart-panel__badge chart-panel__badge--clickable" onClick={irAUsuarios}>
+                Ver todos
+              </span>
+            </div>
+            <p className="activity-panel__subtitle">{totalUsuariosPorRol} usuario{totalUsuariosPorRol !== 1 ? 's' : ''} activo{totalUsuariosPorRol !== 1 ? 's' : ''} en total</p>
+            <div className="progress-list">
+              {extra.usuariosPorRol.length === 0 ? (
+                <p className="activity-panel__vacio">Todavía no hay usuarios registrados.</p>
+              ) : (
+                extra.usuariosPorRol.map((r, i) => {
+                  const pct = totalUsuariosPorRol > 0 ? Math.round((r.cantidad / totalUsuariosPorRol) * 100) : 0;
+                  return (
+                    <div key={i} className="progress-item">
+                      <div className="progress-item__header">
+                        <span className="progress-item__label">{r.rol}</span>
+                        <span className="progress-item__value">{r.cantidad} ({pct}%)</span>
+                      </div>
+                      <div className="progress-item__bar">
+                        <div
+                          className={`progress-item__fill ${i % 2 === 1 ? 'progress-item__fill--secondary' : ''}`}
+                          style={{ width: `${pct}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </article>
+
+          <article className="activity-feed-panel">
+            <div className="activity-panel__header">
+              <h2 className="activity-panel__title">Actividad Reciente</h2>
+              <span className="chart-panel__badge chart-panel__badge--clickable" onClick={irAActividades}>
+                Ver todo
+              </span>
+            </div>
+            <p className="activity-panel__subtitle">Últimas acciones registradas en el sistema</p>
+            <div className="activity-feed-list">
+              {extra.actividadesRecientes.length === 0 ? (
+                <p className="activity-panel__vacio">Todavía no hay actividad registrada.</p>
+              ) : (
+                extra.actividadesRecientes.map((act) => (
+                  <div key={act.id_actividad} className="activity-feed-item">
+                    <div className="activity-feed-item__icon">
+                      <MdHistory size={18} />
+                    </div>
+                    <div className="activity-feed-item__content">
+                      <p className="activity-feed-item__text">
+                        <span className="activity-feed-item__user">{act.nombre_apellido}</span>
+                        {' '}{act.tipo_accion.toLowerCase()} {act.entidad ? `· ${act.entidad}` : ''}
+                      </p>
+                      {act.descripcion && (
+                        <p className="activity-feed-item__desc">{act.descripcion}</p>
+                      )}
+                    </div>
+                    <span className="activity-feed-item__time">{formatFecha(act.fecha)}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </article>
         </section>
 
         <section className="activity-chart-grid">
@@ -289,81 +363,6 @@ const DashboardAdmin = () => {
             </div>
           </article>
         </section>
-
-        {extraStats && (
-          <section className="admin-extra-grid">
-            <article className="roles-panel">
-              <div className="roles-panel__header">
-                <h2 className="roles-panel__title">
-                  <MdPeopleAlt className="roles-panel__title-icon" size={22} />
-                  Usuarios por Rol
-                </h2>
-                <div className="sessions-badge">
-                  <MdWifiTethering size={18} />
-                  <span>{extraStats.sesionesActivas} sesión{extraStats.sesionesActivas !== 1 ? 'es' : ''} activa{extraStats.sesionesActivas !== 1 ? 's' : ''}</span>
-                </div>
-              </div>
-
-              <div className="progress-list">
-                {extraStats.usuariosPorRol.length === 0 ? (
-                  <p className="activity-panel__vacio">No hay usuarios registrados.</p>
-                ) : (
-                  extraStats.usuariosPorRol.map((item, i) => {
-                    const porcentaje = totalRoles > 0
-                      ? Math.round((Number(item.cantidad) / totalRoles) * 100)
-                      : 0;
-                    return (
-                      <div key={i} className="progress-item">
-                        <div className="progress-item__header">
-                          <span className="progress-item__label">{item.rol}</span>
-                          <span className="progress-item__value">{item.cantidad}</span>
-                        </div>
-                        <div className="progress-item__bar">
-                          <div
-                            className={`progress-item__fill ${i % 2 !== 0 ? 'progress-item__fill--secondary' : ''}`}
-                            style={{ width: `${porcentaje}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </article>
-
-            <article className="activity-feed-panel">
-              <div className="activity-feed-panel__header">
-                <h2 className="activity-feed-panel__title">
-                  <MdHistory className="activity-feed-panel__title-icon" size={22} />
-                  Actividad Reciente
-                </h2>
-              </div>
-
-              <div className="activity-feed">
-                {extraStats.actividadesRecientes.length === 0 ? (
-                  <p className="activity-panel__vacio">Todavía no hay actividad registrada.</p>
-                ) : (
-                  extraStats.actividadesRecientes.map((act) => (
-                    <div key={act.id_actividad} className="activity-feed__item">
-                      <div className="activity-feed__icon">
-                        <MdHistory size={16} />
-                      </div>
-                      <div className="activity-feed__content">
-                        <p className="activity-feed__text">
-                          <span className="activity-feed__user">{act.nombre_apellido}</span>{' '}
-                          {act.descripcion}
-                        </p>
-                        <span className="activity-feed__meta">
-                          {act.entidad} · {formatFecha(act.fecha)}
-                        </span>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </article>
-          </section>
-        )}
 
         <section className="books-section">
           <div className="books-section__header">

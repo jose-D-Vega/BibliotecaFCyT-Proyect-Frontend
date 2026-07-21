@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles/DashboardAdmin.css';
+import './styles/DashboardBiblio.css';
 
 import {
-  MdAdminPanelSettings,
+  MdAccountBalance,
   MdTrendingUp,
   MdGroup,
   MdSchedule,
@@ -11,23 +11,20 @@ import {
   MdNotificationsActive,
   MdHourglassEmpty,
   MdGavel,
-  MdBookmark,
-  MdWifiTethering,
-  MdHistory,
-  MdPeopleAlt
+  MdBookmark
 } from 'react-icons/md';
 
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
 const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/admin-dashboard`
-  : "http://localhost:3210/api/admin-dashboard";
+  ? `${import.meta.env.VITE_API_URL}/bibliotecario-dashboard`
+  : "http://localhost:3210/api/bibliotecario-dashboard";
 
-const DashboardAdmin = () => {
+const DashboardBiblio = () => {
   const [stats, setStats] = useState(null);
-  const [extraStats, setExtraStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [failedImages, setFailedImages] = useState({});
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -36,25 +33,19 @@ const DashboardAdmin = () => {
   useEffect(() => {
     const cargarStats = async () => {
       try {
-        const headers = {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-          ...(rolActivo ? { "x-rol-activo": rolActivo } : {})
-        };
+        const res = await fetch(`${API_URL}/mis-estadisticas`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            ...(rolActivo ? { "x-rol-activo": rolActivo } : {})
+          }
+        });
+        const json = await res.json();
 
-        const [resStats, resExtra] = await Promise.all([
-          fetch(`${API_URL}/mis-estadisticas`, { headers }),
-          fetch(`${API_URL}/extra-stats`, { headers })
-        ]);
-
-        const jsonStats = await resStats.json();
-        const jsonExtra = await resExtra.json();
-
-        if (!resStats.ok || !resExtra.ok) {
+        if (!res.ok) {
           setError(true);
         } else {
-          setStats(jsonStats.data);
-          setExtraStats(jsonExtra.data);
+          setStats(json.data);
         }
       } catch (err) {
         console.error("Error al cargar estadísticas del dashboard admin:", err);
@@ -65,6 +56,10 @@ const DashboardAdmin = () => {
     };
     cargarStats();
   }, [token, rolActivo]);
+
+  const handleImageError = (idLibro) => {
+    setFailedImages((prev) => ({ ...prev, [idLibro]: true }));
+  };
 
   const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro, estadoLower }) => {
     if (rolActivo === 'bibliotecario') {
@@ -115,22 +110,11 @@ const DashboardAdmin = () => {
     }));
   };
 
-  const formatFecha = (fecha) => {
-    return new Date(fecha).toLocaleString('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  // CARGA
   if (loading) {
     return (
       <div className="dashboard-spinner-page">
         <div className="dashboard-spinner"></div>
-        <p className="dashboard-spinner-text">Cargando panel de administración...</p>
+        <p className="dashboard-spinner-text">Cargando panel del bibliotecario...</p>
       </div>
     );
   }
@@ -145,22 +129,19 @@ const DashboardAdmin = () => {
 
   const chartData = construirTendenciaChart();
 
-  const totalRoles = extraStats
-    ? extraStats.usuariosPorRol.reduce((a, b) => a + Number(b.cantidad), 0)
-    : 0;
-
   return (
     <>
       <header className="dashboard-header">
         <div className="dashboard-header__container">
           <div className="dashboard-header__brand">
-            <MdAdminPanelSettings className="dashboard-header__icon" size={32} />
-            <h1 className="dashboard-header__title">Panel de Administración</h1>
+            <MdAccountBalance className="dashboard-header__icon" size={32} />
+            <h1 className="dashboard-header__title">Portal del Bibliotecario</h1>
           </div>
         </div>
       </header>
 
       <main className="dashboard-main">
+        {/* STATS GRID */}
         <section className="stats-grid">
           <article className="stat-card stat-card--hover-primary">
             <span className="stat-card__label">Total Libros</span>
@@ -199,6 +180,7 @@ const DashboardAdmin = () => {
           </article>
         </section>
 
+        {/* ALERTAS */}
         <section className="alerts-section">
           <h2 className="alerts-section__title">
             <MdNotificationsActive className="alerts-section__title-icon" size={24} />
@@ -241,6 +223,7 @@ const DashboardAdmin = () => {
           </div>
         </section>
 
+        {/* ACTIVIDAD Y TENDENCIAS */}
         <section className="activity-chart-grid">
           <article className="activity-panel">
             <div className="activity-panel__header">
@@ -290,81 +273,7 @@ const DashboardAdmin = () => {
           </article>
         </section>
 
-        {extraStats && (
-          <section className="admin-extra-grid">
-            <article className="roles-panel">
-              <div className="roles-panel__header">
-                <h2 className="roles-panel__title">
-                  <MdPeopleAlt className="roles-panel__title-icon" size={22} />
-                  Usuarios por Rol
-                </h2>
-                <div className="sessions-badge">
-                  <MdWifiTethering size={18} />
-                  <span>{extraStats.sesionesActivas} sesión{extraStats.sesionesActivas !== 1 ? 'es' : ''} activa{extraStats.sesionesActivas !== 1 ? 's' : ''}</span>
-                </div>
-              </div>
-
-              <div className="progress-list">
-                {extraStats.usuariosPorRol.length === 0 ? (
-                  <p className="activity-panel__vacio">No hay usuarios registrados.</p>
-                ) : (
-                  extraStats.usuariosPorRol.map((item, i) => {
-                    const porcentaje = totalRoles > 0
-                      ? Math.round((Number(item.cantidad) / totalRoles) * 100)
-                      : 0;
-                    return (
-                      <div key={i} className="progress-item">
-                        <div className="progress-item__header">
-                          <span className="progress-item__label">{item.rol}</span>
-                          <span className="progress-item__value">{item.cantidad}</span>
-                        </div>
-                        <div className="progress-item__bar">
-                          <div
-                            className={`progress-item__fill ${i % 2 !== 0 ? 'progress-item__fill--secondary' : ''}`}
-                            style={{ width: `${porcentaje}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </article>
-
-            <article className="activity-feed-panel">
-              <div className="activity-feed-panel__header">
-                <h2 className="activity-feed-panel__title">
-                  <MdHistory className="activity-feed-panel__title-icon" size={22} />
-                  Actividad Reciente
-                </h2>
-              </div>
-
-              <div className="activity-feed">
-                {extraStats.actividadesRecientes.length === 0 ? (
-                  <p className="activity-panel__vacio">Todavía no hay actividad registrada.</p>
-                ) : (
-                  extraStats.actividadesRecientes.map((act) => (
-                    <div key={act.id_actividad} className="activity-feed__item">
-                      <div className="activity-feed__icon">
-                        <MdHistory size={16} />
-                      </div>
-                      <div className="activity-feed__content">
-                        <p className="activity-feed__text">
-                          <span className="activity-feed__user">{act.nombre_apellido}</span>{' '}
-                          {act.descripcion}
-                        </p>
-                        <span className="activity-feed__meta">
-                          {act.entidad} · {formatFecha(act.fecha)}
-                        </span>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </article>
-          </section>
-        )}
-
+        {/* LIBROS MÁS PRESTADOS (RESPONSIVO) */}
         <section className="books-section">
           <div className="books-section__header">
             <h2 className="books-section__title">Libros más Prestados</h2>
@@ -375,23 +284,44 @@ const DashboardAdmin = () => {
             <p className="activity-panel__vacio">Todavía no hay préstamos registrados.</p>
           ) : (
             <div className="books-grid">
-              {stats.librosMasPrestados.map((lib, i) => (
-                <article key={i} className="book-card">
-                  <div className="book-card__content">
-                    <div className="book-card__image-wrapper">
-                      {lib.imagen_url
-                        ? <img className="book-card__image" src={lib.imagen_url} alt={lib.titulo} />
-                        : <span className="book-card__image-placeholder">{lib.titulo?.charAt(0)}</span>
-                      }
+              {stats.librosMasPrestados.map((lib, i) => {
+                const idUnico = lib.id_libro || i;
+                const tieneImagen = lib.imagen_url && !failedImages[idUnico];
+
+                return (
+                  <article key={idUnico} className="book-card">
+                    <div className="book-card__content">
+                      {/* Contenedor adaptativo para la portada del libro */}
+                      <figure className="book-card__image-container">
+                        {tieneImagen ? (
+                          <img
+                            className="book-card__image"
+                            src={lib.imagen_url}
+                            alt={lib.titulo}
+                            loading="lazy"
+                            onError={() => handleImageError(idUnico)}
+                          />
+                        ) : (
+                          <div className="book-card__image-placeholder">
+                            <span>{lib.titulo?.charAt(0)}</span>
+                          </div>
+                        )}
+                      </figure>
+
+                      <h3 className="book-card__title" title={lib.titulo}>{lib.titulo}</h3>
+                      <p className="book-card__stats">
+                        {lib.total_prestamos} préstamo{lib.total_prestamos !== 1 ? 's' : ''}
+                      </p>
+                      <div className="book-card__progress">
+                        <div
+                          className="book-card__progress-fill"
+                          style={{ width: `${lib.porcentaje_relativo}%` }}
+                        ></div>
+                      </div>
                     </div>
-                    <h3 className="book-card__title">{lib.titulo}</h3>
-                    <p className="book-card__stats">{lib.total_prestamos} préstamo{lib.total_prestamos !== 1 ? 's' : ''}</p>
-                    <div className="book-card__progress">
-                      <div className="book-card__progress-fill" style={{ width: `${lib.porcentaje_relativo}%` }}></div>
-                    </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           )}
         </section>
@@ -400,4 +330,4 @@ const DashboardAdmin = () => {
   );
 };
 
-export default DashboardAdmin;
+export default DashboardBiblio;

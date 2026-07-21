@@ -25,7 +25,11 @@ import SancionesUserPage from '../pages/user/SancionesUserPage'
 import PerfilUserPage from '../pages/user/PerfilUserPage'
 import NotificacionesPage from '../pages/NotificacionesPage'
 
+// Dashboard de admin: placeholder temporal hasta que se desarrolle el real
 import AdminDashboardPage from '../pages/admin/DashboardAdmin'
+// Dashboard de bibliotecario: el que ya está desarrollado y funcionando
+import BibliotecarioDashboardPage from '../pages/bibliotecario/DashboardBiblio'
+
 import PrestamosAdminPage from '../pages/admin/PrestamosAdminPage'
 import DevolucionesAdminPage from '../pages/admin/DevolucionesAdminPage'
 import CatalogoAdminPage from '../pages/admin/CatalogoAdminPage'
@@ -161,7 +165,7 @@ const AppRouter = () => {
           }
         >
           <Route index element={<Navigate to="inicio" replace />} />
-          <Route path="inicio" element={<AdminDashboardPage />} />
+          <Route path="inicio" element={<BibliotecarioDashboardPage />} />
           <Route path="notificaciones" element={<NotificacionesPage />} /> 
           <Route path="prestamos" element={<PrestamosAdminPage />} />
           <Route path="devoluciones" element={<DevolucionesAdminPage />} />
