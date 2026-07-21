@@ -8,8 +8,14 @@ Carina Velazquez
 Alejandro Villalba
 ## Tecnologías
 
-- React
-- Vite
+- **React** 19
+- **Vite** 8
+- **React Router DOM** 7 - Enrutamiento
+- **Axios** - Cliente HTTP para consumir la API
+- **@react-oauth/google** - Login con Google OAuth 2.0
+- **lucide-react** / **react-icons** - Íconos
+- **jspdf** + **jspdf-autotable** - Exportación de reportes a PDF
+- **ESLint** - Linting
 
 ## Instalación
 
@@ -23,414 +29,179 @@ npm install
 npm run dev
 ```
 
+## Variables de Entorno
+
+Copiar `.env.example` a `.env` y completar:
+```env
+VITE_API_URL=http://localhost:3210
+```
+
 ## 🎯 Características
 
 - ✅ **Interfaz Moderna** - Diseño responsive con React y CSS personalizado
-- ✅ **Autenticación Segura** - Login con credenciales y Google OAuth 2.0
-- ✅ **Control de Acceso por Roles** - Vistas diferenciadas para admin, bibliotecario y usuario
-- ✅ **Catálogo de Libros** - Exploración y búsqueda de libros disponibles
-- ✅ **Gestión de Usuarios** - Visualización y control de usuarios
-- ✅ **Gestión de Préstamos** - Visualización y control de préstamos activos
-- ✅ **Sistema de Sanciones** - Consulta y gestión de sanciones
-- ✅ **Sistema de Devoluciones** - Registro de devoluciones de libros
-- ✅ **Notificaciones** - Sistema de alertas para los usuarios
-- ✅ **Panel de Administración** - Gestión completa de usuarios, libros y préstamos
-- ✅ **Rutas Protegidas** - Navegación segura con verificación de sesión
-- ✅ **Carrito de Solicitudes** - Sistema de carrito para solicitudes de libros
-- ✅ **Selección de Rol** - Flujo de selección de rol al iniciar sesión
+- ✅ **Autenticación Segura** - Login con Google OAuth 2.0 y JWT
+- ✅ **Control de Acceso por Roles** - Vistas y layouts diferenciados para admin, bibliotecario y usuario
+- ✅ **Catálogo de Libros** - Exploración, búsqueda y detalle (vistas pública, usuario, bibliotecario y admin)
+- ✅ **Gestión de Usuarios** - Visualización y control de usuarios (admin)
+- ✅ **Gestión de Préstamos** - Solicitud, seguimiento, renovación y cancelación de préstamos
+- ✅ **Sistema de Sanciones** - Consulta y gestión de sanciones por infracción de préstamo o comportamiento
+- ✅ **Sistema de Devoluciones** - Registro y detalle de devoluciones de libros
+- ✅ **Notificaciones** - Sistema de alertas en tiempo real para los usuarios (`NotificationsContext`)
+- ✅ **Panel de Administración** - Gestión completa de usuarios, libros, préstamos, sanciones y sesiones
+- ✅ **Reportes** - Generación y exportación a PDF de reportes (admin y bibliotecario)
+- ✅ **Registro de Actividades** - Auditoría de operaciones del sistema (admin)
+- ✅ **Control de Sesiones** - Visualización de sesiones activas/expiradas (admin)
+- ✅ **Rutas Protegidas** - Navegación segura con verificación de sesión (`ProtectedRoute`)
+- ✅ **Carrito de Solicitudes** - Sistema de carrito para solicitudes de préstamo (`CartContext`)
+- ✅ **Selección de Rol** - Flujo de selección de rol activo al iniciar sesión (para usuarios con más de un rol)
 
 ---
 
----
-
-## 🏗️ Estructura del Proyecto
-´´´
-fronted/
-
-├── index.html # Punto de entrada HTML
-
-├── package.json # Dependencias del proyecto
-
-├── package-lock.json # Lock de dependencias
-
-├── vite.config.js # Configuración de Vite
-
-├── eslint.config.js # Configuración de ESLint
-
-├── .env # Variables de entorno (no subir a git)
-
-├── .env.example # Ejemplo de variables de entorno
-
-├── .gitignore # Archivos ignorados por Git
-
-├── README.md # Documentación del proyecto
-
-│
-
-├── public/
-
-│ ├── favicon.svg # Favicon de la aplicación
-
-│ └── icons.svg # Iconos SVG
-
-│
-
-└── src/
-
-├── main.jsx # Punto de entrada de React
-
-├── App.jsx # Componente raíz
-
-├── App.css # Estilos de App
-
-├── index.css # Estilos globales
-
-│
-
-├── assets/
-
-│ ├── icons/
-
-│ │ ├── logo-web-blanco.png
-
-│ │ ├── LogoFCyT.png
-
-│ │ ├── logofcytunca.png
-
-│ │ ├── react.svg
-
-│ │ └── vite.svg
-
-│ └── images/
-
-│ ├── biblioteca-fondo.jpg
-
-│ ├── Calculo.jpg
-
-│ ├── Electrica.jpg
-
-│ ├── hero.png
-
-│ └── Informatica.jpg
-
-│
-
-├── components/
-
-│ ├── devoluciones/ # Componentes de devoluciones
-
-│ ├── prestamos/ # Componentes de préstamos
-
-│ ├── sanciones/ # Componentes de sanciones
-
-│ ├── styles/ # Estilos de componentes
-
-│ ├── Buscador.jsx
-
-│ ├── CamposAutoresNuevoMaterial.jsx
-
-│ ├── CarritoItem.jsx
-
-│ ├── CatalogoPagination.jsx
-
-│ ├── EjemplarItem.jsx
-
-│ ├── Filtros.jsx
-
-│ ├── FooterLogin.jsx
-
-│ ├── InputImagen.jsx
-
-│ ├── LibroCard.jsx
-
-│ ├── LibroInfoItem.jsx
-
-│ ├── ListaLibros.jsx
-
-│ ├── ModalExitoNuevoMaterial.jsx
-
-│ ├── NotificacionesBadge.jsx
-
-│ ├── NuevoMaterialHelpers.jsx
-
-│ ├── PrestamoCard.jsx
-
-│ ├── PrestamoConfirmModal.jsx
-
-│ ├── PrestamoDetalleModal.jsx
-
-│ ├── PrestamoEstadoBadge.jsx
-
-│ ├── PrestamoFilters.jsx
-
-│ ├── PrestamoPagination.jsx
-
-│ ├── PrestamoSolicitudCard.jsx
-
-│ ├── PrestamoSolicitudModal.jsx
-
-│ ├── PrestamoTabs.jsx
-
-│ ├── SelectPersonalizadoNuevoMaterial.jsx
-
-│ ├── SolicitudFilters.jsx
-
-│ └── SolicitudTipoBadge.jsx
-
-│
-
-├── context/
-
-│ └── AuthContext.jsx # Contexto de autenticación (JWT, usuario)
-
-│
-
-├── hooks/ # Custom hooks
-
-│
-
-├── layouts/
-
-│ ├── prueba/
-
-│ │ ├── AdminLayout.jsx
-
-│ │ ├── Layout.css
-
-│ │ └── UserLayout.jsx
-
-│ ├── styles/
-
-│ │ ├── AdminLayout.css
-
-│ │ ├── Footer.css
-
-│ │ ├── Navbar.css
-
-│ │ ├── SidebarAdmin.css
-
-│ │ ├── SidebarUser.css
-
-│ │ └── UserLayout.css
-
-│ ├── AdminLayout.jsx
-
-│ ├── BibliotecarioLayout.jsx
-
-│ ├── Footer.jsx
-
-│ ├── Navbar.jsx
-
-│ ├── SidebarAdmin.jsx
-
-│ ├── SidebarUser.jsx
-
-│ └── UserLayout.jsx
-
-│
-
-├── layouts_components/
-
-│ ├── Footer.jsx
-
-│ ├── Navbar.jsx
-
-│ ├── SidebarAdmin.jsx
-
-│ └── SidebarUser.jsx
-
-│
-
-├── layouts_prueba/
-
-│ ├── AdminLayout.jsx
-
-│ ├── Layout.css
-
-│ └── UserLayout.jsx
-
-│
-
-├── pages/
-
-│ ├── admin/
-
-│ │ ├── prueba/
-
-│ │ │ ├── DevolucionesAdminPage.jsx
-
-│ │ │ ├── DevolucionesAdminPage.css
-
-│ │ │ ├── AdminPrestamosPage.jsx
-
-│ │ │ ├── SancionesAdminPage.jsx
-
-│ │ │ ├── SancionesAdminPage.css
-
-│ │ │ ├── EditarLibroPage.jsx
-
-│ │ │ ├── GestionPrestamosPage.jsx
-
-│ │ │ ├── InformesPage.jsx
-
-│ │ │ ├── NuevaSancionPage.jsx
-
-│ │ │ ├── NuevaSancionPage.css
-
-│ │ │ ├── NuevoLibroPage.jsx
-
-│ │ │ └── UsuariosPage.jsx
-
-│ │ ├── AdminCatalogoPage.jsx
-
-│ │ ├── CatalogoAdmin.jsx
-
-│ │ ├── DashboardAdmin.jsx
-
-│ │ ├── DetalleLibroAdminPage.jsx
-
-│ │ ├── GestionUsuarios.jsx
-
-│ │ ├── LibroDetalleAdmin.jsx
-
-│ │ ├── ModificarMaterial.jsx
-
-│ │ ├── NuevoMaterial.jsx
-
-│ │ ├── PerfilAdminPage.jsx
-
-│ │ ├── PrestamosAdmin.jsx
-
-│ │ └── PrestamosAdminPage.jsx
-
-│ │
-
-│ ├── auth/
-
-│ │ ├── auth_styles/
-
-│ │ ├── AuthCallbackPage.jsx
-
-│ │ ├── CompletarPerfilPage.jsx
-
-│ │ ├── CompletarPerfilPage.css
-
-│ │ ├── LoginPage.jsx
-
-│ │ ├── LoginPage.css
-
-│ │ ├── RolSelectorPage.jsx
-
-│ │ └── RolSelectorPage.css
-
-│ │
-
-│ ├── public/
-
-│ │ ├── CatalogoPublic.jsx
-
-│ │ ├── CatalogoPublicPage.jsx
-
-│ │ ├── LibroDetallePublic.jsx
-
-│ │ └── LibroDetallePublicPage.jsx
-
-│ │
-
-│ ├── styles/
-
-│ │ ├── styles_admin/
-
-│ │ │ ├── CatalogoAdmin.css
-
-│ │ │ ├── DashboardAdmin.css
-
-│ │ │ ├── GestionUsuarios.css
-
-│ │ │ ├── LibroDetalleAdmin.css
-
-│ │ │ ├── ModificarMaterial.css
-
-│ │ │ ├── NuevoMaterial.css
-
-│ │ │ └── PrestamosAdmin.css
-
-│ │ ├── styles_user/
-
-│ │ │ ├── Carrito.css
-
-│ │ │ ├── Catalogo.css
-
-│ │ │ ├── DashboardUser.css
-
-│ │ │ ├── LibroDetalle.css
-
-│ │ │ └── SancionesUserPage.css
-
-│ │ ├── Dashboard.css
-
-│ │ └── PerfilPage.css
-
-│ │
-
-│ └── user/
-
-│ ├── prueba/
-
-│ │ ├── DevolucionesUserPage.jsx
-
-│ │ ├── DevolucionesUserPage.css
-
-│ │ └── PrestamosPage.jsx
-
-│ ├── Carrito.jsx
-
-│ ├── Catalogo.jsx
-
-│ ├── CatalogoUserPage.jsx
-
-│ ├── DashboardUser.jsx
-
-│ ├── DetalleLibroUserPage.jsx
-
-│ ├── LibroDetalle.jsx
-
-│ ├── PerfilUserPage.jsx
-
-│ └── SancionesUserPage.jsx
-
-│
-
-├── routes/
-
-│ ├── AppRouter.jsx # Definición de rutas principales
-
-│ ├── ProtectedRoute.jsx # Wrapper de rutas protegidas
-
-│ └── ScrollToTop.jsx # Scroll al inicio en cada navegación
-
-│
-
-└── services/
-
-├── api.js # Configuración base de axios/fetch
-
-├── auth.services.js # Servicios de autenticación
-
-├── books.services.js # Servicios de libros
-
-├── copies.services.js # Servicios de copias/ejemplares
-
-├── loans.services.js # Servicios de préstamos
-
-├── notifications.services.js # Servicios de notificaciones
-
-├── returns.services.js # Servicios de devoluciones
-
-├── sanctions.services.js # Servicios de sanciones
-
-└── users.services.js # Servicios de usuarios
 ```
+frontend/
+├── index.html                    # Punto de entrada HTML
+├── package.json                  # Dependencias del proyecto
+├── package-lock.json             # Lock de dependencias
+├── vite.config.js                # Configuración de Vite
+├── eslint.config.js              # Configuración de ESLint
+├── .env                          # Variables de entorno (no subir a git)
+├── .env.example                  # Ejemplo de variables de entorno
+├── .gitignore                    # Archivos ignorados por Git
+├── README.md                     # Documentación del proyecto
+│
+├── public/
+│   ├── favicon.svg               # Favicon de la aplicación
+│   └── icons.svg                 # Sprite de íconos SVG
+│
+└── src/
+    ├── main.jsx                  # Punto de entrada de React (providers + AppRouter)
+    ├── index.css                 # Estilos globales
+    │
+    ├── assets/
+    │   ├── icons/                # Logos (FCyT, web, etc.)
+    │   └── images/                # Imágenes de fondo/hero/carreras
+    │
+    ├── components/                # Componentes reutilizables, agrupados por dominio
+    │   ├── catalogo/              # Cards, filtros, buscador, detalle de libro (público/user/admin/biblio)
+    │   ├── devoluciones/          # Tabs, modales y cards de devoluciones
+    │   ├── login/                 # FooterLogin
+    │   ├── notificaciones/        # Badge y filtros de notificaciones
+    │   ├── prestamos/             # Cards e historial de préstamos (vista usuario)
+    │   ├── prestamos-admin/       # Cards, modales, filtros y tabs de préstamos (vista admin/bibliotecario)
+    │   ├── reportes/              # Selectores, filtros y resultado de reportes
+    │   ├── sanciones/             # Cards, modales y listado de sanciones
+    │   └── sesiones/              # Tabla, filtros y paginación de sesiones
+    │
+    ├── constants/
+    │   └── filtrosMeta.js         # Metadatos de filtros reutilizables
+    │
+    ├── context/                   # Contextos globales de React
+    │   ├── AuthContext.jsx        # Autenticación (JWT, usuario, rol activo)
+    │   ├── CartContext.jsx        # Carrito de solicitudes de préstamo
+    │   └── NotificationsContext.jsx # Notificaciones en tiempo real
+    │
+    ├── hooks/                     # Custom hooks
+    │
+    ├── layouts/
+    │   ├── AdminLayout.jsx
+    │   ├── BibliotecarioLayout.jsx
+    │   ├── UserLayout.jsx
+    │   ├── components/
+    │   │   ├── Footer.jsx
+    │   │   ├── Navbar.jsx
+    │   │   ├── SidebarAdmin.jsx
+    │   │   ├── SidebarBibliotecario.jsx
+    │   │   ├── SidebarUser.jsx
+    │   │   └── styles/
+    │   └── styles/
+    │       ├── AdminLayout.css
+    │       └── UserLayout.css
+    │
+    ├── pages/
+    │   ├── NotificacionesPage.jsx
+    │   ├── styles/                # Estilos compartidos (Dashboard, Perfil, Notificaciones)
+    │   ├── admin/                 # Páginas del panel de administración
+    │   │   ├── DashboardAdmin.jsx
+    │   │   ├── CatalogoAdminPage.jsx
+    │   │   ├── LibroDetalleAdminPage.jsx
+    │   │   ├── NuevoMaterial.jsx / ModificarMaterial.jsx
+    │   │   ├── PrestamosAdminPage.jsx / PrestamosAdmin.jsx
+    │   │   ├── DevolucionesAdminPage.jsx
+    │   │   ├── SancionesAdminPage.jsx / NuevaSancionPage.jsx
+    │   │   ├── DetalleSancionesPrestamoPage.jsx / DetalleSancionesComportamientoPage.jsx
+    │   │   ├── ReportesAdminPage.jsx
+    │   │   ├── ActividadesAdminPage.jsx
+    │   │   ├── GestionUsuarios.jsx
+    │   │   ├── SesionesAdmin.jsx
+    │   │   ├── PerfilAdminPage.jsx
+    │   │   └── styles/
+    │   ├── auth/                  # Login, callback de OAuth, selección de rol, completar perfil
+    │   │   ├── LoginPage.jsx
+    │   │   ├── AuthCallbackPage.jsx
+    │   │   ├── RolSelectorPage.jsx
+    │   │   ├── CompletarPerfilPage.jsx
+    │   │   └── styles/
+    │   ├── bibliotecario/         # Páginas del panel de bibliotecario
+    │   │   ├── DashboardBiblio.jsx
+    │   │   ├── LibroDetalleBibliotecarioPage.jsx
+    │   │   ├── ReportesBibliotecarioPage.jsx
+    │   │   ├── PerfilBibliotecarioPage.jsx
+    │   │   └── styles/
+    │   ├── public/                # Catálogo público sin autenticación
+    │   │   ├── CatalogoPublicPage.jsx
+    │   │   ├── LibroDetallePublicPage.jsx
+    │   │   └── styles/
+    │   └── user/                  # Páginas del usuario normal
+    │       ├── DashboardUser.jsx
+    │       ├── CatalogoUserPage.jsx
+    │       ├── LibroDetalleUserPage.jsx
+    │       ├── MisSolicitudesPage.jsx
+    │       ├── PrestamosUserPage.jsx
+    │       ├── DevolucionesUserPage.jsx
+    │       ├── SancionesUserPage.jsx
+    │       ├── PerfilUserPage.jsx
+    │       └── styles/
+    │
+    ├── routes/
+    │   ├── AppRouter.jsx           # Definición de rutas (públicas, por rol y layouts)
+    │   ├── ProtectedRoute.jsx      # Wrapper de rutas protegidas por auth/rol
+    │   └── ScrollToTop.jsx         # Scroll al inicio en cada navegación
+    │
+    ├── services/                   # Llamadas a la API (uno por dominio, sobre axios)
+    │   ├── api.js                  # Instancia de axios (baseURL, interceptor de token)
+    │   ├── auth.services.js
+    │   ├── activity.services.js
+    │   ├── books.services.js
+    │   ├── copies.services.js
+    │   ├── loans.services.js
+    │   ├── notifications.services.js
+    │   ├── reports.services.js
+    │   ├── returns.services.js
+    │   ├── sanctions.services.js
+    │   ├── session.services.js
+    │   └── users.services.js
+    │
+    └── utils/
+        ├── bloquearCaracteresNumero.js
+        ├── exportarReportePDF.js
+        ├── formatearCelda.js
+        ├── notificacionTipos.js
+        ├── textFormatters.js
+        └── validarRangoFecha.js
+```
+
+---
+
+## 🧭 Roles y Rutas
+
+La aplicación define layouts y sets de rutas separados por rol, protegidos con `ProtectedRoute` según el `rolActivo` del usuario autenticado (`AuthContext`):
+
+- **Público** (sin login): catálogo y detalle de libro (`pages/public`)
+- **Usuario normal** (`UserLayout`): dashboard, catálogo, mis solicitudes, préstamos, devoluciones, sanciones, perfil
+- **Bibliotecario** (`BibliotecarioLayout`): dashboard, catálogo/detalle de libro, reportes, perfil
+- **Admin** (`AdminLayout`): dashboard, catálogo y CRUD de materiales, préstamos, devoluciones, sanciones, reportes, actividades, gestión de usuarios, sesiones, perfil
+
+Un usuario puede tener más de un rol asignado; en ese caso, `RolSelectorPage` le permite elegir con cuál rol operar en la sesión actual.
 
 ## 🌐 Conexión con el Backend
 
@@ -438,12 +209,16 @@ Este frontend consume la API REST documentada en el repositorio del backend (`Bi
 
 - Autenticación (`/api/auth`)
 - Libros y copias (`/api/books`, `/api/books/:id/copies`)
-- Préstamos y devoluciones (`/api/loans`)
+- Préstamos y devoluciones (`/api/loans`, `/api/returns`)
 - Sanciones (`/api/sanctions`)
 - Usuarios (`/api/users`)
 - Notificaciones (`/api/notifications`)
 - Actividades y sesiones (`/api/activity`, `/api/sessions`)
+- Dashboards (`/api/dashboard`, `/api/admin-dashboard`, `/api/bibliotecario-dashboard`)
+- Reportes (`/api/reports`)
+
+La URL base se toma de la variable `VITE_API_URL` y se centraliza en `src/services/api.js`.
 
 ---
 
-**Última actualización:** 23 de Junio de 2026
+**Última actualización:** 21 de Julio de 2026
