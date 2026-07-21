@@ -1,0 +1,99 @@
+@import '../../styles/Dashboard.css';
+
+/* Card clickeable (para Usuarios / Sesiones) */
+.stat-card--clickable {
+  cursor: pointer;
+}
+
+/* Badge clickeable dentro de los paneles ("Ver todos" / "Ver todo") */
+.chart-panel__badge--clickable {
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.chart-panel__badge--clickable:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+/* Panel de actividad reciente (feed) */
+.activity-feed-panel {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1.8rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.activity-feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.activity-feed-item__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.activity-feed-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-feed-item__text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.activity-feed-item__user {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.activity-feed-item__desc {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.activity-feed-item__time {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .activity-feed-item {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .activity-feed-item__time {
+    align-self: flex-end;
+  }
+}
