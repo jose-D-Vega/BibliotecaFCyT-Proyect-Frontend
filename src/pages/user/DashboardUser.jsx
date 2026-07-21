@@ -80,58 +80,12 @@ const DashboardUser = () => {
     }));
   };
 
-  // SKELETON DE CARGA
+  // CARGA
   if (loading) {
     return (
-      <div className="ud-page">
-        <header className="ud-header">
-          <div className="ud-header__container">
-            <div className="ud-header__brand">
-              <div className="ud-header__icon-box">
-                <MdSchool size={24} />
-              </div>
-              <div className="ud-header__text-group">
-                <span className="ud-header__badge">
-                  <span className="ud-header__badge-dot"></span>
-                  PORTAL DEL ESTUDIANTE
-                </span>
-                <h1 className="ud-header__title">Mi Biblioteca</h1>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main className="ud-main">
-          <section className="ud-stats-grid">
-            {[1, 2, 3, 4].map(i => (
-              <article key={i} className="ud-stat-card ud-skeleton-card">
-                <div className="ud-skeleton-line ud-skeleton-line--short"></div>
-                <div className="ud-skeleton-line ud-skeleton-line--value"></div>
-                <div className="ud-skeleton-line ud-skeleton-line--short"></div>
-              </article>
-            ))}
-          </section>
-
-          <section className="ud-activity-chart-grid">
-            <article className="ud-activity-panel ud-skeleton-card">
-              <div className="ud-skeleton-line ud-skeleton-line--title"></div>
-              <div className="ud-skeleton-line ud-skeleton-line--sub"></div>
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="ud-skeleton-bar-line"></div>
-              ))}
-            </article>
-
-            <article className="ud-chart-panel ud-skeleton-card">
-              <div className="ud-skeleton-line ud-skeleton-line--title"></div>
-              <div className="ud-skeleton-line ud-skeleton-line--sub"></div>
-              <div className="ud-skeleton-chart-bars">
-                {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="ud-skeleton-bar" style={{ height: `${30 + (i % 3) * 20}%` }}></div>
-                ))}
-              </div>
-            </article>
-          </section>
-        </main>
+      <div className="ud-spinner-page">
+        <div className="ud-spinner"></div>
+        <p className="ud-spinner-text">Cargando tu biblioteca...</p>
       </div>
     );
   }
