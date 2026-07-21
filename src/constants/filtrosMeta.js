@@ -111,6 +111,10 @@ export const FILTROS_META = {
   id_admin: { label: "Registrado por (sanción)", type: "usuario_search", soloStaff: true },
   
   es_reserva: { label: "¿Es reserva?", type: "select", options: ["true", "false"] },
+  activo: { label: "Activo", type: "select", options: [
+    { value: "true", label: "Sí" },
+    { value: "false", label: "No" }
+  ] },
   fecha_desde: { label: "Desde", type: "date" },
   fecha_hasta: { label: "Hasta", type: "date" },
   rol: {

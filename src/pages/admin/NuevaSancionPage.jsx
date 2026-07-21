@@ -41,7 +41,9 @@ const leerEntrada = (state, searchParams) => {
     idPrestamoInicial:      searchParams.get('id_prestamo'),
     idEjemplaresInicial:    searchParams.get('id_ejemplares'),
     idUsuarioInicial:       searchParams.get('id_usuario'),
-    idEjemplaresDanio:      state?.idEjemplaresDanio || null,
+    idEjemplaresDanio: (state?.idEjemplaresDanio && state.idEjemplaresDanio.length > 0)
+      ? state.idEjemplaresDanio
+      : null,
   }
 }
 
