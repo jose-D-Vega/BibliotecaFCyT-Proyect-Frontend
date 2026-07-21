@@ -2,10 +2,8 @@
 
 Frontend de la aplicación de gestión de biblioteca para la Facultad de Ciencias y Tecnología (FCyT). El sistema es una aplicación web de gestión de biblioteca para la Facultad de Ciencias y Tecnología (FCyT). Su objetivo principal es digitalizar y organizar todo el proceso relacionado con el manejo de libros, usuarios y servicios de préstamo dentro de la biblioteca, facilitando el trabajo tanto de los administradores como de los estudiantes o usuarios que la utilicen.
 
-Autores : 
-Jose Vega Santos
-Carina Velazquez
-Alejandro Villalba
+---
+
 ## Tecnologías
 
 - **React** 19
@@ -17,24 +15,50 @@ Alejandro Villalba
 - **jspdf** + **jspdf-autotable** - Exportación de reportes a PDF
 - **ESLint** - Linting
 
-## Instalación
+---
 
+## 📋 Requisitos Previos
+
+- **Node.js** (v18 o superior)
+- **npm** o **yarn**
+- Backend de BibliotecaFCyT corriendo (ver repositorio `BibliotecaFCyT-Proyect`)
+
+---
+
+## 🚀 Instalación
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/tu-usuario/BibliotecaFCyT-Frontend.git
+cd BibliotecaFCyT-Frontend
+```
+
+### 2. Instalar dependencias
 ```bash
 npm install
 ```
 
-## Uso
-
-```bash
-npm run dev
-```
-
-## Variables de Entorno
-
-Copiar `.env.example` a `.env` y completar:
+### 3. Configurar variables de entorno
+Copiar `.env.example` a `.env` y completar los valores:
 ```env
 VITE_API_URL=http://localhost:3210
 ```
+
+### 4. Iniciar el servidor
+```bash
+# Modo desarrollo
+npm run dev
+
+# Compilar para producción
+npm run build
+
+# Previsualizar build de producción
+npm run preview
+```
+
+El frontend estará disponible en: `http://localhost:5173`
+
+---
 
 ## 🎯 Características
 
@@ -56,6 +80,8 @@ VITE_API_URL=http://localhost:3210
 - ✅ **Selección de Rol** - Flujo de selección de rol activo al iniciar sesión (para usuarios con más de un rol)
 
 ---
+
+## 🏗️ Estructura del Proyecto
 
 ```
 frontend/
@@ -218,6 +244,17 @@ Este frontend consume la API REST documentada en el repositorio del backend (`Bi
 - Reportes (`/api/reports`)
 
 La URL base se toma de la variable `VITE_API_URL` y se centraliza en `src/services/api.js`.
+
+---
+
+## ✨ Autores
+
+**Equipo de Ingeniería en Informática — Programación Web I**
+- José Santos David Vega Acosta.
+- Alejandro Manuel Villalba Irigoitia.
+- Carina Velazquez Rodríguez.
+
+*FCyT — Universidad Nacional de Caaguazú*
 
 ---
 
