@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./styles/AdminLayout.css";
 import Navbar from "./components/Navbar";
-import SidebarAdmin from "./components/SidebarAdmin";
+import SidebarBibliotecario from "./components/SidebarBibliotecario";
 import Footer from "./components/Footer";
 
 const BibliotecarioLayout = () => {
@@ -43,7 +43,7 @@ const BibliotecarioLayout = () => {
         onViewProfile={handleViewProfile}
       />
 
-      <SidebarAdmin isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+      <SidebarBibliotecario isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main className="admin-layout__main">
         <div className="admin-layout__content">

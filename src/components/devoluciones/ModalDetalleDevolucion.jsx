@@ -123,7 +123,12 @@ const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
           </div>
         )}
 
-        {loading && <p className="modal-dev__loading">Cargando detalle...</p>}
+        {loading && (
+          <div className="tab-loading">
+            <div className="tab-spinner"></div>
+            <p>Cargando detalle...</p>
+          </div>
+        )}
         {error   && <p className="modal-dev__error" style={{ margin: '1rem 1.5rem' }}>{error}</p>}
 
         {detalle && !loading && (

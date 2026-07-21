@@ -209,7 +209,12 @@ const ModalSancionesLoan = ({ grupo, onCerrar, onActualizar }) => {
         )}
 
         <div className="modal-sancion__body">
-          {loading && <p style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>Cargando...</p>}
+          {loading && (
+            <div className="sanciones-loading-modal">
+              <div className="sanciones-spinner"></div>
+              <p>Cargando sanciones...</p>
+            </div>
+          )}
           {error   && <p className="sanciones-error">{error}</p>}
           {!loading && !error && sancionesOrdenadas.length === 0 && (
             <p style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>

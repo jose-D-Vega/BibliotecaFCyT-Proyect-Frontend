@@ -6,20 +6,27 @@ import { useState, useEffect, useRef } from "react";
 
 import "./styles/ModificarMaterial.css";
 import { updateBook } from "../../services/books.services";
+import { useAuth } from "../../context/AuthContext";
 
 function ModificarMaterial() {
   const { state } = useLocation();
+  const { rolActivo } = useAuth();
+
+  const rutaCatalogo =
+  rolActivo === "bibliotecario"
+    ? "/bibliotecario/catalogo"
+    : "/admin/catalogo";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   /* REDIRECCIÓN SEGURA */
-  useEffect(() => {
-    if (!state) {
-      navigate("/admin/catalogo", {
-        replace: true,
-      });
-    }
-  }, [state, navigate]);
+useEffect(() => {
+  if (!state) {
+    navigate(rutaCatalogo, {
+      replace: true,
+    });
+  }
+}, [state, navigate, rutaCatalogo]);
 
   /* ESTADOS */
   const [libro, setLibro] = useState(state || {});
@@ -269,7 +276,7 @@ function ModificarMaterial() {
       }
 
       await updateBook(libro.id_libro, formData);
-      navigate("/admin/catalogo");
+      navigate(rutaCatalogo);
     } catch (err) {
       setErrores({
         ...errores,

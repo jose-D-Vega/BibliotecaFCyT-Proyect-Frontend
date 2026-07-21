@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react"
+
+import { useLocation, useNavigate } from "react-router-dom"
+import { MdArrowBack } from "react-icons/md"
+
+
 import "./styles/PrestamosAdmin.css"
+
 
 import PrestamoTabs from "../../components/prestamos-admin/PrestamoTabs"
 import PrestamoSolicitudCard from "../../components/prestamos-admin/PrestamoSolicitudCard"
@@ -13,8 +19,11 @@ import { getLoans } from "../../services/loans.services"
 const ITEMS_PER_PAGE = 6
 
 function PrestamosAdmin() {
+    const location = useLocation()
+  const navigate = useNavigate()
+  const rolActivo = localStorage.getItem("rolActivo")
 
-  const [activeTab, setActiveTab] = useState("solicitudes")
+  const [activeTab, setActiveTab] = useState(location.state?.tab || "solicitudes")
 
   const [solicitudes, setSolicitudes] = useState([])
   const [prestamos, setPrestamos] = useState([])
@@ -26,11 +35,12 @@ function PrestamosAdmin() {
 
   // Control real de carga: evita el flash de "no hay resultados" antes de que
   // termine el primer fetch de cada pestaña
+
   const [loadedSolicitudes, setLoadedSolicitudes] = useState(false)
   const [loadedPrestamos, setLoadedPrestamos] = useState(false)
 
-  const [solicitudFiltro, setSolicitudFiltro] = useState("TODAS")
-  const [estadoFiltro, setEstadoFiltro] = useState("Todos los estados")
+  const [solicitudFiltro, setSolicitudFiltro] = useState(location.state?.solicitudFiltro || "TODAS")
+  const [estadoFiltro, setEstadoFiltro] = useState(location.state?.estadoFiltro || "Todos los estados")
 
   const [prestamosPage, setPrestamosPage] = useState(1)
   const [solicitudesPage, setSolicitudesPage] = useState(1)
@@ -40,6 +50,13 @@ function PrestamosAdmin() {
     action: "",
     solicitud: null
   })
+
+  // Si llega un nuevo state de navegación (ej. desde otra tarjeta del dashboard), aplicarlo
+  useEffect(() => {
+    if (location.state?.tab) setActiveTab(location.state.tab)
+    if (location.state?.estadoFiltro) setEstadoFiltro(location.state.estadoFiltro)
+    if (location.state?.solicitudFiltro) setSolicitudFiltro(location.state.solicitudFiltro)
+  }, [location.state])
 
   const normalize = (str) =>
     (str || "")
@@ -187,10 +204,13 @@ function PrestamosAdmin() {
     return ["solicitado", "solicitud_reserva", "solicitud_renovacion", "reserva_aprobada", "reserva_parcialmente_aprobada"]
   }
 
+
+
   // =========================
   // PRESTAMOS — un solo request, filtro y paginación reales del backend
   // =========================
   const fetchPrestamos = async (page = prestamosPage, estado = estadoFiltro) => {
+
     setLoading(true)
     try {
       const resp = await getLoans({
@@ -208,11 +228,13 @@ function PrestamosAdmin() {
     }
   }
 
+
   // =========================
   // SOLICITUDES — mismo endpoint, filtrando por los 3 estados de "solicitud"
   // (o uno solo, según el tipo elegido) directamente en el backend
   // =========================
   const fetchSolicitudes = async (page = solicitudesPage, tipo = solicitudFiltro) => {
+
     setLoading(true)
     try {
       const resp = await getLoans({
@@ -222,8 +244,11 @@ function PrestamosAdmin() {
         limit: ITEMS_PER_PAGE
       })
 
+
+      
       setSolicitudes((resp.data || []).map(mapSolicitud))
       setSolicitudesPaginacion(resp.pagination || { total: 0, page: 1, totalPages: 1 })
+
     } finally {
       setLoading(false)
       setLoadedSolicitudes(true)
@@ -235,6 +260,7 @@ function PrestamosAdmin() {
     if (activeTab === "solicitudes") fetchSolicitudes(solicitudesPage, solicitudFiltro)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab])
+
 
   // =========================
   // Handlers de filtro — ahora disparan un fetch nuevo (el filtro ya es del backend)
@@ -251,6 +277,7 @@ function PrestamosAdmin() {
     fetchSolicitudes(1, valor)
   }
 
+
   const isLoading =
     loading ||
     (activeTab === "prestamos" && !loadedPrestamos) ||
@@ -260,9 +287,31 @@ function PrestamosAdmin() {
     <main className="prestamos-admin">
 
       <section className="prestamos-admin__header">
-        <h1>Gestión de Préstamos</h1>
-        <PrestamoTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      </section>
+
+  {location.state?.fromDashboard && (
+    <button
+      className="prestamos-admin__volver-btn"
+      onClick={() =>
+        navigate(
+          rolActivo === "bibliotecario"
+            ? "/bibliotecario/inicio"
+            : "/admin/inicio"
+        )
+      }
+    >
+      <MdArrowBack size={16} />
+      Volver al inicio
+    </button>
+  )}
+
+  <h1>Gestión de Préstamos</h1>
+
+  <PrestamoTabs
+    activeTab={activeTab}
+    setActiveTab={setActiveTab}
+  />
+
+</section>
 
       <section className="prestamos-admin__body">
 
@@ -369,4 +418,4 @@ function PrestamosAdmin() {
   )
 }
 
-export default PrestamosAdmin
+export default PrestamosAdmin;

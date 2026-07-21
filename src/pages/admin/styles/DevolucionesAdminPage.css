@@ -8,6 +8,29 @@
   padding: 20px;
 }
 
+.devoluciones-volver-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  align-self: flex-start;
+  background-color: #1e2536;
+  color: #e8ddc7;
+  border: 1px solid #3a4256;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.devoluciones-volver-btn:hover {
+  background-color: #262e42;
+  border-color: #4a5468;
+}
+
 .devoluciones-page__title {
   font-family: 'Playfair Display', serif;
   font-size: 1.75rem;

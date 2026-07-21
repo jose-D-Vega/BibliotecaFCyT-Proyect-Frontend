@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const ModalSugerirSancion = ({ sancionInfo, id_prestamo, onCerrar, onNavegar }) => {
+const ModalSugerirSancion = ({ sancionInfo, id_prestamo, rutaRol, onCerrar, onNavegar}) => {
   const [seleccionadas, setSeleccionadas] = useState({
     devolucion_tardia: false,
     deterioro: false
@@ -34,7 +34,7 @@ const ModalSugerirSancion = ({ sancionInfo, id_prestamo, onCerrar, onNavegar }) 
       params.set('id_ejemplares', idsDanio.join(','))
     }
 
-    onNavegar(`/admin/sanciones/nueva?${params.toString()}`, {
+    onNavegar(`${rutaRol}/sanciones/nueva?${params.toString()}`, {
       // location.state para los tipos pendientes y los ids del tipo deterioro
       tiposPendientes: tipos,
       idEjemplaresDanio: idsDanio  // lo usa NuevaSancionPage cuando el tipo activo es 'deterioro'

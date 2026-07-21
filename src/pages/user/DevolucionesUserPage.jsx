@@ -92,7 +92,12 @@ const DevolucionesUserPage = () => {
         </button>
       </form>
 
-      {loading && <p className="dev-user-loading">Cargando devoluciones...</p>}
+      {loading && (
+        <div className="dev-user-loader">
+          <div className="dev-user-spinner"></div>
+          <p>Cargando devoluciones...</p>
+        </div>
+      )}
       {error && <p className="dev-user-error">{error}</p>}
 
       {!loading && !error && devoluciones.length === 0 && (
@@ -169,18 +174,69 @@ const DevolucionesUserPage = () => {
           </div>
 
           {totalPaginas > 1 && (
-            <div className="dev-user-paginacion">
-              {Array.from({ length: totalPaginas }, (_, i) => (
-                <button
-                  key={i}
-                  className={`dev-user-pag-btn ${pagina === i + 1 ? 'activo' : ''}`}
-                  onClick={() => setPagina(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="dev-user-paginacion">
+
+            <button
+              className="dev-user-pag-btn"
+              disabled={pagina === 1}
+              onClick={() => setPagina(1)}
+            >
+              «
+            </button>
+
+            <button
+              className="dev-user-pag-btn"
+              disabled={pagina === 1}
+              onClick={() => setPagina(pagina - 1)}
+            >
+              ‹
+            </button>
+
+
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1)
+              .filter(num => {
+                if (totalPaginas <= 7) return true
+
+                if (num === 1 || num === totalPaginas) return true
+
+                return Math.abs(num - pagina) <= 2
+              })
+              .map((num, index, arr) => (
+                <span key={num}>
+                  {index > 0 && num - arr[index - 1] > 1 && (
+                    <span className="dev-user-pag-dots">...</span>
+                  )}
+
+                  <button
+                    className={`dev-user-pag-btn ${pagina === num ? 'activo' : ''}`}
+                    onClick={() => setPagina(num)}
+                  >
+                    {num}
+                  </button>
+                </span>
+              ))
+            }
+
+
+            <button
+              className="dev-user-pag-btn"
+              disabled={pagina === totalPaginas}
+              onClick={() => setPagina(pagina + 1)}
+            >
+              ›
+            </button>
+
+            <button
+              className="dev-user-pag-btn"
+              disabled={pagina === totalPaginas}
+              onClick={() => setPagina(totalPaginas)}
+            >
+              »
+            </button>
+
+          </div>
+        )}
+
         </>
       )}
 

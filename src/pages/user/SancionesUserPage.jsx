@@ -146,7 +146,10 @@ export default function MisSanciones() {
   if (loading) {
     return (
       <div className="san-contenedor">
-        <p>Cargando tus sanciones...</p>
+        <div className="san-loader">
+          <div className="san-spinner"></div>
+          <p>Cargando tus sanciones...</p>
+        </div>
       </div>
     )
   }
