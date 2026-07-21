@@ -96,6 +96,34 @@ function PrestamosAdmin() {
     return Object.values(materialesMap)
   }
 
+  // A diferencia de agruparMaterialesPorLibro (que muestra todo, para el tab
+  // "Préstamos"), esta versión filtra solo lo que todavía está 'solicitado' —
+  // para el modal de Solicitudes el bibliotecario NUNCA debería poder volver
+  // a tocar un ítem que ya se aprobó o rechazó antes (eso ya es una decisión
+  // firme, posiblemente con reasignaciones ya hechas sobre ella).
+  const agruparMaterialesPendientes = (detalles = []) => {
+    const materialesMap = {}
+
+    detalles
+      .filter(d => d.estado_prestamo_ejemplar !== 'rechazado')
+      .forEach((d) => {
+        const key = d.id_libro ?? `${d.titulo}-${d.autor}`
+
+        if (!materialesMap[key]) {
+          materialesMap[key] = {
+            id: d.id_libro,
+            titulo: d.titulo,
+            autor: d.autor,
+            ejemplares: []
+          }
+        }
+
+        materialesMap[key].ejemplares.push(d.id_ejemplar)
+      })
+
+    return Object.values(materialesMap)
+  }
+
   const mapPrestamo = (p) => ({
     id: p.id_prestamo,
     usuario: p.nombre_apellido || "Usuario",
@@ -113,18 +141,36 @@ function PrestamosAdmin() {
   })
 
   const mapSolicitud = (p) => {
+    const detallesReserva = (p.detalles || []).filter(d => d.es_reserva)
+    const yaAprobados = detallesReserva.filter(d => d.estado_prestamo_ejemplar === "solicitado").length
+    const yaRechazados = detallesReserva.filter(d => d.estado_prestamo_ejemplar === "rechazado").length
+    const tieneSolicitadoPendiente = detallesReserva.some(d => d.estado_prestamo_ejemplar === "solicitado")
+
     let tipoSolicitud = "Préstamo"
-    if (p.estado_prestamo === "solicitud_reserva") tipoSolicitud = "Reserva"
+    const esRondaFinalReserva =
+      ["reserva_aprobada", "reserva_parcialmente_aprobada"].includes(p.estado_prestamo) &&
+      !tieneSolicitadoPendiente
+    const esReservaConDecisionPendiente =
+      ["reserva_aprobada", "reserva_parcialmente_aprobada"].includes(p.estado_prestamo) &&
+      tieneSolicitadoPendiente
+
+    if (p.estado_prestamo === "solicitud_reserva" || esRondaFinalReserva || esReservaConDecisionPendiente) {
+      tipoSolicitud = "Reserva"
+    }
     if (p.estado_prestamo === "solicitud_renovacion") tipoSolicitud = "Renovación"
 
     return {
       id: p.id_prestamo,
       usuario: p.nombre_apellido || "Usuario",
       tipoSolicitud,
+      esRondaFinalReserva,
+      esReservaConDecisionPendiente,
+      yaAprobados,
+      yaRechazados,
       fecha: p.fecha_solicitud?.split("T")[0] || "",
       fechaLimite: p.fecha_tope_devolucion?.split("T")[0] || "",
       totalEjemplares: p.total_ejemplares ?? 0,
-      materiales: agruparMaterialesPorLibro(p.detalles)
+      materiales: agruparMaterialesPendientes(p.detalles)  
     }
   }
 
@@ -133,9 +179,12 @@ function PrestamosAdmin() {
 
   const mapTipoAEstadosSolicitud = (tipo) => {
     if (tipo === "PRESTAMO") return ["solicitado"]
-    if (tipo === "RESERVA") return ["solicitud_reserva"]
+    // RESERVA trae las dos rondas: la solicitud inicial Y las reservas ya
+    // listas para gestionar la entrega final (antes quedaban "perdidas" acá,
+    // sin ningún lugar del frontend donde el admin pudiera confirmarlas)
+    if (tipo === "RESERVA") return ["solicitud_reserva", "reserva_aprobada", "reserva_parcialmente_aprobada"]
     if (tipo === "RENOVACION") return ["solicitud_renovacion"]
-    return ["solicitado", "solicitud_reserva", "solicitud_renovacion"]
+    return ["solicitado", "solicitud_reserva", "solicitud_renovacion", "reserva_aprobada", "reserva_parcialmente_aprobada"]
   }
 
   // =========================
@@ -146,6 +195,7 @@ function PrestamosAdmin() {
     try {
       const resp = await getLoans({
         estado: mapEstadoFiltroABackend(estado),
+        excluir_pendientes_solicitud: true, 
         page,
         limit: ITEMS_PER_PAGE
       })
@@ -167,6 +217,7 @@ function PrestamosAdmin() {
     try {
       const resp = await getLoans({
         estados: mapTipoAEstadosSolicitud(tipo).join(","),
+        solo_reservas_listas: true,
         page,
         limit: ITEMS_PER_PAGE
       })

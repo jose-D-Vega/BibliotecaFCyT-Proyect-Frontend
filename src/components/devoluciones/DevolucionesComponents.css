@@ -201,6 +201,10 @@
   backdrop-filter: blur(4px);
 }
 
+.overlay-in-modal{
+  top: 0
+}
+
 .modal-dev-box {
   background: #0f2035;
   border: 1px solid rgba(255,255,255,0.12);
@@ -690,4 +694,29 @@
   background: rgba(239,68,68,0.2);
   border-color: rgba(239,68,68,0.5);
   color: #f09595;
+}
+
+.nueva-sancion-textarea {
+  padding: 0.7rem 0.95rem;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  color: #fff;
+
+  font-family: 'Source Sans 3', sans-serif;
+
+  font-size: 0.95rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
 }

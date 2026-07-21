@@ -23,7 +23,9 @@ function PrestamoSolicitudCard({ solicitud, onAceptar }) {
             </h2>
 
             <span className="solicitud-card-admin__date">
-              Solicitud realizada el {solicitud.fecha}
+              {solicitud.esRondaFinalReserva
+                ? "Reserva lista — todos los ejemplares ya fueron devueltos"
+                : `Solicitud realizada el ${solicitud.fecha}`}
             </span>
 
             <div className="solicitud-card-admin__meta">

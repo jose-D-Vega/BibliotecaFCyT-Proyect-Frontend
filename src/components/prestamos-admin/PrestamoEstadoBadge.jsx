@@ -42,6 +42,9 @@ function getEstadoLabel(estado = "") {
     case "aprobado":
       return "Aprobado"
 
+    case "reserva_rechazada":
+      return "Reserva Rechazada"
+
     default:
       return estado
   }
