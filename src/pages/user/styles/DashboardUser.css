@@ -618,9 +618,10 @@
   }
 
   .ud-books-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
 
   .ud-chart-panel__body {
     height: 150px;
@@ -640,9 +641,12 @@
 }
 
 @media (max-width: 480px) {
-  .ud-header__title {
-    font-size: 1.35rem;
+  
+  .ud-books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
   }
+
 
   .ud-header__badge {
     font-size: 0.65rem;
