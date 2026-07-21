@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { getLoanForReturn, registerReturn } from '../../services/returns.services'
 import './DevolucionesComponents.css'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import ModalReservaAfectada from './ModalReservaAfectada'
 import ModalSugerirSancion from './ModalSugerirSancion'
 
@@ -24,6 +25,11 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
   const [resultadoDevolucion, setResultadoDevolucion] = useState(null)
 
   const navigate = useNavigate()
+  const { rolActivo } = useAuth()
+
+  const rutaRol = rolActivo === 'admin'
+    ? '/admin'
+    : '/bibliotecario'
 
   useEffect(() => {
     const fetchPrestamo = async () => {
@@ -298,6 +304,7 @@ const ModalDevolucion = ({ id_prestamo, onCerrar, onDevolucionRegistrada }) => {
               <ModalSugerirSancion
                 sancionInfo={sancionInfo}
                 id_prestamo={id_prestamo}
+                rutaRol={rutaRol}
                 onCerrar={() => { setModal(null); onCerrar() }}
                 // En ModalSugerirSancion, la prop onNavegar recibe (ruta, state)
                 // En ModalDevolucion, actualizá el handler así:

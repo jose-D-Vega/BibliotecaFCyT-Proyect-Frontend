@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
 
 import "./styles/NuevoMaterial.css"
 
@@ -20,7 +21,14 @@ import {
 
 function NuevoMaterial() {
 
+  const { rolActivo } = useAuth()
+
   const navigate = useNavigate()
+
+  const rutaCatalogo =
+  rolActivo === "bibliotecario"
+    ? "/bibliotecario/catalogo"
+    : "/admin/catalogo"
 
   const [loading, setLoading] = useState(false)
 
@@ -225,7 +233,7 @@ function NuevoMaterial() {
         open={successModal}
         onClose={() => {
           setSuccessModal(false)
-          navigate("/admin/catalogo")
+          navigate(rutaCatalogo)
         }}
       />
 
@@ -236,7 +244,7 @@ function NuevoMaterial() {
           <button
             className="btn-secondary"
             onClick={() =>
-              navigate("/admin/catalogo")
+              navigate(rutaCatalogo)
             }
           >
             ← Volver

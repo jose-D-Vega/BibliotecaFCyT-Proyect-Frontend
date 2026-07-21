@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import { getLoanForSanction, createSanction } from '../../services/sanctions.services'
+import { useAuth } from '../../context/AuthContext'
 import BuscadorPrestamo      from '../../components/sanciones/BuscadorPrestamo'
 import BuscadorUsuario       from '../../components/sanciones/BuscadorUsuario'
 import SelectorEjemplares    from '../../components/sanciones/SelectorEjemplares'
@@ -45,6 +46,10 @@ const leerEntrada = (state, searchParams) => {
 }
 
 const NuevaSancionPage = () => {
+  const { rolActivo } = useAuth()
+  const rutaRol = rolActivo === 'admin'
+  ? '/admin'
+  : '/bibliotecario'
   const navigate       = useNavigate()
   const location       = useLocation()
   const [searchParams] = useSearchParams()
@@ -254,7 +259,7 @@ const NuevaSancionPage = () => {
         const params = new URLSearchParams()
         if (prestamo) params.set('id_prestamo', prestamo.id_prestamo)
 
-        navigate(`/admin/sanciones/nueva?${params.toString()}`, {
+        navigate(`${rutaRol}/sanciones/nueva?${params.toString()}`, {
           replace: true,
           state: {
             tiposPendientes:  tiposPendientes,          // resto de tipos
@@ -511,12 +516,19 @@ const NuevaSancionPage = () => {
             <div className="success-icon">✓</div>
             <h2>{tiposPendientesInicial.length > 1 ? 'Sanciones registradas' : 'Sanción registrada'}</h2>
             <p>¿Qué querés hacer ahora?</p>
-            <button className="success-btn" onClick={() => irYDespues('/admin/sanciones')}>
-              Ir a sanciones
-            </button>
-            <button className="success-btn" style={{ marginTop: '0.5rem' }} onClick={() => irYDespues('/admin/devoluciones')}>
-              Ir a devoluciones
-            </button>
+            <button 
+            className="success-btn" 
+            onClick={() => irYDespues(`${rutaRol}/sanciones`)}
+          >
+            Ir a sanciones
+          </button>
+            <button 
+            className="success-btn" 
+            style={{ marginTop: '0.5rem' }} 
+            onClick={() => irYDespues(`${rutaRol}/devoluciones`)}
+          >
+            Ir a devoluciones
+          </button>
             <button className="success-btn" style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.08)', color: '#fff' }} 
               onClick={() => { 
                 setMostrarExito(false)

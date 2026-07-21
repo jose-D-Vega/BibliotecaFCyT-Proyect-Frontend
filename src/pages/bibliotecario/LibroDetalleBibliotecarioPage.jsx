@@ -1,26 +1,26 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
-import { getBookById, getCopiesByBook } from '../../services/books.services'
-import LibroDetalleAdmin from '../../components/catalogo/LibroDetalleAdmin'
-import "./styles/LibroDetalleAdmin.css"
 
-function LibroDetalleAdminPage() {
+import { getBookById, getCopiesByBook } from '../../services/books.services'
+import LibroDetalleBibliotecario from '../../components/catalogo/LibroDetalleBibliotecario'
+
+import "../admin/styles/LibroDetalleAdmin.css"
+
+
+function LibroDetalleBibliotecarioPage() {
+
   const { id } = useParams()
   const navigate = useNavigate()
-  const { rolActivo } = useAuth()
-
-  const rutaCatalogo =
-    rolActivo === "bibliotecario"
-      ? "/bibliotecario/catalogo"
-      : "/admin/catalogo"
 
   const [libro, setLibro] = useState(null)
   const [ejemplares, setEjemplares] = useState([])
   const [loading, setLoading] = useState(true)
 
+
   const fetchData = async () => {
+
     try {
+
       setLoading(true)
 
       const [libroData, copiesData] = await Promise.all([
@@ -32,17 +32,26 @@ function LibroDetalleAdminPage() {
       setEjemplares(copiesData)
 
     } catch {
-      navigate(rutaCatalogo, { replace: true })
+
+      navigate("/bibliotecario/catalogo", {
+        replace:true
+      })
+
     } finally {
+
       setLoading(false)
+
     }
+
   }
+
 
   useEffect(() => {
     fetchData()
   }, [id])
 
-  if (loading) {
+
+  if(loading){
     return (
       <div className="detalle-loading">
         <div className="spinner"></div>
@@ -50,14 +59,16 @@ function LibroDetalleAdminPage() {
     )
   }
 
+
   return (
-    <LibroDetalleAdmin
+    <LibroDetalleBibliotecario
       libro={libro}
       ejemplares={ejemplares}
-      onVolver={() => navigate(rutaCatalogo)}
+      onVolver={() => navigate("/bibliotecario/catalogo")}
       onRefresh={fetchData}
     />
   )
 }
 
-export default LibroDetalleAdminPage
+
+export default LibroDetalleBibliotecarioPage

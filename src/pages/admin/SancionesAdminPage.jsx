@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import {
   getSanctions, resolveSanction, escalateSanction,
   confirmSanction, rejectSanction, getSanctionsGrouped,
@@ -32,6 +33,12 @@ const TABS_CON_SUBTABS = ['activa', 'resuelta,rechazada']
 const LIMITE = 12
 
 const SancionesAdminPage = () => {
+
+  const { rolActivo } = useAuth()
+
+  const rutaRol = rolActivo === 'admin'
+  ? '/admin'
+  : '/bibliotecario'
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -347,7 +354,13 @@ const SancionesAdminPage = () => {
         <h1 className="sanciones-page__title">Sanciones</h1>
         <button
           className="sanciones-nueva-btn"
-          onClick={() => navigate('/admin/sanciones/nueva')}
+          onClick={() =>
+            navigate(
+              rolActivo === 'admin'
+                ? '/admin/sanciones/nueva'
+                : '/bibliotecario/sanciones/nueva'
+            )
+          }
         >
           + Nueva sanción
         </button>
@@ -411,6 +424,7 @@ const SancionesAdminPage = () => {
         setGrupoComportam={setGrupoComportam}
         renderPaginacion={renderPaginacion}
         claveActual={claveActual}
+        rutaRol={rutaRol}
       />
 
       {sancionDetalle && (

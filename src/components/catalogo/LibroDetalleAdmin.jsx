@@ -2,16 +2,27 @@ import { useMemo, useState } from "react"
 import "./styles/LibroDetalle.css"
 import LibroInfoItem from "./LibroInfoItem"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
 import { deleteBook } from "../../services/books.services"
 import { deleteCopy, updateCopyStatus, addCopies } from "../../services/copies.services"
 
 
 function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefresh }) {
+
+  const navigate = useNavigate()
+  const { rolActivo } = useAuth()
+
+  const rutaBase =
+    rolActivo === "bibliotecario"
+      ? "/bibliotecario/catalogo"
+      : "/admin/catalogo"
+
+
   const [modal, setModal] = useState(null)
   const [ejemplarSeleccionado, setEjemplarSeleccionado] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
+
   const data = useMemo(() => {
     return libro || {
       id_libro: 0,
@@ -26,14 +37,19 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
     }
   }, [libro])
 
+
   const ejemplares = ejemplaresProp || []
+
   const ejemplaresTotal = ejemplares.length
   const disponibles = ejemplares.filter(e => e.estado_ejemplar === "disponible").length
   const enPrestamo = ejemplares.filter(e => e.estado_ejemplar === "prestado").length
   const reservados = ejemplares.filter(e => e.estado_ejemplar === "reservado").length
 
   const [cantidadAgregar, setCantidadAgregar] = useState(1)
-  const inhabilitados = ejemplares.filter(e => e.estado_ejemplar === "inhabilitado").length
+
+  const inhabilitados =
+    ejemplares.filter(e => e.estado_ejemplar === "inhabilitado").length
+
 
   const abrirEliminarMaterial = () => setModal("eliminarMaterial")
 
@@ -42,71 +58,133 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
     setModal("eliminarEjemplar")
   }
 
+
   const cerrarModal = () => {
     setModal(null)
     setEjemplarSeleccionado(null)
     setError(null)
   }
 
+
   const confirmarEliminarLibro = async () => {
     try {
+
       setLoading(true)
+
       await deleteBook(data.id_libro)
-      navigate('/admin/catalogo', { replace: true })
+
+      navigate(rutaBase, { replace: true })
+
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al eliminar el libro')
+
+      setError(
+        err.response?.data?.error ||
+        'Error al eliminar el libro'
+      )
+
     } finally {
       setLoading(false)
     }
   }
+
 
   const confirmarEliminarEjemplar = async () => {
     try {
+
       setLoading(true)
-      await deleteCopy(data.id_libro, ejemplarSeleccionado.id_ejemplar)
+
+      await deleteCopy(
+        data.id_libro,
+        ejemplarSeleccionado.id_ejemplar
+      )
+
       cerrarModal()
       onRefresh?.()
+
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al eliminar el ejemplar')
+
+      setError(
+        err.response?.data?.error ||
+        'Error al eliminar el ejemplar'
+      )
+
     } finally {
       setLoading(false)
     }
   }
+
 
   const confirmarInhabilitarEjemplar = async () => {
     try {
+
       setLoading(true)
-      const nuevoEstado = ejemplarSeleccionado.estado_ejemplar === 'inhabilitado'
-        ? 'disponible'
-        : 'inhabilitado'
-      await updateCopyStatus(data.id_libro, ejemplarSeleccionado.id_ejemplar, nuevoEstado)
+
+      const nuevoEstado =
+        ejemplarSeleccionado.estado_ejemplar === 'inhabilitado'
+          ? 'disponible'
+          : 'inhabilitado'
+
+
+      await updateCopyStatus(
+        data.id_libro,
+        ejemplarSeleccionado.id_ejemplar,
+        nuevoEstado
+      )
+
       cerrarModal()
       onRefresh?.()
+
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al actualizar el ejemplar')
+
+      setError(
+        err.response?.data?.error ||
+        'Error al actualizar el ejemplar'
+      )
+
     } finally {
       setLoading(false)
     }
   }
+
 
   const confirmarAgregarEjemplares = async () => {
     try {
+
       setLoading(true)
-      await addCopies(data.id_libro, cantidadAgregar)
+
+      await addCopies(
+        data.id_libro,
+        cantidadAgregar
+      )
+
       cerrarModal()
       setCantidadAgregar(1)
       onRefresh?.()
+
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al agregar ejemplares')
+
+      setError(
+        err.response?.data?.error ||
+        'Error al agregar ejemplares'
+      )
+
     } finally {
       setLoading(false)
     }
   }
 
-  // Función para manejar la navegación a la vista de modificar
+
   const manejarModificar = () => {
-    navigate(`/admin/catalogo/${data.id_libro}/editar`, { state: data })
+
+    navigate(
+      `${rutaBase}/${data.id_libro}/editar`,
+      {
+        state: data
+      }
+    )
+
   }
+
 
   return (
     <div className="detalle-page">

@@ -18,7 +18,8 @@ const SancionesAdminListado = ({
   setGrupoDetalle,
   setGrupoComportam,
   renderPaginacion,
-  claveActual
+  claveActual,
+  rutaRol
 }) => {
 
   if (loading) {
@@ -76,7 +77,7 @@ const SancionesAdminListado = ({
 
                   if(tabActiva === 'resuelta,rechazada'){
                     navigate(
-                      `/admin/sanciones/comportamiento/${s.id_usuario}`,
+                      `${rutaRol}/sanciones/comportamiento/${s.id_usuario}`,
                       {
                         state:{tabActiva}
                       }
@@ -101,7 +102,7 @@ const SancionesAdminListado = ({
 
                 if(tabActiva === 'resuelta,rechazada'){
                   navigate(
-                    `/admin/sanciones/prestamo/${s.id_prestamo}`,
+                    `${rutaRol}/sanciones/prestamo/${s.id_prestamo}`,
                     {
                       state:{tabActiva}
                     }
