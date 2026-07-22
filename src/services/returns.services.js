@@ -77,3 +77,8 @@ export const reemplazarEjemplarPerdido = async (id_prestamo, id_ejemplar) => {
   const { data } = await api.post(`/returns/prestamo/${id_prestamo}/ejemplar/${id_ejemplar}/reemplazar`)
   return data
 }
+
+export const getDetalleDevolucionUsuario = async (id_prestamo) => {
+  const { data } = await api.get(`/returns/mis-devoluciones/${id_prestamo}/detalle`)
+  return data.data
+}

@@ -92,6 +92,10 @@
   flex-wrap: wrap;
   padding-top: 0.5rem;
   border-top: 1px solid rgba(255,255,255,0.06);
+  /* Empuja las acciones al fondo de la card, sin importar cuánto contenido
+     haya arriba (la grid ya estira todas las cards de la fila a la misma
+     altura). Así las acciones quedan siempre alineadas entre cards vecinas. */
+  margin-top: auto;
 }
 
 /* ── BOTONES ── */

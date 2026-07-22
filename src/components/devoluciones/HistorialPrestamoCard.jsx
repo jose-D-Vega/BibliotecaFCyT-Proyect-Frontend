@@ -21,7 +21,9 @@ const HistorialPrestamoCard = ({ prestamo, onVerDetalle }) => {
       <div className="hcard__header">
         <div className="hcard__usuario">
           <span className="hcard__nombre">{prestamo.nombre_apellido}</span>
-          <span className="hcard__detalle">{prestamo.correo} · CI: {prestamo.ci}</span>
+          <span className="hcard__detalle">{prestamo.correo} 
+            <br />
+            CI: {prestamo.ci}</span>
         </div>
         <div className="hcard__badges">
           <span className={`pcard__badge ${estadoCard === 'completo' ? 'badge--verde' : estadoCard === 'problema' ? 'badge--rojo' : 'badge--amarillo'}`}>
@@ -67,7 +69,7 @@ const HistorialPrestamoCard = ({ prestamo, onVerDetalle }) => {
           </span>
         </div>
         <div className="pcard__info-item">
-          <span className="pcard__info-label">Bibliotecario</span>
+          <span className="pcard__info-label">Activado Por:</span>
           <span className="pcard__info-value">{prestamo.bibliotecario_activacion || '—'}</span>
         </div>
       </div>

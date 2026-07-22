@@ -114,6 +114,7 @@
 .dev-user-card--completo { border: 1px solid rgba(29,158,117,0.2); }
 .dev-user-card--parcial { border: 1px solid rgba(245,158,11,0.2); }
 .dev-user-card--problema { border: 1px solid rgba(239,68,68,0.25); }
+.dev-user-card--perdida { border: 1px solid rgba(239,68,68,0.25); }
 
 .dev-user-card__header {
   display: flex;

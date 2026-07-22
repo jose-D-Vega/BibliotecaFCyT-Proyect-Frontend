@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getDetalleDevoluciones, recuperarEjemplarPerdido, reemplazarEjemplarPerdido } from '../../services/returns.services'
+import { getDetalleDevoluciones, recuperarEjemplarPerdido, 
+  reemplazarEjemplarPerdido, getDetalleDevolucionUsuario } from '../../services/returns.services'
 import ModalConfirmacionAccion from '../sanciones/ModalConfirmacionAccion'
 import './DevolucionesComponents.css'
 
@@ -19,7 +20,7 @@ const ESTADO_COLORS = {
   reemplazado: { bg: 'rgba(99,102,241,0.2)',  color: '#a5b4fc', label: 'Reemplazado' },
 }
 
-const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
+const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar, readOnly = false  }) => {
   const [detalle,       setDetalle]       = useState(null)
   const [loading,       setLoading]       = useState(true)
   const [error,         setError]         = useState(null)
@@ -35,7 +36,9 @@ const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
   const fetchDetalle = async () => {
     try {
       setLoading(true)
-      const data = await getDetalleDevoluciones(prestamo.id_prestamo)
+      const data = readOnly
+        ? await getDetalleDevolucionUsuario(prestamo.id_prestamo)
+        : await getDetalleDevoluciones(prestamo.id_prestamo)
       setDetalle(data)
     } catch {
       setError('Error al cargar el detalle')
@@ -240,24 +243,16 @@ const ModalDetalleDevolucion = ({ prestamo, onCerrar, onActualizar }) => {
                         </span>
                       )}
 
-                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                        <button
-                          className="sancion-btn sancion-btn--resolver"
-                          onClick={() => handleRecuperar(perd)}
-                          disabled={loadingAccion}
-                          style={{ fontSize: '0.78rem' }}
-                        >
-                          📦 Registrar devolución
-                        </button>
-                        <button
-                          className="sancion-btn sancion-btn--primario"
-                          onClick={() => handleReemplazar(perd)}
-                          disabled={loadingAccion}
-                          style={{ fontSize: '0.78rem' }}
-                        >
-                          🔄 Registrar reemplazo
-                        </button>
-                      </div>
+                      {!readOnly && (
+                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                          <button className="sancion-btn sancion-btn--resolver" onClick={() => handleRecuperar(perd)} disabled={loadingAccion} style={{ fontSize: '0.78rem' }}>
+                            📦 Registrar devolución
+                          </button>
+                          <button className="sancion-btn sancion-btn--primario" onClick={() => handleReemplazar(perd)} disabled={loadingAccion} style={{ fontSize: '0.78rem' }}>
+                            🔄 Registrar reemplazo
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

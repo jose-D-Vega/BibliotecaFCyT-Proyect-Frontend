@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { getDevolucionesUsuario } from '../../services/returns.services'
-import { getDetalleDevoluciones } from '../../services/returns.services'
 import ModalDetalleDevolucion from '../../components/devoluciones/ModalDetalleDevolucion'
 import './styles/DevolucionesUserPage.css'
 
@@ -154,12 +153,6 @@ const DevolucionesUserPage = () => {
                         {dev.ejemplares_devueltos}/{dev.total_ejemplares} devueltos
                       </span>
                     </div>
-                    {esRenovacion && (
-                      <div className="dev-user-card__item">
-                        <span className="dev-user-card__label">Préstamo original</span>
-                        <span className="dev-user-card__value">#{dev.id_prestamo_original}</span>
-                      </div>
-                    )}
                   </div>
 
                   <button
@@ -244,6 +237,7 @@ const DevolucionesUserPage = () => {
         <ModalDetalleDevolucion
           prestamo={prestamoDetalle}
           onCerrar={() => setPrestamoDetalle(null)}
+          readOnly
         />
       )}
     </div>

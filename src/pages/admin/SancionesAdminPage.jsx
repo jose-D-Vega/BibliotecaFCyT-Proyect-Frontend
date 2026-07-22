@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import {
@@ -81,6 +81,12 @@ const SancionesAdminPage = () => {
 
   const usaSubTabs = TABS_CON_SUBTABS.includes(tabActiva)
 
+  // Contador de peticiones: al disparar un nuevo fetch se incrementa, y cada
+  // fetch en curso guarda "su" número. Si al resolver ya no coincide con el
+  // valor actual, significa que el usuario cambió de tab/subtab mientras
+  // tanto y esta respuesta quedó obsoleta — se descarta sin tocar el estado.
+  const requestIdRef = useRef(0)
+
   const getClavePaginacion = (tab, subTab) => {
     if (tab === 'pendiente_confirmacion') {
       return 'pendiente_confirmacion'
@@ -105,6 +111,8 @@ const SancionesAdminPage = () => {
   }
 
   const fetchSanciones = useCallback(async (tab, subTab) => {
+    const requestId = ++requestIdRef.current
+
     try {
       setLoading(true)
       setError(null)
@@ -139,6 +147,10 @@ const SancionesAdminPage = () => {
         })
       }
 
+      // Si mientras esta petición estaba en vuelo se disparó otra más
+      // reciente (cambio de tab/subtab), descartamos esta respuesta.
+      if (requestId !== requestIdRef.current) return
+
       setSanciones(data.data)
 
       setTotalesPaginas(prev => ({
@@ -146,9 +158,12 @@ const SancionesAdminPage = () => {
         [clave]: data.pagination.totalPages
       }))
     } catch {
+      if (requestId !== requestIdRef.current) return
       setError('Error al cargar las sanciones')
     } finally {
-      setLoading(false)
+      if (requestId === requestIdRef.current) {
+        setLoading(false)
+      }
     }
   }, [paginas])
 
