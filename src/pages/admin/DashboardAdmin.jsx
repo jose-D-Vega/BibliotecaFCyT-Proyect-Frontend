@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/DashboardAdmin.css';
+import { getStaffEstadisticas } from '../../services/dashboard.services';
 
 import {
   MdAdminPanelSettings,
@@ -19,43 +20,19 @@ import {
 
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/admin-dashboard`
-  : "http://localhost:3210/api/admin-dashboard";
-
 const DashboardAdmin = () => {
   const [stats, setStats] = useState(null);
-  const [extraStats, setExtraStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
   const rolActivo = localStorage.getItem("rolActivo");
 
   useEffect(() => {
     const cargarStats = async () => {
       try {
-        const headers = {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-          ...(rolActivo ? { "x-rol-activo": rolActivo } : {})
-        };
-
-        const [resStats, resExtra] = await Promise.all([
-          fetch(`${API_URL}/mis-estadisticas`, { headers }),
-          fetch(`${API_URL}/extra-stats`, { headers })
-        ]);
-
-        const jsonStats = await resStats.json();
-        const jsonExtra = await resExtra.json();
-
-        if (!resStats.ok || !resExtra.ok) {
-          setError(true);
-        } else {
-          setStats(jsonStats.data);
-          setExtraStats(jsonExtra.data);
-        }
+        const data = await getStaffEstadisticas();
+        setStats(data);
       } catch (err) {
         console.error("Error al cargar estadísticas del dashboard admin:", err);
         setError(true);
@@ -64,7 +41,7 @@ const DashboardAdmin = () => {
       }
     };
     cargarStats();
-  }, [token, rolActivo]);
+  }, []);
 
   const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro, estadoLower }) => {
     if (rolActivo === 'bibliotecario') {
@@ -145,9 +122,7 @@ const DashboardAdmin = () => {
 
   const chartData = construirTendenciaChart();
 
-  const totalRoles = extraStats
-    ? extraStats.usuariosPorRol.reduce((a, b) => a + Number(b.cantidad), 0)
-    : 0;
+  const totalRoles = stats.usuariosPorRol.reduce((a, b) => a + Number(b.cantidad), 0);
 
   return (
     <>
@@ -290,8 +265,7 @@ const DashboardAdmin = () => {
           </article>
         </section>
 
-        {extraStats && (
-          <section className="admin-extra-grid">
+        <section className="admin-extra-grid">
             <article className="roles-panel">
               <div className="roles-panel__header">
                 <h2 className="roles-panel__title">
@@ -300,15 +274,15 @@ const DashboardAdmin = () => {
                 </h2>
                 <div className="sessions-badge">
                   <MdWifiTethering size={18} />
-                  <span>{extraStats.sesionesActivas} sesión{extraStats.sesionesActivas !== 1 ? 'es' : ''} activa{extraStats.sesionesActivas !== 1 ? 's' : ''}</span>
+                  <span>{stats.sesionesActivas} sesión{stats.sesionesActivas !== 1 ? 'es' : ''} activa{stats.sesionesActivas !== 1 ? 's' : ''}</span>
                 </div>
               </div>
 
               <div className="progress-list">
-                {extraStats.usuariosPorRol.length === 0 ? (
+                {stats.usuariosPorRol.length === 0 ? (
                   <p className="activity-panel__vacio">No hay usuarios registrados.</p>
                 ) : (
-                  extraStats.usuariosPorRol.map((item, i) => {
+                  stats.usuariosPorRol.map((item, i) => {
                     const porcentaje = totalRoles > 0
                       ? Math.round((Number(item.cantidad) / totalRoles) * 100)
                       : 0;
@@ -340,10 +314,10 @@ const DashboardAdmin = () => {
               </div>
 
               <div className="activity-feed">
-                {extraStats.actividadesRecientes.length === 0 ? (
+                {stats.actividadesRecientes.length === 0 ? (
                   <p className="activity-panel__vacio">Todavía no hay actividad registrada.</p>
                 ) : (
-                  extraStats.actividadesRecientes.map((act) => (
+                  stats.actividadesRecientes.map((act) => (
                     <div key={act.id_actividad} className="activity-feed__item">
                       <div className="activity-feed__icon">
                         <MdHistory size={16} />
@@ -363,7 +337,6 @@ const DashboardAdmin = () => {
               </div>
             </article>
           </section>
-        )}
 
         <section className="books-section">
           <div className="books-section__header">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './styles/DashboardUser.css';
+import { getMisEstadisticas } from '../../services/dashboard.services';
 
 import {
   MdSchool,
@@ -16,33 +17,16 @@ import {
 
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/dashboard`
-  : "http://localhost:3210/api/dashboard";
-
 const DashboardUser = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
     const cargarStats = async () => {
       try {
-        const res = await fetch(`${API_URL}/mis-estadisticas`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        });
-        const json = await res.json();
-
-        if (!res.ok) {
-          setError(true);
-        } else {
-          setStats(json.data);
-        }
+        const data = await getMisEstadisticas();
+        setStats(data);
       } catch (err) {
         console.error("Error al cargar estadísticas:", err);
         setError(true);
@@ -51,7 +35,7 @@ const DashboardUser = () => {
       }
     };
     cargarStats();
-  }, [token]);
+  }, []);
 
   const formatearFecha = (fecha) => {
     if (!fecha) return "—";

@@ -323,6 +323,7 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
           <div className="modal-box">
             <h3 className="modal-title">Eliminar material</h3>
             <p className="modal-texto">¿Estás seguro de que deseas eliminar este material?</p>
+            <p className="modal-texto" style={{color:'#f87171'}}>Esta es una acción irreversible</p>
             <div className="modal-libro">
               <strong>{data.titulo}</strong>
               <span>{data.autor}</span>
@@ -346,6 +347,7 @@ function LibroDetalleAdmin({ libro, ejemplares: ejemplaresProp, onVolver, onRefr
           <div className="modal-box">
             <h3 className="modal-title">Eliminar ejemplar</h3>
             <p className="modal-texto">¿Estás seguro de que deseas eliminar este ejemplar?</p>
+            <p className="modal-texto" style={{color:'#f87171'}}>Esta es una acción irreversible</p>
             <div className="modal-libro">
               <strong>Ejemplar #{ejemplarSeleccionado?.id_ejemplar}</strong>
               <span>{data.titulo}</span>

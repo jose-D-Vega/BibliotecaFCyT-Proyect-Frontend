@@ -222,6 +222,8 @@
   gap: 10px;
   margin-top: 10px;
   border-radius: 14px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 /* Modal */

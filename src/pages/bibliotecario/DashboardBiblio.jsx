@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/DashboardBiblio.css';
+import { getStaffEstadisticas } from '../../services/dashboard.services';
 
 import {
   MdAccountBalance,
@@ -16,10 +17,6 @@ import {
 
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/bibliotecario-dashboard`
-  : "http://localhost:3210/api/bibliotecario-dashboard";
-
 const DashboardBiblio = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,35 +24,22 @@ const DashboardBiblio = () => {
   const [failedImages, setFailedImages] = useState({});
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
   const rolActivo = localStorage.getItem("rolActivo");
 
   useEffect(() => {
     const cargarStats = async () => {
       try {
-        const res = await fetch(`${API_URL}/mis-estadisticas`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-            ...(rolActivo ? { "x-rol-activo": rolActivo } : {})
-          }
-        });
-        const json = await res.json();
-
-        if (!res.ok) {
-          setError(true);
-        } else {
-          setStats(json.data);
-        }
+        const data = await getStaffEstadisticas();
+        setStats(data);
       } catch (err) {
-        console.error("Error al cargar estadísticas del dashboard admin:", err);
+        console.error("Error al cargar estadísticas del dashboard bibliotecario:", err);
         setError(true);
       } finally {
         setLoading(false);
       }
     };
     cargarStats();
-  }, [token, rolActivo]);
+  }, []);
 
   const handleImageError = (idLibro) => {
     setFailedImages((prev) => ({ ...prev, [idLibro]: true }));
