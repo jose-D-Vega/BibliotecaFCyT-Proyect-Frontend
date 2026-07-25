@@ -3,22 +3,38 @@ import { getBookById } from '../services/books.services'
 
 const CartContext = createContext(null)
 
+// Debe coincidir con MAX_EJEMPLARES_POR_SOLICITUD del backend
+// (config/loans.config.js). Esto es solo para UX: la validación real
+// que importa es la del backend.
+const MAX_EJEMPLARES_CARRITO = 10
+
 export const CartProvider = ({ children }) => {
   const [carrito, setCarrito] = useState([])
   const [loadingLibro, setLoadingLibro] = useState(false)
 
-  // Agrega o actualiza un libro en el carrito con cantidad y disponibilidad real
+  // Agrega o actualiza un libro en el carrito con cantidad y disponibilidad real.
+  // La cantidad se recorta para no superar el máximo de ejemplares por solicitud.
   const agregarAlCarrito = useCallback(async (libro, cantidadSolicitada = 1) => {
     const disponibles = parseInt(libro.ejemplares_disponibles) || 0
     const reservables = parseInt(libro.cantidad_ejemplar) - disponibles
 
     setCarrito(prev => {
       const existente = prev.find(item => item.id_libro === libro.id_libro)
+
+      const totalOtros = prev
+        .filter(item => item.id_libro !== libro.id_libro)
+        .reduce((acc, item) => acc + item.cantidad, 0)
+
+      const espacioDisponible = Math.max(0, MAX_EJEMPLARES_CARRITO - totalOtros)
+      const cantidadFinal = Math.min(cantidadSolicitada, espacioDisponible)
+
+      if (cantidadFinal < 1) return prev
+
       if (existente) {
         // Actualizar cantidad si ya existe
         return prev.map(item =>
           item.id_libro === libro.id_libro
-            ? { ...item, cantidad: cantidadSolicitada }
+            ? { ...item, cantidad: cantidadFinal }
             : item
         )
       }
@@ -27,7 +43,7 @@ export const CartProvider = ({ children }) => {
         titulo: libro.titulo,
         autor: libro.autor,
         imagen_url: libro.imagen_url,
-        cantidad: cantidadSolicitada,
+        cantidad: cantidadFinal,
         ejemplares_disponibles: disponibles,
         ejemplares_reservables: Math.max(reservables, 0),
         max_solicitables: parseInt(libro.cantidad_ejemplar) || 0
@@ -36,13 +52,20 @@ export const CartProvider = ({ children }) => {
   }, [])
 
   const actualizarCantidad = useCallback((id_libro, cantidad) => {
-    setCarrito(prev =>
-      prev.map(item =>
+    setCarrito(prev => {
+      const totalOtros = prev
+        .filter(item => item.id_libro !== id_libro)
+        .reduce((acc, item) => acc + item.cantidad, 0)
+
+      const espacioDisponible = Math.max(0, MAX_EJEMPLARES_CARRITO - totalOtros)
+      const cantidadFinal = Math.min(Math.max(1, cantidad), Math.max(1, espacioDisponible))
+
+      return prev.map(item =>
         item.id_libro === id_libro
-          ? { ...item, cantidad: Math.max(1, cantidad) }
+          ? { ...item, cantidad: cantidadFinal }
           : item
       )
-    )
+    })
   }, [])
 
   const removerDelCarrito = useCallback((id_libro) => {
@@ -73,6 +96,7 @@ export const CartProvider = ({ children }) => {
 
   const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0)
   const hayReservas = carrito.some(item => item.cantidad > item.ejemplares_disponibles)
+  const limiteCarritoAlcanzado = totalItems >= MAX_EJEMPLARES_CARRITO
 
   return (
     <CartContext.Provider value={{
@@ -86,7 +110,9 @@ export const CartProvider = ({ children }) => {
       calcularDistribucion,
       buildPayload,
       totalItems,
-      hayReservas
+      hayReservas,
+      MAX_EJEMPLARES_CARRITO,
+      limiteCarritoAlcanzado
     }}>
       {children}
     </CartContext.Provider>

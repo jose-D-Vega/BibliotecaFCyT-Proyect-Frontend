@@ -5,7 +5,7 @@ import LibroInfoItem from "./LibroInfoItem"
 import EjemplarItem from "./EjemplarItem"
 
 function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarrito, vieneDelDashboard, onVolverInicio }) {
-  const { agregarAlCarrito, estaEnCarrito, actualizarCantidad } = useCart()
+  const { agregarAlCarrito, estaEnCarrito, actualizarCantidad, carrito, MAX_EJEMPLARES_CARRITO } = useCart()
 
   const [modal, setModal] = useState(null)
   const [cantidad, setCantidad] = useState(1)
@@ -31,6 +31,22 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
   const enPrestamo = ejemplares.filter(e => e.estado_ejemplar === "prestado").length
   const reservados = ejemplares.filter(e => e.estado_ejemplar === "reservado").length
   const maxSolicitables = disponibles + enPrestamo + reservados
+
+  // Cuántos ejemplares ya ocupa el carrito con OTROS libros (si este libro
+  // ya estaba en el carrito, editar su cantidad no "suma" — la reemplaza).
+  const ejemplaresOtrosLibros = carrito
+    .filter(item => item.id_libro !== data.id_libro)
+    .reduce((acc, item) => acc + item.cantidad, 0)
+
+  const espacioDisponibleCarrito = Math.max(0, MAX_EJEMPLARES_CARRITO - ejemplaresOtrosLibros)
+
+  // El tope real es lo menor entre lo que hay del libro y lo que queda de espacio
+  // en el carrito para esta solicitud.
+  const maxReal = Math.min(maxSolicitables, espacioDisponibleCarrito)
+
+  // El límite que realmente está frenando el "+" es el del carrito, no el
+  // del libro (hay más ejemplares del libro de los que el carrito permite)
+  const limiteEsPorCarrito = espacioDisponibleCarrito < maxSolicitables
 
   // Cuántos de la cantidad pedida irían como préstamo vs reserva
   const comoPrestamo = Math.min(cantidad, disponibles)
@@ -169,44 +185,63 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
                 <span className="modal-cantidad-valor">{cantidad}</span>
                 <button
                   className="modal-cantidad-btn"
-                  onClick={() => setCantidad(c => Math.min(maxSolicitables, c + 1))}
-                  disabled={cantidad >= maxSolicitables}
+                  onClick={() => setCantidad(c => Math.min(maxReal, c + 1))}
+                  disabled={cantidad >= maxReal}
                 >
                   +
                 </button>
               </div>
-              <p className="modal-cantidad-max">
-                Máximo disponible: {maxSolicitables} ejemplar{maxSolicitables !== 1 ? 'es' : ''}
-              </p>
+
+              {maxReal === 0 ? (
+                <p className="modal-cantidad-max modal-cantidad-max--limite">
+                  ⚠ Ya alcanzaste el máximo de {MAX_EJEMPLARES_CARRITO} ejemplares por solicitud.
+                  Quitá algo de tus solicitudes actuales para poder agregar este libro.
+                </p>
+              ) : limiteEsPorCarrito ? (
+                <p className="modal-cantidad-max modal-cantidad-max--limite">
+                  ⚠ Podés agregar hasta {maxReal} ejemplar{maxReal !== 1 ? 'es' : ''} de este libro:
+                  ya tenés {ejemplaresOtrosLibros} en tus solicitudes, de un máximo de {MAX_EJEMPLARES_CARRITO} por solicitud.
+                </p>
+              ) : (
+                <p className="modal-cantidad-max">
+                  Máximo disponible: {maxSolicitables} ejemplar{maxSolicitables !== 1 ? 'es' : ''}
+                </p>
+              )}
             </div>
 
             {/* Distribución préstamo / reserva */}
-            <div className="modal-distribucion">
-              {comoPrestamo > 0 && (
-                <div className="modal-dist-item disponible">
-                  <span className="modal-dist-dot" />
-                  <span>
-                    {comoPrestamo} como <strong>préstamo</strong>
-                    {' '}— disponibles para retiro inmediato
-                  </span>
-                </div>
-              )}
-              {comoReserva > 0 && (
-                <div className="modal-dist-item reserva">
-                  <span className="modal-dist-dot" />
-                  <span>
-                    {comoReserva} como <strong>reserva</strong>
-                    {' '}— actualmente en préstamo, se notificará cuando estén disponibles
-                  </span>
-                </div>
-              )}
-            </div>
+            {maxReal > 0 && (
+              <div className="modal-distribucion">
+                {comoPrestamo > 0 && (
+                  <div className="modal-dist-item disponible">
+                    <span className="modal-dist-dot" />
+                    <span>
+                      {comoPrestamo} como <strong>préstamo</strong>
+                      {' '}— disponibles para retiro inmediato
+                    </span>
+                  </div>
+                )}
+                {comoReserva > 0 && (
+                  <div className="modal-dist-item reserva">
+                    <span className="modal-dist-dot" />
+                    <span>
+                      {comoReserva} como <strong>reserva</strong>
+                      {' '}— actualmente en préstamo, se notificará cuando estén disponibles
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="modal-actions">
               <button className="modal-btn secundario" onClick={cancelarModal}>
                 Cancelar
               </button>
-              <button className="modal-btn primario" onClick={aceptarAgregar}>
+              <button
+                className="modal-btn primario"
+                onClick={aceptarAgregar}
+                disabled={maxReal === 0}
+              >
                 {yaEnCarrito ? 'Actualizar' : 'Agregar a mis solicitudes'}
               </button>
             </div>

@@ -340,6 +340,15 @@
   color: #ffffff;
 }
 
+.carrito-resumen-valor--limite {
+  color: #f59e0b;
+}
+
+.carrito-accion-btn.primario:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .carrito-acciones {
   display: flex;
   gap: 10px;

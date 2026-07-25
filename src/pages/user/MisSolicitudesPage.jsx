@@ -12,7 +12,8 @@ function MisSolicitudesPage() {
     vaciarCarrito,
     calcularDistribucion,
     buildPayload,
-    hayReservas
+    hayReservas,
+    MAX_EJEMPLARES_CARRITO
   } = useCart()
 
   const navigate = useNavigate()
@@ -183,8 +184,8 @@ function MisSolicitudesPage() {
                 <span className="carrito-resumen-label">
                   Total de ejemplares
                 </span>
-                <span className="carrito-resumen-valor">
-                  {totalEjemplares}
+                <span className={`carrito-resumen-valor ${totalEjemplares >= MAX_EJEMPLARES_CARRITO ? 'carrito-resumen-valor--limite' : ''}`}>
+                  {totalEjemplares} / {MAX_EJEMPLARES_CARRITO}
                 </span>
               </div>
 
@@ -199,6 +200,7 @@ function MisSolicitudesPage() {
                 <button
                   className="carrito-accion-btn primario"
                   onClick={() => setModal('confirmar')}
+                  disabled={totalEjemplares === 0 || totalEjemplares > MAX_EJEMPLARES_CARRITO}
                 >
                   Confirmar solicitud
                 </button>
