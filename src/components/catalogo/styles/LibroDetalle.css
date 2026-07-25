@@ -139,6 +139,19 @@
   cursor: not-allowed;
 }
 
+.btn-prestamo--solo-consulta {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
+  cursor: default;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.3;
+}
+
 .info {
   flex: 1;
   min-width: 0;

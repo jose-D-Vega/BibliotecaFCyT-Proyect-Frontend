@@ -112,13 +112,19 @@ function LibroDetalle({ libro, ejemplares: ejemplaresProp, onVolver, onIrAlCarri
               }
             </div>
 
-            <button
-              className="btn-prestamo"
-              onClick={abrirConfirmacion}
-              disabled={maxSolicitables === 0}
-            >
-              {yaEnCarrito ? 'Editar solicitud' : 'Solicitar préstamo'}
-            </button>
+            {data.tipo_material === 'tfg' ? (
+              <div className="btn-prestamo btn-prestamo--solo-consulta" role="note">
+                📖 Solo consulta — los Trabajos Finales de Grado no se prestan
+              </div>
+            ) : (
+              <button
+                className="btn-prestamo"
+                onClick={abrirConfirmacion}
+                disabled={maxSolicitables === 0}
+              >
+                {yaEnCarrito ? 'Editar solicitud' : 'Solicitar préstamo'}
+              </button>
+            )}
           </div>
 
           <div className="info">

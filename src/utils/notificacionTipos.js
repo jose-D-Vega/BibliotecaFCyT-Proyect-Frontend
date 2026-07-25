@@ -33,7 +33,8 @@ export const NOTIFICACION_TIPOS = {
   // --- Solo admin ---
   admin_renovacion_pendiente: { icono: '🔁', label: 'Renovación pendiente',          rol: 'admin' },
   admin_sancion_escalada:     { icono: '📛', label: 'Sanción sin resolver (30 días)', rol: 'admin' },
-  admin_reserva_lista:        { icono: '📦', label: 'Reserva lista para gestionar',   rol: 'admin' }
+  admin_reserva_lista:        { icono: '📦', label: 'Reserva lista para gestionar',   rol: 'admin' },
+  admin_solicitud_rechazada:  { icono: '⏳', label: 'Solicitud rechazada por falta de gestión', rol: 'admin' }
 }
 
 export const getIconoTipo = (tipo) => NOTIFICACION_TIPOS[tipo]?.icono || '🔔'

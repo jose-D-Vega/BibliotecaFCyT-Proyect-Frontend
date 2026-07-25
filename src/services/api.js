@@ -16,7 +16,6 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status
-    const code = error.response?.data?.code
 
     if (status === 401) {
       // Token inválido o expirado — cerrar sesión siempre
@@ -27,17 +26,10 @@ api.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    if (status === 403 && code !== 'USUARIO_SANCIONADO') {
-      // 403 sin code conocido = acceso prohibido por rol (posible token manipulado)
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      localStorage.removeItem('rolActivo')
-      window.location.href = '/login'
-      return Promise.reject(error)
-    }
-
-    // Cualquier otro error (403 USUARIO_SANCIONADO, 400, 404, 500...) 
-    // se propaga normalmente para que cada componente lo maneje
+    // 403 (y cualquier otro error: 400, 404, 500...) se propaga normalmente:
+    // un 403 significa "no tenés permiso para ESTA acción puntual", no que
+    // la sesión esté comprometida. Que cada componente lo maneje y muestre
+    // su propio mensaje.
     return Promise.reject(error)
   }
 )

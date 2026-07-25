@@ -77,6 +77,13 @@
   padding-top: 5px;
 }
 
+.libro-card-badge-tfg {
+  font-size: 11px !important;
+  color: #f59e0b !important;
+  font-weight: 700;
+  padding-top: 3px;
+}
+
 .libro-card-ver-detalles {
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;

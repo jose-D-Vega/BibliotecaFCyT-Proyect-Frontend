@@ -21,6 +21,10 @@ function LibroCard({ libro, onVerDetalle }) {
           {libro.ejemplares_disponibles} disponibles de{" "}
           {libro.cantidad_ejemplar}
         </p>
+
+        {libro.tipo_material === 'tfg' && (
+          <p className="libro-card-badge-tfg">TFG · Solo consulta</p>
+        )}
       </div>
 
       <button

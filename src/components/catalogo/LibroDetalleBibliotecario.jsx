@@ -32,7 +32,7 @@ function LibroDetalleBibliotecario({ libro, ejemplares: ejemplaresProp, onVolver
     }
   }, [libro])
 
-  const ejemplares = ejemplaresProp || []
+  const ejemplares = ejemplaresProp.filter(e => !["eliminado"].includes(e.estado_ejemplar)) || []
 
   const disponibles = ejemplares.filter(e => e.estado_ejemplar === "disponible").length
   const enPrestamo = ejemplares.filter(e => e.estado_ejemplar === "prestado").length

@@ -15,6 +15,10 @@ export const CartProvider = ({ children }) => {
   // Agrega o actualiza un libro en el carrito con cantidad y disponibilidad real.
   // La cantidad se recorta para no superar el máximo de ejemplares por solicitud.
   const agregarAlCarrito = useCallback(async (libro, cantidadSolicitada = 1) => {
+    // Los TFG son solo de consulta — no se pueden solicitar como préstamo.
+    // La UI ya oculta el botón para este caso; esto es una defensa adicional.
+    if (libro.tipo_material === 'tfg') return
+
     const disponibles = parseInt(libro.ejemplares_disponibles) || 0
     const reservables = parseInt(libro.cantidad_ejemplar) - disponibles
 
