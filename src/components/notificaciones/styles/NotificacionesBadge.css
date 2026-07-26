@@ -79,9 +79,38 @@
   cursor: pointer;
   transition: color 0.2s;
   padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .notif-panel__marcar-todas:hover { color: rgba(255,255,255,0.8); }
+
+.notif-panel__marcar-todas:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.notif-spinner {
+  width: 11px;
+  height: 11px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: notif-spin 0.6s linear infinite;
+}
+
+.notif-spinner--dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  border-width: 1.5px;
+}
+
+@keyframes notif-spin {
+  to { transform: rotate(360deg); }
+}
 
 .notif-panel__lista {
   max-height: 350px;
@@ -111,6 +140,11 @@
 .notif-item:hover { background: rgba(255,255,255,0.04); }
 
 .notif-item--no-leida { background: rgba(255,255,255,0.03); }
+
+.notif-item--marcando {
+  opacity: 0.6;
+  cursor: wait;
+}
 
 .notif-item__icono {
   font-size: 1.1rem;

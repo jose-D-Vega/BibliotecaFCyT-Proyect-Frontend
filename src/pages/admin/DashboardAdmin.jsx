@@ -13,6 +13,7 @@ import {
   MdHourglassEmpty,
   MdGavel,
   MdBookmark,
+  MdAutorenew,
   MdWifiTethering,
   MdHistory,
   MdPeopleAlt
@@ -211,6 +212,17 @@ const DashboardAdmin = () => {
               <div className="alert-card__content">
                 <p className="alert-card__title">{stats.reservasPendientes} Reserva{stats.reservasPendientes !== 1 ? 's' : ''} pendiente{stats.reservasPendientes !== 1 ? 's' : ''}</p>
                 <p className="alert-card__description">Asignar a estantería</p>
+              </div>
+            </article>
+
+            <article
+              className="alert-card alert-card--info alert-card--clickable"
+              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RENOVACION', estadoLower: 'solicitud_renovacion' })}
+            >
+              <div className="alert-card__icon-wrapper"><MdAutorenew size={24} /></div>
+              <div className="alert-card__content">
+                <p className="alert-card__title">{stats.renovacionesPendientes} Renovación{stats.renovacionesPendientes !== 1 ? 'es' : ''} pendiente{stats.renovacionesPendientes !== 1 ? 's' : ''}</p>
+                <p className="alert-card__description">Revisar solicitudes de renovación</p>
               </div>
             </article>
           </div>

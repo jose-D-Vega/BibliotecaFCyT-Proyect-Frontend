@@ -27,6 +27,9 @@ const NotificacionesPage = () => {
   const [fechaDesde, setFechaDesde] = useState('')
   const [fechaHasta, setFechaHasta] = useState('')
 
+  const [marcandoTodas, setMarcandoTodas] = useState(false)
+  const [idsMarcando, setIdsMarcando] = useState(() => new Set())
+
   const limpiarFiltros = () => {
     setTipoFiltro('')
     setEstadoFiltro('')
@@ -68,15 +71,33 @@ const hayFiltrosActivos = tipoFiltro || estadoFiltro || fechaDesde || fechaHasta
   }, [pagina])
 
   const marcarUnaLeida = async (id) => {
-    await marcarLeida(id)
-    setNotificaciones(prev => prev.map(n => n.id_notificacion === id ? { ...n, leida: true } : n))
-    refrescarBadge()
+    if (idsMarcando.has(id)) return // ya se está procesando, evita doble click
+
+    setIdsMarcando(prev => new Set(prev).add(id))
+    try {
+      await marcarLeida(id)
+      setNotificaciones(prev => prev.map(n => n.id_notificacion === id ? { ...n, leida: true } : n))
+      refrescarBadge()
+    } finally {
+      setIdsMarcando(prev => {
+        const siguiente = new Set(prev)
+        siguiente.delete(id)
+        return siguiente
+      })
+    }
   }
 
   const marcarTodas = async () => {
-    await marcarTodasLeidas()
-    await fetchPagina(pagina)
-    refrescarBadge()
+    if (marcandoTodas) return
+
+    setMarcandoTodas(true)
+    try {
+      await marcarTodasLeidas()
+      await fetchPagina(pagina)
+      refrescarBadge()
+    } finally {
+      setMarcandoTodas(false)
+    }
   }
 
   const hayNoLeidas = notificaciones.some(n => !n.leida)
@@ -86,8 +107,19 @@ const hayFiltrosActivos = tipoFiltro || estadoFiltro || fechaDesde || fechaHasta
       <div className="notif-page__header">
         <h1 className="notif-page__title">Notificaciones</h1>
         {hayNoLeidas && (
-          <button className="notif-page__marcar-todas-btn" onClick={marcarTodas}>
-            Marcar todas como leídas
+          <button
+            className="notif-page__marcar-todas-btn"
+            onClick={marcarTodas}
+            disabled={marcandoTodas}
+          >
+            {marcandoTodas ? (
+              <>
+                <span className="notif-page__spinner-inline" />
+                Marcando...
+              </>
+            ) : (
+              'Marcar todas como leídas'
+            )}
           </button>
         )}
       </div>
@@ -122,26 +154,33 @@ const hayFiltrosActivos = tipoFiltro || estadoFiltro || fechaDesde || fechaHasta
           </p>
 
           <div className="notif-page__lista">
-            {notificaciones.map(n => (
-              <div
-                key={n.id_notificacion}
-                className={`notif-page__item ${!n.leida ? 'notif-page__item--no-leida' : ''}`}
-                onClick={() => !n.leida && marcarUnaLeida(n.id_notificacion)}
-              >
-                <span className="notif-page__icono">{getIconoTipo(n.tipo)}</span>
-                <div className="notif-page__contenido">
-                  <p className="notif-page__titulo">{n.titulo}</p>
-                  <p className="notif-page__mensaje">{n.mensaje}</p>
-                  <p className="notif-page__fecha">
-                    {new Date(n.fecha).toLocaleDateString('es-PY', {
-                      day: '2-digit', month: '2-digit', year: 'numeric',
-                      hour: '2-digit', minute: '2-digit'
-                    })}
-                  </p>
+            {notificaciones.map(n => {
+              const marcandoEsta = idsMarcando.has(n.id_notificacion)
+              return (
+                <div
+                  key={n.id_notificacion}
+                  className={`notif-page__item ${!n.leida ? 'notif-page__item--no-leida' : ''} ${marcandoEsta ? 'notif-page__item--marcando' : ''}`}
+                  onClick={() => !n.leida && !marcandoEsta && marcarUnaLeida(n.id_notificacion)}
+                >
+                  <span className="notif-page__icono">{getIconoTipo(n.tipo)}</span>
+                  <div className="notif-page__contenido">
+                    <p className="notif-page__titulo">{n.titulo}</p>
+                    <p className="notif-page__mensaje">{n.mensaje}</p>
+                    <p className="notif-page__fecha">
+                      {new Date(n.fecha).toLocaleDateString('es-PY', {
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                      })}
+                    </p>
+                  </div>
+                  {marcandoEsta ? (
+                    <span className="notif-page__spinner-dot" />
+                  ) : (
+                    !n.leida && <span className="notif-page__dot" />
+                  )}
                 </div>
-                {!n.leida && <span className="notif-page__dot" />}
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           <PrestamoPagination

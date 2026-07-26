@@ -10,6 +10,8 @@ export const NotificationsProvider = ({ children }) => {
   const { user, rolActivo } = useAuth()
   const [notificaciones, setNotificaciones] = useState([])
   const [noLeidas, setNoLeidas] = useState(0)
+  const [marcandoTodas, setMarcandoTodas] = useState(false)
+  const [idsMarcando, setIdsMarcando] = useState(() => new Set())
 
   const fetchNotificaciones = async () => {
     if (!user) return
@@ -29,13 +31,31 @@ export const NotificationsProvider = ({ children }) => {
   }, [user, rolActivo])
 
   const leerNotificacion = async (id) => {
-    await marcarLeida(id)
-    await fetchNotificaciones()
+    if (idsMarcando.has(id)) return // ya se está procesando, evita doble click
+
+    setIdsMarcando(prev => new Set(prev).add(id))
+    try {
+      await marcarLeida(id)
+      await fetchNotificaciones()
+    } finally {
+      setIdsMarcando(prev => {
+        const siguiente = new Set(prev)
+        siguiente.delete(id)
+        return siguiente
+      })
+    }
   }
 
   const leerTodas = async () => {
-    await marcarTodasLeidas()
-    await fetchNotificaciones()
+    if (marcandoTodas) return
+
+    setMarcandoTodas(true)
+    try {
+      await marcarTodasLeidas()
+      await fetchNotificaciones()
+    } finally {
+      setMarcandoTodas(false)
+    }
   }
 
   return (
@@ -45,7 +65,9 @@ export const NotificationsProvider = ({ children }) => {
       limiteBadge: LIMITE_BADGE,
       fetchNotificaciones,
       leerNotificacion,
-      leerTodas
+      leerTodas,
+      marcandoTodas,
+      idsMarcando
     }}>
       {children}
     </NotificationsContext.Provider>

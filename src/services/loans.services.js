@@ -42,6 +42,12 @@ export const rejectRenewal = async (id) => {
   return data
 }
 
+// Cancela una solicitud de renovación propia antes de que sea respondida
+export const cancelRenewal = async (id) => {
+  const { data } = await api.patch(`/loans/${id}/renew/cancel`)
+  return data
+}
+
 export const respondDetalle = async (id_prestamo, id_ejemplar, estado, observaciones) => {
   const { data } = await api.patch(`/loans/${id_prestamo}/detalle/${id_ejemplar}`, { estado, observaciones })
   return data

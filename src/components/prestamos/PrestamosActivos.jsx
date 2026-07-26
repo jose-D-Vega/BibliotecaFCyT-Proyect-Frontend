@@ -25,9 +25,22 @@ function PrestamosActivos() {
     setLoading(true)
     try {
       const res = await getLoans({ limit: 100 })
-      const activos = res.data.filter(p =>
-        !ESTADOS_EXCLUIDOS.includes(p.estado_prestamo)
+
+      // ids de cadena (id_prestamo_original) que ya tienen una renovación
+      // esperando respuesta del bibliotecario
+      const cadenasConRenovacionPendiente = new Set(
+        res.data
+          .filter(p => p.estado_prestamo === 'solicitud_renovacion')
+          .map(p => p.id_prestamo_original)
       )
+
+      const activos = res.data
+        .filter(p => !ESTADOS_EXCLUIDOS.includes(p.estado_prestamo))
+        .map(p => ({
+          ...p,
+          renovacionPendiente: cadenasConRenovacionPendiente.has(p.id_prestamo_original || p.id_prestamo)
+        }))
+
       setPrestamos(activos)
     } catch (err) {
       console.error('Error al cargar préstamos activos:', err)

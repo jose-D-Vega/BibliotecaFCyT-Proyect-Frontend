@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { cancelLoan, renewLoan } from '../../services/loans.services'
+import { cancelLoan, renewLoan, cancelRenewal } from '../../services/loans.services'
 
 const ESTADO_LABELS = {
   solicitado: 'Solicitado',
@@ -15,6 +15,7 @@ const ESTADO_LABELS = {
   reserva_aprobada: 'Reserva aprobada',
   reserva_parcialmente_aprobada: 'Reserva parcial',
   renovado: 'Renovado',
+  reserva_rechazada: 'Reserva Rechazada',
 }
 
 const ESTADOS_CANCELABLES = [
@@ -38,7 +39,10 @@ function PrestamoCard({ prestamo, onAccion }) {
 
   const esRenovacion = (prestamo.numero_renovacion ?? 0) > 0
   const esCancelable = ESTADOS_CANCELABLES.includes(prestamo.estado_prestamo)
-  const esRenovable = prestamo.estado_prestamo === 'activo'
+  const esRenovable = prestamo.estado_prestamo === 'activo' && !prestamo.renovacionPendiente
+  // La fila de la solicitud de renovación en sí — el usuario puede
+  // arrepentirse mientras el bibliotecario no la respondió
+  const esRenovacionCancelable = prestamo.estado_prestamo === 'solicitud_renovacion'
   const mostrarFechaTope = ESTADOS_CON_FECHA_TOPE.includes(prestamo.estado_prestamo)
   const mostrarFechaRespuesta = ['aprobado', 'parcialmente_aprobado', 'rechazado',
     'reserva_aprobada', 'reserva_parcialmente_aprobada',
@@ -65,6 +69,20 @@ function PrestamoCard({ prestamo, onAccion }) {
       onAccion?.()
     } catch (err) {
       setError(err.response?.data?.error || 'Error al cancelar')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCancelarRenovacion = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      await cancelRenewal(prestamo.id_prestamo)
+      setModal(null)
+      onAccion?.()
+    } catch (err) {
+      setError(err.response?.data?.error || 'Error al cancelar la renovación')
     } finally {
       setLoading(false)
     }
@@ -163,7 +181,7 @@ function PrestamoCard({ prestamo, onAccion }) {
         )}
 
         {/* Footer */}
-        {(mostrarFechaTope || esCancelable || esRenovable) && (
+        {(mostrarFechaTope || esCancelable || esRenovable || esRenovacionCancelable) && (
           <div className="prestamo-card__footer">
             {mostrarFechaTope && prestamo.fecha_tope_devolucion && (
               <span className={`prestamo-card__fecha-tope ${estaVencido ? 'vencido' : ''}`}>
@@ -185,6 +203,16 @@ function PrestamoCard({ prestamo, onAccion }) {
                 <button className="prestamo-btn renovar" onClick={() => setModal('renovar')}>
                   Renovar
                 </button>
+              )}
+              {esRenovacionCancelable && (
+                <button className="prestamo-btn cancelar" onClick={() => setModal('cancelar-renovacion')}>
+                  Cancelar renovación
+                </button>
+              )}
+              {prestamo.estado_prestamo === 'activo' && prestamo.renovacionPendiente && (
+                <span className="prestamo-card__renovacion-pendiente-msg">
+                  Ya tenés una renovación pendiente de aprobación
+                </span>
               )}
             </div>
           </div>
@@ -223,6 +251,24 @@ function PrestamoCard({ prestamo, onAccion }) {
               </button>
               <button className="modal-btn renovar" onClick={handleRenovar} disabled={loading}>
                 {loading ? 'Enviando...' : 'Solicitar renovación'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal cancelar renovación */}
+      {modal === 'cancelar-renovacion' && (
+        <div className="prestamo-modal-overlay">
+          <div className="prestamo-modal-box">
+            <h3>Cancelar solicitud de renovación</h3>
+            <p>¿Estás seguro de que deseas cancelar tu solicitud de renovación? El préstamo seguirá activo con su fecha tope original.</p>
+            {error && <p style={{ color: '#f87171', fontSize: '0.875rem', margin: '0 0 12px' }}>{error}</p>}
+            <div className="prestamo-modal-acciones">
+              <button className="modal-btn secundario" onClick={() => { setModal(null); setError('') }} disabled={loading}>
+                Volver
+              </button>
+              <button className="modal-btn primario" onClick={handleCancelarRenovacion} disabled={loading}>
+                {loading ? 'Cancelando...' : 'Confirmar'}
               </button>
             </div>
           </div>

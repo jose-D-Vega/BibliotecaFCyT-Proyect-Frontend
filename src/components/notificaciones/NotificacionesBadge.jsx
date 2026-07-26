@@ -12,7 +12,15 @@ const PREFIJO_POR_ROL = {
 }
 
 const NotificacionesBadge = () => {
-  const { notificaciones, noLeidas, limiteBadge, leerNotificacion, leerTodas } = useNotifications()
+  const {
+    notificaciones,
+    noLeidas,
+    limiteBadge,
+    leerNotificacion,
+    leerTodas,
+    marcandoTodas = false,
+    idsMarcando = new Set()
+  } = useNotifications()
   const { rolActivo } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -47,8 +55,19 @@ const NotificacionesBadge = () => {
           <div className="notif-panel__header">
             <span>Notificaciones</span>
             {noLeidas > 0 && (
-              <button className="notif-panel__marcar-todas" onClick={leerTodas}>
-                Marcar todas como leídas
+              <button
+                className="notif-panel__marcar-todas"
+                onClick={leerTodas}
+                disabled={marcandoTodas}
+              >
+                {marcandoTodas ? (
+                  <>
+                    <span className="notif-spinner" />
+                    Marcando...
+                  </>
+                ) : (
+                  'Marcar todas como leídas'
+                )}
               </button>
             )}
           </div>
@@ -57,26 +76,33 @@ const NotificacionesBadge = () => {
             {notificaciones.length === 0 ? (
               <p className="notif-panel__vacio">No tenés notificaciones</p>
             ) : (
-              notificaciones.map(n => (
-                <div
-                  key={n.id_notificacion}
-                  className={`notif-item ${!n.leida ? 'notif-item--no-leida' : ''}`}
-                  onClick={() => !n.leida && leerNotificacion(n.id_notificacion)}
-                >
-                  <span className="notif-item__icono">{getIconoTipo(n.tipo)}</span>
-                  <div className="notif-item__contenido">
-                    <p className="notif-item__titulo">{n.titulo}</p>
-                    <p className="notif-item__mensaje">{n.mensaje}</p>
-                    <p className="notif-item__fecha">
-                      {new Date(n.fecha).toLocaleDateString('es-PY', {
-                        day: '2-digit', month: '2-digit', year: 'numeric',
-                        hour: '2-digit', minute: '2-digit'
-                      })}
-                    </p>
+              notificaciones.map(n => {
+                const marcandoEsta = idsMarcando.has(n.id_notificacion)
+                return (
+                  <div
+                    key={n.id_notificacion}
+                    className={`notif-item ${!n.leida ? 'notif-item--no-leida' : ''} ${marcandoEsta ? 'notif-item--marcando' : ''}`}
+                    onClick={() => !n.leida && !marcandoEsta && leerNotificacion(n.id_notificacion)}
+                  >
+                    <span className="notif-item__icono">{getIconoTipo(n.tipo)}</span>
+                    <div className="notif-item__contenido">
+                      <p className="notif-item__titulo">{n.titulo}</p>
+                      <p className="notif-item__mensaje">{n.mensaje}</p>
+                      <p className="notif-item__fecha">
+                        {new Date(n.fecha).toLocaleDateString('es-PY', {
+                          day: '2-digit', month: '2-digit', year: 'numeric',
+                          hour: '2-digit', minute: '2-digit'
+                        })}
+                      </p>
+                    </div>
+                    {marcandoEsta ? (
+                      <span className="notif-spinner notif-spinner--dot" />
+                    ) : (
+                      !n.leida && <span className="notif-item__dot" />
+                    )}
                   </div>
-                  {!n.leida && <span className="notif-item__dot" />}
-                </div>
-              ))
+                )
+              })
             )}
           </div>
 

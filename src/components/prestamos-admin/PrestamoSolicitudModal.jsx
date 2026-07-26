@@ -252,7 +252,7 @@ function PrestamoSolicitudModal({ open, onClose, solicitud, onAceptar }) {
               "Confirmar entrega"
             ) : (
               <>
-                Confirmar{" "}
+                Gestionar{" "}
                 {isReserva
                   ? "reserva"
                   : isRenovacion
