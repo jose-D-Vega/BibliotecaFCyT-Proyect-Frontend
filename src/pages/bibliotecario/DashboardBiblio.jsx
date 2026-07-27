@@ -189,7 +189,7 @@ const DashboardBiblio = () => {
             >
               <div className="alert-card__icon-wrapper"><MdGavel size={24} /></div>
               <div className="alert-card__content">
-                <p className="alert-card__title">{stats.librosVencidos} Préstamos{stats.librosVencidos !== 1 ? 's' : ''} atrasados{stats.librosVencidos !== 1 ? 's' : ''}</p>
+                <p className="alert-card__title">{stats.librosVencidos} Préstamo{stats.librosVencidos !== 1 ? 's' : ''} atrasado{stats.librosVencidos !== 1 ? 's' : ''}</p>
                 <p className="alert-card__description">Ver préstamos vencidos</p>
               </div>
             </article>
