@@ -46,21 +46,20 @@ const DashboardBiblio = () => {
     setFailedImages((prev) => ({ ...prev, [idLibro]: true }));
   };
 
-  const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro, estadoLower }) => {
-    if (rolActivo === 'bibliotecario') {
-      navigate('/bibliotecario/prestamos', {
-        state: { filtroEstado: estadoLower || '', fromDashboard: true }
-      });
-    } else {
-      navigate('/admin/prestamos', {
-        state: {
-          tab: tab || 'prestamos',
-          estadoFiltro: estadoLabel,
-          solicitudFiltro: solicitudFiltro,
-          fromDashboard: true
-        }
-      });
-    }
+  // Se unifica el state enviado con el que espera PrestamosAdmin.jsx
+  // (mismo componente montado en /bibliotecario/prestamos y /admin/prestamos),
+  // que solo lee "tab", "estadoFiltro" y "solicitudFiltro".
+  const irAPrestamos = ({ tab, estadoLabel, solicitudFiltro }) => {
+    const ruta = rolActivo === 'bibliotecario' ? '/bibliotecario/prestamos' : '/admin/prestamos';
+
+    navigate(ruta, {
+      state: {
+        tab: tab || 'prestamos',
+        estadoFiltro: estadoLabel,
+        solicitudFiltro: solicitudFiltro,
+        fromDashboard: true
+      }
+    });
   };
 
   const irADevoluciones = () => {
@@ -186,7 +185,7 @@ const DashboardBiblio = () => {
 
             <article
               className="alert-card alert-card--error alert-card--clickable"
-              onClick={() => irAPrestamos({ tab: 'prestamos', estadoLabel: 'Vencido', estadoLower: 'vencido' })}
+              onClick={() => irAPrestamos({ tab: 'prestamos', estadoLabel: 'Vencido' })}
             >
               <div className="alert-card__icon-wrapper"><MdGavel size={24} /></div>
               <div className="alert-card__content">
@@ -197,7 +196,7 @@ const DashboardBiblio = () => {
 
             <article
               className="alert-card alert-card--info alert-card--clickable"
-              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RESERVA', estadoLower: 'solicitud_reserva' })}
+              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RESERVA' })}
             >
               <div className="alert-card__icon-wrapper"><MdBookmark size={24} /></div>
               <div className="alert-card__content">
@@ -208,7 +207,7 @@ const DashboardBiblio = () => {
 
             <article
               className="alert-card alert-card--info alert-card--clickable"
-              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RENOVACION', estadoLower: 'solicitud_renovacion' })}
+              onClick={() => irAPrestamos({ tab: 'solicitudes', solicitudFiltro: 'RENOVACION' })}
             >
               <div className="alert-card__icon-wrapper"><MdAutorenew size={24} /></div>
               <div className="alert-card__content">
